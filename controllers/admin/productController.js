@@ -133,10 +133,12 @@ const getAllProducts = async (req, res) => {
 
 const loadEditProduct = async (req, res) => {
     try {
-        const productId = req.params.id;
+        const productId = req.query.id;
+        console.log("Product ID:", productId);
 
         // Fetch the product details by ID
         const product = await Product.findById(productId);
+        console.log("Product Details:", product);
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -228,10 +230,39 @@ const editProduct = async (req, res, next) => {
     }
 };
 
+
+
+
+const blockProduct=async(req,res)=>{
+    try {
+        let id=req.query.id;
+        await Product.updateOne({_id:id},{$set:{isBlocked:true}})
+        res.redirect('/admin/products')
+
+    } catch (error) {
+        res.redirect('/pageNotFound')
+       
+    }
+}
+
+
+const unblockProduct=async(req,res)=>{
+    try {
+        let id=req.query.id;
+        await Product.updateOne({_id:id},{$set:{isBlocked:false}})
+        res.redirect('/admin/products')
+    } catch (error) {
+        res.redirect('/pageNotFound');
+        
+    }
+}
+
 module.exports = {
     loadAddProduct,
     addProduct,
     getAllProducts,
     editProduct,
-    loadEditProduct
+    loadEditProduct,
+    blockProduct,
+    unblockProduct
 };

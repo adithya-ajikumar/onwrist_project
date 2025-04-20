@@ -29,6 +29,8 @@ router.get("/products",productController.getAllProducts);
 router.get("/addproduct",productController.loadAddProduct);
 router.post("/addproduct",upload.array('productImages', 4),productController.addProduct);
 router.get("/editProduct",productController.loadEditProduct);
-router.get('/edit-product/:id',productController.loadEditProduct);
+router.get('/editProduct/:id',productController.loadEditProduct);
+router.get('/blockProduct',productController.blockProduct)
+router.get('/unblockProduct',productController.unblockProduct)
 
 module.exports=router;

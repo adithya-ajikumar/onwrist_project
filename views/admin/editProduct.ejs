@@ -223,65 +223,92 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <input name="descriptionData" value="<%=product.description%>" class="form-control">
+                                    <input name="description" value="<%=product.description%>" class="form-control">
                                     <div id="description-error" class="error-message"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Regular price</label>
-                                            <input placeholder="$" name="regularPrice" type="text" value="<%=product.regularPrice%>" class="form-control">
-                                            <div id="regularPrice-error" class="error-message"></div>
+                                            <label class="form-label">Price</label>
+                                            <input placeholder="$" name="price" type="text" value="<%=product.price%>" class="form-control">
+                                            <div id="price-error" class="error-message"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Sale price</label>
-                                            <input name="salePrice" type="text" value="<%=product.salePrice%>" class="form-control">
-                                            <div id="salePrice-error" class="error-message"></div>
+                                            <label class="form-label">Offer Price</label>
+                                            <input name="offerprice" type="text" value="<%=product.offerprice%>" class="form-control">
+                                            <div id="offerprice-error" class="error-message"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Quantity</label>
-                                            <input name="quantity" type="text" value="<%=product.quantity%>" class="form-control">
-                                            <div id="quantity-error" class="error-message"></div>
+                                            <label class="form-label">Total Stock</label>
+                                            <input name="totalStock" type="text" value="<%=product.totalStock%>" class="form-control">
+                                            <div id="totalStock-error" class="error-message"></div>
                                         </div>
                                     </div>
                                 </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="mb-4">
-                                                <label for="size-6">Size 6 Quantity:</label>
-                                                <input type="number" id="size-6" name="sizes[6]" min="0" class="form-control" value="<%= product.sizes[6] %>">
-
-                                                <label for="size-7">Size 7 Quantity:</label>
-                                                <input type="number" id="size-7" name="sizes[7]" min="0" class="form-control" value="<%= product.sizes[7] %>">
-
-                                                <label for="size-8">Size 8 Quantity:</label>
-                                                <input type="number" id="size-8" name="sizes[8]" min="0" class="form-control" value="<%= product.sizes[8] %>">
-
-                                                <label for="size-9">Size 9 Quantity:</label>
-                                                <input type="number" id="size-9" name="sizes[9]" min="0" class="form-control" value="<%= product.sizes[9] %>">
-
-                                                <!-- Size validation error message -->
-                                                <small id="size-error" class="text-danger"></small>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Category</label>
-                                            <select class="form-select" name="category">
-                                                <%for(let i=0;i<cat.length;i++){%>
-                                                    <option value="<%=cat[i].name%>"><%=cat[i].name%></option>
-                                                <%}%>
-                                            </select>
-                                            <div id="category-error" class="error-message"></div>
+                                            <label for="silver-stock">Silver Stock:</label>
+                                            <input type="number" id="silver-stock" name="colorStock[silver]" min="0" class="form-control" value="<%= product.colorStock.silver %>">
+
+                                            <label for="gold-stock">Gold Stock:</label>
+                                            <input type="number" id="gold-stock" name="colorStock[gold]" min="0" class="form-control" value="<%= product.colorStock.gold %>">
+
+                                            <label for="black-stock">Black Stock:</label>
+                                            <input type="number" id="black-stock" name="colorStock[black]" min="0" class="form-control" value="<%= product.colorStock.black %>">
+
+                                            <!-- Stock validation error message -->
+                                            <small id="stock-error" class="text-danger"></small>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select" name="categoryId">
+                                            <%for(let i=0;i<cat.length;i++){%>
+                                                <option value="<%=cat[i]._id%>" <%= product.categoryId.equals(cat[i]._id) ? 'selected' : '' %>><%=cat[i].name%></option>
+                                            <%}%>
+                                        </select>
+                                        <div id="category-error" class="error-message"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Status</label>
+                                        <select class="form-select" name="status">
+                                            <option value="instock" <%= product.status === 'instock' ? 'selected' : '' %>>In Stock</option>
+                                            <option value="outofstock" <%= product.status === 'outofstock' ? 'selected' : '' %>>Out of Stock</option>
+                                            <option value="available" <%= product.status === 'available' ? 'selected' : '' %>>Available</option>
+                                        </select>
+                                        <div id="status-error" class="error-message"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Return Policy</label>
+                                        <select class="form-select" name="returnpolicy">
+                                            <option value="true" <%= product.returnpolicy ? 'selected' : '' %>>Yes</option>
+                                            <option value="false" <%= !product.returnpolicy ? 'selected' : '' %>>No</option>
+                                        </select>
+                                        <div id="returnpolicy-error" class="error-message"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Warranty</label>
+                                        <select class="form-select" name="warranty">
+                                            <option value="true" <%= product.warranty ? 'selected' : '' %>>Yes</option>
+                                            <option value="false" <%= !product.warranty ? 'selected' : '' %>>No</option>
+                                        </select>
+                                        <div id="warranty-error" class="error-message"></div>
+                                    </div>
+                                </div>
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <h4>Product Images</h4>
@@ -493,21 +520,20 @@
 
             // Get form elements
             const name = document.getElementsByName('productName')[0].value;
-            const description = document.getElementsByName('descriptionData')[0].value;
+            const description = document.getElementsByName('description')[0].value;
             const brand = document.getElementsByName('brand')[0].value;
-            const price = document.getElementsByName('regularPrice')[0].value;
-            const salePrice = document.getElementsByName('salePrice')[0].value;
-            const category = document.getElementsByName('category')[0].value;
-            const quantity = document.getElementsByName('quantity')[0].value;
+            const price = document.getElementsByName('price')[0].value;
+            const offerprice = document.getElementsByName('offerprice')[0].value;
+            const category = document.getElementsByName('categoryId')[0].value;
+            const totalStock = document.getElementsByName('totalStock')[0].value;
 
-            // Get total size quantities
-            const sizes = {
-                6: parseInt(document.getElementById('size-6').value) || 0,
-                7: parseInt(document.getElementById('size-7').value) || 0,
-                8: parseInt(document.getElementById('size-8').value) || 0,
-                9: parseInt(document.getElementById('size-9').value) || 0
+            // Get total color stock quantities
+            const colorStock = {
+                silver: parseInt(document.getElementById('silver-stock').value) || 0,
+                gold: parseInt(document.getElementById('gold-stock').value) || 0,
+                black: parseInt(document.getElementById('black-stock').value) || 0,
             };
-            const totalSizeQuantity = Object.values(sizes).reduce((a, b) => a + b, 0);
+            const totalColorStock = Object.values(colorStock).reduce((a, b) => a + b, 0);
 
             // Validate Product Name
             if (!name || name.trim() === "") {
@@ -527,19 +553,19 @@
                 isValid = false;
             }
 
-            // Validate Regular Price
+            // Validate Price
             if (!price || !/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) <= 0) {
-                displayErrorMessage('regularPrice-error', 'Please enter a valid price');
+                displayErrorMessage('price-error', 'Please enter a valid price');
                 isValid = false;
             }
 
-            // Validate Sale Price
-            if (!salePrice || !/^\d+(\.\d{1,2})?$/.test(salePrice) || parseFloat(salePrice) < 0) {
-                displayErrorMessage('salePrice-error', 'Please enter a valid sale price');
+            // Validate Offer Price
+            if (!offerprice || !/^\d+(\.\d{1,2})?$/.test(offerprice) || parseFloat(offerprice) < 0) {
+                displayErrorMessage('offerprice-error', 'Please enter a valid offer price');
                 isValid = false;
             }
-            if (parseFloat(salePrice) >= parseFloat(price)) {
-                displayErrorMessage('salePrice-error', 'Sale price must be less than regular price');
+            if (parseFloat(offerprice) >= parseFloat(price)) {
+                displayErrorMessage('offerprice-error', 'Offer price must be less than regular price');
                 isValid = false;
             }
 
@@ -549,15 +575,15 @@
                 isValid = false;
             }
 
-            // Validate Quantity
-            if (!quantity || isNaN(parseInt(quantity)) || parseInt(quantity) < 0) {
-                displayErrorMessage('quantity-error', 'Please enter a valid quantity');
+            // Validate Total Stock
+            if (!totalStock || isNaN(parseInt(totalStock)) || parseInt(totalStock) < 0) {
+                displayErrorMessage('totalStock-error', 'Please enter a valid total stock');
                 isValid = false;
             }
 
-            // Validate Size Quantities match total quantity
-            if (parseInt(quantity) !== totalSizeQuantity) {
-                displayErrorMessage('size-error', 'Total size quantities must match the total quantity');
+            // Validate Color Stock quantities match total stock
+            if (parseInt(totalStock) !== totalColorStock) {
+                displayErrorMessage('stock-error', 'Total color stock quantities must match the total stock');
                 isValid = false;
             }
 
