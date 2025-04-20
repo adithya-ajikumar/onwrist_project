@@ -3,16 +3,14 @@
 
 const Product = require('../../models/productsSchema');
 const Category = require('../../models/catogerySchema');
-
 const mongoose = require('mongoose');
-
-
-
+const path = require('path');
+const sharp = require('sharp');
 
 const loadAddProduct = async (req, res) => {
-try{
+    try {
         const categories = await Category.find({});
-        res.render('addProduct', { cat:categories });
+        res.render('addProduct', { cat: categories });
     } catch (error) {
         console.error('Error loading add product page:', error);
         res.status(500).json({
@@ -21,7 +19,6 @@ try{
         });
     }
 };
-
 
 const addProduct = async (req, res) => {
     try {
@@ -81,7 +78,7 @@ const addProduct = async (req, res) => {
             returnpolicy: returnpolicy === 'true',
             warranty: warranty === 'true',
             status,
-            productImage:productImages, // Save the productImages array
+            productImage: productImages, // Save the productImages array
             isListed: true // Default value
         });
 
@@ -96,33 +93,27 @@ const addProduct = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to add product', error: error.message });
     }
 };
-
-
-
-
 const getAllProducts = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = 10; 
+        const limit = 10;
         const search = req.query.search || '';
 
         // Build search query
         const searchQuery = search ? {
             $or: [
-                { productName: { $regex: search, $options: 'i' }},
-                { brand: { $regex: search, $options: 'i' }}
+                { productName: { $regex: search, $options: 'i' } },
+                { brand: { $regex: search, $options: 'i' } }
             ]
         } : {};
 
-       
         const productData = await Product.find(searchQuery)
-            .sort({ createdAt: -1 }) 
+            .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(limit)
-            .populate('category')
-            .exec();
+            .populate('categoryId') // Populate the categoryId field
+            .exec(); // Use exec() to execute the query
 
-       
         const totalProducts = await Product.countDocuments(searchQuery);
         const totalPages = Math.ceil(totalProducts / limit);
 
@@ -162,12 +153,10 @@ const loadEditProduct = async (req, res) => {
         console.error('Error loading edit product page:', error);
         res.status(500).json({
             success: false,
-            message: 'Internal server error'
+            message: 'Internal server error',
         });
     }
 };
-
-
 
 const editProduct = async (req, res, next) => {
     try {
@@ -239,29 +228,6 @@ const editProduct = async (req, res, next) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     loadAddProduct,
     addProduct,
@@ -269,5 +235,3 @@ module.exports = {
     editProduct,
     loadEditProduct
 };
-
-
