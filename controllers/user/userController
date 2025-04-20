@@ -1,0 +1,247 @@
+const User = require('../../models/userschema');
+const nodemailer = require("nodemailer");
+const env = require("dotenv").config();
+const bcrypt = require("bcrypt");
+const genrateOTP = require("../../utils/genrateOTP");
+
+
+const loadHome = async (req, res) => {
+    try {
+        console.log("Home Page");
+        res.render('home');
+    } catch (error) {
+        console.error("Home load error:", error);
+        res.status(500).send("Server error");
+    }
+};
+
+
+const loadSignup = async (req, res) => {
+    try {
+        console.log("Signup Page");
+        res.render('signup');
+    } catch (error) {
+        console.error("Signup load error:", error);
+        res.status(500).send("Server error");
+    }
+};
+
+const loadLogin = async (req, res) => {
+    try {
+        console.log("Login Page");
+        res.render('login');
+    } catch (error) {
+        console.error("Login load error:", error);
+        res.status(500).send("Server error");
+    }
+};
+
+const loadPagenotfound = async (req, res) => {
+    try {
+        console.log("404 Page");
+        res.render('pagenotfound');
+    } catch (error) {
+        console.error("404 load error:", error);
+        res.status(500).send("Server error");
+    }
+};
+
+
+
+
+async function sendVerificationEmail(email, otp) {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: process.env.NODEMAILER_EMAIL,
+                pass: process.env.NODEMAILER_PASSWORD
+            }
+        });
+
+        const info = await transporter.sendMail({
+            from: process.env.NODEMAILER_EMAIL,
+            to: email,
+            subject: "Verify your account",
+            text: `Your OTP is ${otp}`,
+            html: `<b>Your OTP is: ${otp}</b>`
+        });
+
+        return info.accepted.length > 0;
+    } catch (error) {
+        console.error("Error sending email:", error);
+        return false;
+    }
+}
+
+
+const securePassword = async (password) => {
+    try {
+        const passwordHash = await bcrypt.hash(password, 10);
+        return passwordHash;
+    } catch (error) {
+        console.error("Password hashing error:", error);
+    }
+};
+
+const signup = async (req, res) => {
+    try {
+
+        const { name, email, password } = req.body;
+console.log(req.body)
+       
+
+        const existingUser = await User.findOne({ email });
+        console.log("EXISTING USER : ",existingUser)
+        if (existingUser) {
+            return res.status(400).json({success:false,message:"User Already Exisit"});
+        }
+
+        const otp = genrateOTP();
+        await sendVerificationEmail(email, otp);
+
+
+        req.session.userOtp = otp;
+        req.session.userData = { name, email, password };
+
+        console.log("OTP sent:", otp);
+        res.render('verifyOtp', { success: true, message: "OTP sent successfully" });
+
+       console.log('success')
+    } catch (error) {
+        console.error("Error in signup:", error);
+        res.redirect("/pagenotfound");
+    }
+};
+
+const verifyOtp = async (req, res) => {
+    try {
+        const { otp } = req.body;
+        console.log("Entered OTP:", otp);
+
+        if (otp === req.session.userOtp) {
+            const user = req.session.userData;
+            const passwordHash = await securePassword(user.password);
+
+            const newUserData = {
+                name: user.name,
+                email: user.email,
+                password: passwordHash,
+                // Optional: only set googleId if it's defined
+                ...(user.googleId ? { googleId: user.googleId } : {})
+            };
+
+            const newUser = new User(newUserData);
+            await newUser.save();
+
+            req.session.user = newUser._id;
+            return res.json({ success: true, redirectUrl: "/" });
+        } else {
+            return res.status(400).json({ success: false, message: "Invalid OTP. Please try again." });
+        }
+    } catch (error) {
+        console.error("Error verifying OTP:", error);
+        return res.status(500).json({ success: false, message: "Error verifying OTP" });
+    }
+};
+
+
+
+const resendOtp = async (req, res) => {
+    try {
+        const { email } = req.session.userData;
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email not found in session." });
+        }
+
+        const otp = generateOtp();
+        req.session.userOtp = otp;
+
+        const emailSent = await sendVerificationEmail(email, otp);
+        if (emailSent) {
+            console.log("Resent OTP:", otp);
+            res.status(200).json({ success: true, message: "OTP resent successfully." });
+        } else {
+            res.status(500).json({ success: false, message: "Failed to resend OTP. Please try again." });
+        }
+    } catch (error) {
+        console.error("Error resending OTP:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error. Please try again." });
+    }
+};
+
+
+
+const loadVerifyOtp=async(req,res)=>{
+    try {
+        res.render('verifyOtp')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
+
+const signin = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      console.log("Sign in request:", req.body);
+  
+      
+      const user = await User.findOne({ email });
+      if (!user) {
+        res.json({message:'User not found'});
+        return res.redirect('/signup');
+      }
+  
+      
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        res.json({message:'Invalid credentials'})
+        return res.redirect('/login');
+      }
+  
+      req.session.user = user;
+      return res.redirect('/')
+  
+    } catch (error) {
+      console.error('Error in sign in:', error);
+      return res.status(500).send('Server error');
+    }
+  };
+
+
+
+const loadForgotPassword=async(req,res)=>{
+    try{
+    res.render('forgotPassword');
+    }catch(error){
+    console.log(error)
+    }
+    }
+
+
+
+
+
+
+
+
+
+module.exports = {
+    loadHome,
+    loadSignup,
+    loadLogin,
+    loadPagenotfound,
+    signup,
+    verifyOtp,
+    resendOtp,
+    loadVerifyOtp,
+    signin,
+    loadForgotPassword
+};

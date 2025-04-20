@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .error.message {
+            color: red;
+            font-size: 0.75rem;
+            display: none;
+        }
+    </style>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="w-1/2 p-8">
+            <a href="#" class="text-gray-600 text-xl">←</a>
+            <h2 class="text-3xl font-semibold mb-6">Get Started Now</h2>
+            <form id="signform" class="space-y-4" action="/auth/register" method="POST">
+                <input type="text" placeholder="Name" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="name" name="name">
+                <div id="error1" class="text-red-600 text-sm"></div>
+
+                <input type="email" placeholder="Email address" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="email" name="email">
+                <div id="error2" class="text-red-600 text-sm"></div>
+
+                <input type="password" placeholder="Password" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="password" name="password">
+                <div id="error3" class="text-red-600 text-sm"></div>
+
+                <input type="password" placeholder="Confirm Password" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="confirmpassword" name="confirmpassword">
+                <div id="error4" class="text-red-600 text-sm"></div>
+
+                <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="terms" required>
+                    <span>I agree to the <a href="#" class="text-blue-600">terms & policy</a></span>
+                </label>
+
+                <button type="submit"
+                    class="w-full py-3 mt-4 bg-green-600 text-white rounded-lg hover:bg-green-700">Sign Up</button>
+
+                <div class="text-center text-gray-600 mt-4">or</div>
+
+                <button type="button"
+                    class="w-full py-3 mt-2 bg-white text-gray-600 border rounded-lg hover:bg-gray-100 flex items-center justify-center">
+                    <img src="https://i.pinimg.com/736x/68/3d/9a/683d9a1a8150ee8b29bfd25d46804605.jpg"  style="width: 20px; height: 20px; margin-right: 10px;">
+                         Sign in with Google
+                </button>
+
+              
+            </form>
+
+            <p class="mt-6 text-center text-gray-600">Have an account? <a href="/login"
+                    class="text-blue-600">Sign In</a></p>
+        </div>
+
+        <div class="w-1/2">
+            <img src="https://www.jiomart.com/images/product/original/rvv0jejch6/iloz-stylish-new-luxury-gold-black-men-watch-designer-professional-gold-quartz-fashion-analog-wrist-watch-for-men-product-images-rvv0jejch6-0-202210200514.jpg?im=Resize=(600,750)" alt="Watch" class="object-cover w-full h-full">
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("signform");
+
+        const fields = {
+            name: document.getElementById("name"),
+            email: document.getElementById("email"),
+            password: document.getElementById("password"),
+            confirmpassword: document.getElementById("confirmpassword"),
+            terms: document.getElementById("terms")
+        };
+
+        const errors = {
+            name: document.getElementById("error1"),
+            email: document.getElementById("error2"),
+            password: document.getElementById("error3"),
+            confirmpassword: document.getElementById("error4"),
+        };
+
+        const validateField = (fieldName, value) => {
+            switch (fieldName) {
+                case "name":
+                    if (value.length < 3 || value.length > 10) {
+                        return "Username must be between 3 and 10 characters";
+                    }
+                    if (!/^[A-Z][A-Za-z0-9_]*$/.test(value)) {
+                        return "Username must start with a capital letter and contain only letters, numbers, or underscores";
+                    }
+                    break;
+
+                case "email":
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        return "Invalid email format";
+                    }
+                    break;
+
+                case "password":
+                    if (value.length < 6) {
+                        return "Password must be at least 6 characters";
+                    }
+                    break;
+
+                case "confirmpassword":
+                    if (value !== fields.password.value) {
+                        return "Passwords do not match";
+                    }
+                    break;
+            }
+
+            return null;
+        };
+
+        const showError = (field, message) => {
+            errors[field].textContent = message || "";
+            if (message) {
+                fields[field].classList.add("border-red-500");
+            } else {
+                fields[field].classList.remove("border-red-500");
+            }
+        };
+
+        Object.keys(fields).forEach((key) => {
+            if (key === "terms") return;
+            fields[key].addEventListener("input", (e) => {
+                const value = e.target.value;
+                const errorMessage = validateField(key, value);
+                showError(key, errorMessage);
+
+                if (key === "password" && fields.confirmpassword.value.length > 0) {
+                    const confirmError = validateField("confirmpassword", fields.confirmpassword.value);
+                    showError("confirmpassword", confirmError);
+                }
+            });
+        });
+
+        form.addEventListener("submit", (e) => {
+            let hasError = false;
+
+            Object.keys(fields).forEach((key) => {
+                if (key === "terms") return;
+
+                const value = fields[key].value.trim();
+                const errorMessage = validateField(key, value);
+                showError(key, errorMessage);
+
+                if (errorMessage) hasError = true;
+            });
+
+            if (!fields.terms.checked) {
+                alert("Please agree to the terms and policy.");
+                hasError = true;
+            }
+
+            if (hasError) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

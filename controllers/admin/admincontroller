@@ -1,0 +1,181 @@
+const User=require("../../models/userschema");
+const mongoose=require("mongoose");
+const bcrypt = require("bcrypt");
+
+
+const loadlogin=(req,res)=>{
+    if(req.session.admin){
+        return res.redirect("/admin/dashboard")
+    }
+    res.render("adminlogin" );
+
+}
+
+
+// const bcrypt = require('bcrypt');
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const admin = await User.findOne({ email });
+
+    console.log('Admin Data:', admin);
+
+    // Check if admin exists and is actually an admin
+    if (admin && admin.isAdmin) {
+
+      // Compare passwords with await
+      const passwordMatch = await bcrypt.compare(password, admin.password);
+      console.log('Password Match:', passwordMatch);
+
+      if (passwordMatch) {
+        // Set session for admin
+        req.session.admin = true;
+        return res.redirect("/admin/dashboard");
+      } else {
+        // Invalid password
+        return res.redirect("/admin/login");
+      }
+
+    } else {
+      // Not an admin or not found
+      return res.redirect("/admin/login");
+    }
+
+  } catch (error) {
+    console.log("Login error:", error);
+    return res.redirect("/pageerror"); // fixed the typo here
+  }
+};
+
+// const login = async (req, res) => {
+//     try {
+//       const { email, password } = req.body;
+  
+//       const admin = await User.findOne({ email });
+  
+//       console.log("Email:", email);
+//       console.log("Password from form:", password);
+//       console.log("Admin fetched from DB:", admin);
+//       console.log("Admin hashed password:", admin?.password);
+  
+//       if (admin && admin.isAdmin) {
+  
+//         if (!password || !admin?.password) {
+//           console.log("Missing password or hash");
+//           return res.redirect("/admin/login");
+//         }
+  
+//         const passwordMatch = await bcrypt.compare(password, admin.password);
+//         console.log('Password Match:', passwordMatch);
+  
+//         if (passwordMatch) {
+//           req.session.admin = true;
+//           return res.redirect("/admin/dashboard");
+//         } else {
+//           return res.redirect("/admin/login");
+//         }
+  
+//       } else {
+//         return res.redirect("/admin/login");
+//       }
+  
+//     } catch (error) {
+//       console.log("Login error:", error);
+//       return res.redirect("/pageerror");
+//     }
+//   };
+  
+
+  const loadDashboard=async(req,res)=>{
+    if(req.session.admin){
+    try {     
+       res.render("dashboard");
+    } catch (error) {
+        res.redirect("pageerror")
+        console.error(error);
+    }
+    }
+  }
+
+
+  const logout = async (req, res) => {
+    try {
+        req.session.admin = null
+        res.redirect('/admin/login')
+    } catch (error) {
+        res.status(500).send('logout error')
+    }
+}
+
+const blockUser = async (req, res) => {
+    try {
+        const userId = req.query.id;
+        await User.findByIdAndUpdate(userId, { isBlocked: true });
+       
+        res.redirect('/admin/customers');
+
+    } catch (error) {
+        console.error('Error blocking user:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+ 
+// Function to unblock a user
+const unblockUser = async (req, res) => {
+    try {
+        const userId = req.query.id;
+        console.log(userId);
+        await User.findByIdAndUpdate(userId, { isBlocked: false });
+        res.redirect('/admin/customers');
+    } catch (error) {
+        console.error('Error unblocking user:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const toggleUserStatus = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // Toggle blocked status
+        user.isBlocked = !user.isBlocked;
+        await user.save();
+
+        res.json({
+            success: true,
+            isBlocked: user.isBlocked,
+            message: `User has been ${user.isBlocked ? 'blocked' : 'unblocked'} successfully`
+        });
+
+    } catch (error) {
+        console.error('Toggle user status error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+};
+
+
+
+
+
+module.exports={
+    loadlogin,
+    login,
+    loadDashboard,
+    logout,
+    blockUser,
+    unblockUser,
+    toggleUserStatus
+}
