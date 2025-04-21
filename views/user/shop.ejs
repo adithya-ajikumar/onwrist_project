@@ -129,11 +129,6 @@
         margin-bottom: 1.5rem;
     }
 
-    .f-icon img {
-        width: 35px;
-        height: auto;
-    }
-
     .single-features h6 {
         font-size: 1.2rem;
         font-weight: 600;
@@ -323,8 +318,8 @@
         text-decoration: line-through;
         color: #999;
         margin-left: 10px;
-        font-size: 0.9rem !important;
-        font-weight: 400 !important;
+        font-size: 0.9rem;
+        font-weight: 400;
     }
 
     .prd-bottom {
@@ -375,182 +370,26 @@
         opacity: 1;
     }
 
-    /* Exclusive Deal Area */
-    .exclusive-deal-area {
-        padding: 5rem 0;
-        background-color: #f8f9fa;
-    }
-
-    .exclusive-left {
-        padding: 3rem;
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 15px 0 0 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .exclusive-right {
-        background-color: white;
-        border-radius: 0 15px 15px 0;
-        overflow: hidden;
-    }
-
-    .clockdiv {
-        margin-bottom: 2rem;
-    }
-
-    .clock-wrap {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 2rem;
-    }
-
-    .clockinner {
-        background-color: rgba(255, 255, 255, 0.2);
-        padding: 1.5rem;
-        border-radius: 10px;
-        text-align: center;
-        margin-right: 10px;
-    }
-
-    .clockinner h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
+    .stock-status {
+        font-size: 0.9rem;
         margin-bottom: 0.5rem;
     }
 
-    .smalltext {
-        font-size: 0.9rem;
+    .stock-status.instock {
+        color: green;
     }
 
-    .primary-btn {
-        display: inline-block;
-        background-color: white;
-        color: var(--primary-color);
-        padding: 12px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        transition: all 0.3s ease;
+    .stock-status.outofstock {
+        color: red;
     }
 
-    .primary-btn:hover {
-        background-color: var(--secondary-color);
-        color: white;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    .stock-status.available {
+        color: orange;
     }
 
-    /* Brand Area */
-    .brand-area {
-        padding: 4rem 0;
-        background-color: white;
-    }
-
-    .single-img {
-        text-align: center;
-        padding: 1rem;
-        filter: grayscale(100%);
-        opacity: 0.7;
-        transition: all 0.3s ease;
-    }
-
-    .single-img:hover {
-        filter: grayscale(0%);
-        opacity: 1;
-    }
-
-    /* Related Products */
-    .related-product-area {
-        padding: 5rem 0;
-        background-color: var(--body-color);
-    }
-
-    .single-related-product {
-        background-color: white;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px var(--shadow-color);
-        transition: all 0.3s ease;
-    }
-
-    .single-related-product:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    .single-related-product img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 10px 0 0 10px;
-    }
-
-    .single-related-product .desc {
-        padding: 10px 15px;
-    }
-
-    .title {
-        font-weight: 600;
-        color: var(--dark-color);
-        transition: all 0.3s ease;
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    .title:hover {
-        color: var(--primary-color);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .banner-content h1 {
-            font-size: 2.5rem;
-        }
-
-        .features-inner {
-            margin-top: 0;
-        }
-
-        .exclusive-left, .exclusive-right {
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .banner-area {
-            margin-top: 60px;
-        }
-
-        .banner-content {
-            left: 5%;
-            max-width: 80%;
-        }
-
-        .banner-content h1 {
-            font-size: 2rem;
-        }
-
-        .sorting-box {
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-select {
-            width: 100%;
-        }
-
-        .clock-wrap {
-            flex-wrap: wrap;
-        }
-
-        .clockinner {
-            flex: 0 0 calc(50% - 10px);
-            margin-bottom: 10px;
-        }
+    .color-options {
+        font-size: 0.8rem;
+        color: #666;
     }
 
     /* Search Box Animation */
@@ -610,20 +449,51 @@
     .search-button:hover {
         background-color: var(--secondary-color);
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .banner-content h1 {
+            font-size: 2.5rem;
+        }
+
+        .features-inner {
+            margin-top: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .banner-area {
+            margin-top: 60px;
+        }
+
+        .banner-content {
+            left: 5%;
+            max-width: 80%;
+        }
+
+        .banner-content h1 {
+            font-size: 2rem;
+        }
+
+        .sorting-box {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-select {
+            width: 100%;
+        }
+    }
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/owl.carousel.css">
 
 <div class="main-content">
-
-    <!-- start banner Area -->
+    <!-- Start Banner Area -->
     <section class="banner-area">
-
         <div class="search-bar-container">
             <div class="container">
                 <div class="search-wrapper">
@@ -632,13 +502,11 @@
                     </div>
                     <div class="search-input-group" id="searchInputGroup">
                         <form action="/shop" method="GET" class="search-form">
-                            <!-- Preserve existing filters when searching -->
                             <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
                             <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
                             <input type="hidden" name="maxPrice" value="<%= currentMaxPrice %>">
                             <input type="hidden" name="sort" value="<%= currentSort %>">
                             <input type="hidden" name="page" value="1">
-
                             <input type="text" name="search" class="search-input" placeholder="Search products..." value="<%= searchQuery || '' %>">
                             <button type="submit" class="search-button">
                                 <i class="fas fa-search"></i>
@@ -652,11 +520,9 @@
             <div class="row m-0">
                 <div class="col-12 p-0">
                     <div class="active-banner-slider owl-carousel">
-                        <!-- single-slide -->
                         <div class="single-slide position-relative">
                             <div class="banner-img">
-                                <!-- <img class="img-fluid w-100" src="/img/banner.jpg" alt="Banner"
-                                     style="height: 80vh; object-fit: cover;"> -->
+                                <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
                             </div>
                             <div class="banner-overlay"></div>
                             <div class="banner-content">
@@ -665,11 +531,9 @@
                                 <a href="#products" class="btn-shop">Shop Now <i class="fas fa-arrow-right ml-2"></i></a>
                             </div>
                         </div>
-                        <!-- single-slide -->
                         <div class="single-slide position-relative">
                             <div class="banner-img">
-                                <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner"
-                                     style="height: 80vh; object-fit: cover;">
+                                <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
                             </div>
                             <div class="banner-overlay"></div>
                             <div class="banner-content">
@@ -683,13 +547,12 @@
             </div>
         </div>
     </section>
-    <!-- End banner Area -->
+    <!-- End Banner Area -->
 
-    <!-- start features Area -->
+    <!-- Start Features Area -->
     <section class="features-area section_gap">
         <div class="container">
             <div class="row features-inner">
-                <!-- single features -->
                 <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
                     <div class="single-features">
                         <div class="f-icon">
@@ -699,7 +562,6 @@
                         <p>On all orders above ₹500</p>
                     </div>
                 </div>
-                <!-- single features -->
                 <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
                     <div class="single-features">
                         <div class="f-icon">
@@ -709,7 +571,6 @@
                         <p>30-day easy returns</p>
                     </div>
                 </div>
-                <!-- single features -->
                 <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
                     <div class="single-features">
                         <div class="f-icon">
@@ -719,7 +580,6 @@
                         <p>Customer service excellence</p>
                     </div>
                 </div>
-                <!-- single features -->
                 <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
                     <div class="single-features">
                         <div class="f-icon">
@@ -732,9 +592,9 @@
             </div>
         </div>
     </section>
-    <!-- end features Area -->
+    <!-- End Features Area -->
 
-    <!-- Start category Area -->
+    <!-- Start Category Area -->
     <section class="category-area">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -751,8 +611,8 @@
                         <div class="col-lg-8 col-md-8">
                             <div class="single-deal">
                                 <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="img/category/c1.jpg" alt="">
-                                <a href="img/category/c1.jpg" class="img-pop-up" target="_blank">
+                                <img class="img-fluid w-100" src="/img/category/c1.jpg" alt="">
+                                <a href="/img/category/c1.jpg" class="img-pop-up" target="_blank">
                                     <div class="deal-details">
                                         <h6 class="deal-title">Sneaker for Sports</h6>
                                     </div>
@@ -762,8 +622,8 @@
                         <div class="col-lg-4 col-md-4">
                             <div class="single-deal">
                                 <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="img/category/c2.jpg" alt="">
-                                <a href="img/category/c2.jpg" class="img-pop-up" target="_blank">
+                                <img class="img-fluid w-100" src="/img/category/c2.jpg" alt="">
+                                <a href="/img/category/c2.jpg" class="img-pop-up" target="_blank">
                                     <div class="deal-details">
                                         <h6 class="deal-title">Casual Footwear</h6>
                                     </div>
@@ -773,8 +633,8 @@
                         <div class="col-lg-4 col-md-4">
                             <div class="single-deal">
                                 <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="img/category/c3.jpg" alt="">
-                                <a href="img/category/c3.jpg" class="img-pop-up" target="_blank">
+                                <img class="img-fluid w-100" src="/img/category/c3.jpg" alt="">
+                                <a href="/img/category/c3.jpg" class="img-pop-up" target="_blank">
                                     <div class="deal-details">
                                         <h6 class="deal-title">Couples Collection</h6>
                                     </div>
@@ -784,8 +644,8 @@
                         <div class="col-lg-8 col-md-8">
                             <div class="single-deal">
                                 <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="img/category/c4.jpg" alt="">
-                                <a href="img/category/c4.jpg" class="img-pop-up" target="_blank">
+                                <img class="img-fluid w-100" src="/img/category/c4.jpg" alt="">
+                                <a href="/img/category/c4.jpg" class="img-pop-up" target="_blank">
                                     <div class="deal-details">
                                         <h6 class="deal-title">Premium Sneakers</h6>
                                     </div>
@@ -797,8 +657,8 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single-deal">
                         <div class="overlay"></div>
-                        <img class="img-fluid w-100" src="img/category/c5.jpg" alt="">
-                        <a href="img/category/c5.jpg" class="img-pop-up" target="_blank">
+                        <img class="img-fluid w-100" src="/img/category/c5.jpg" alt="">
+                        <a href="/img/category/c5.jpg" class="img-pop-up" target="_blank">
                             <div class="deal-details">
                                 <h6 class="deal-title">Designer Collection</h6>
                             </div>
@@ -808,73 +668,49 @@
             </div>
         </div>
     </section>
-    <!-- End category Area -->
+    <!-- End Category Area -->
 
-    <!-- Add this before your products section -->
+    <!-- Products Section -->
     <div class="container" id="products">
         <div class="row">
             <!-- Filter Sidebar -->
             <div class="col-lg-3">
                 <div class="filter-wrapper bg-white p-4 rounded shadow-sm">
                     <h4 class="mb-4 fw-bold">Refine Results</h4>
-
                     <form id="filterForm" method="GET" action="/shop">
                         <!-- Category Filter -->
                         <div class="mb-4">
                             <h5 class="fw-semibold mb-3">Categories</h5>
                             <div class="category-list">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                           name="category" id="allCategories"
-                                           value=""
-                                           <%= !selectedCategory ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="allCategories">
-                                        All Categories
-                                    </label>
+                                    <input class="form-check-input" type="radio" name="category" id="allCategories" value="" <%= !selectedCategory ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="allCategories">All Categories</label>
                                 </div>
                                 <% categories.forEach(category => { %>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio"
-                                               name="category"
-                                               id="<%= category._id %>"
-                                               value="<%= category._id %>"
-                                               <%= selectedCategory === category._id.toString() ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="<%= category._id %>">
-                                            <%= category.name %>
-                                        </label>
+                                        <input class="form-check-input" type="radio" name="category" id="<%= category._id %>" value="<%= category._id %>" <%= selectedCategory === category._id.toString() ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="<%= category._id %>"><%= category.name %></label>
                                     </div>
                                 <% }); %>
                             </div>
                         </div>
-
                         <!-- Price Range Filter -->
                         <div class="mb-4">
                             <h5 class="fw-semibold mb-3">Price Range</h5>
                             <div class="price-range">
                                 <div class="input-group mb-2">
                                     <span class="input-group-text">₹</span>
-                                    <input type="number" class="form-control"
-                                           name="minPrice"
-                                           value="<%= currentMinPrice %>"
-                                           min="<%= priceRange.minPrice %>"
-                                           max="<%= priceRange.maxPrice %>"
-                                           placeholder="Min price">
+                                    <input type="number" class="form-control" name="minPrice" value="<%= currentMinPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Min price">
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
-                                    <input type="number" class="form-control"
-                                           name="maxPrice"
-                                           value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>"
-                                           min="<%= priceRange.minPrice %>"
-                                           max="<%= priceRange.maxPrice %>"
-                                           placeholder="Max price">
+                                    <input type="number" class="form-control" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Max price">
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Keep current sort value -->
+                        <!-- Keep current sort and search values -->
                         <input type="hidden" name="sort" value="<%= currentSort %>">
-
+                        <input type="hidden" name="search" value="<%= searchQuery || '' %>">
                         <!-- Apply Filters Button -->
                         <button type="submit" class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none; border-radius: 30px; padding: 10px;">
                             <i class="fas fa-filter me-2"></i> Apply Filters
@@ -882,7 +718,6 @@
                     </form>
                 </div>
             </div>
-
             <!-- Products Grid -->
             <div class="col-lg-9">
                 <div class="container mb-5">
@@ -896,13 +731,11 @@
                                     <div class="sorting-options d-flex align-items-center">
                                         <label class="me-2 text-muted">Sort by:</label>
                                         <form id="sortForm" method="GET" action="/shop" class="mb-0">
-                                            <!-- Preserve all filter values -->
                                             <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
                                             <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
                                             <input type="hidden" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>">
                                             <input type="hidden" name="search" value="<%= searchQuery || '' %>">
                                             <input type="hidden" name="page" value="<%= currentPage %>">
-
                                             <select class="form-select" name="sort" onchange="this.form.submit()">
                                                 <option value="default" <%= currentSort === 'default' ? 'selected' : '' %>>Featured</option>
                                                 <option value="priceAsc" <%= currentSort === 'priceAsc' ? 'selected' : '' %>>Price: Low to High</option>
@@ -917,8 +750,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Products will be rendered here -->
+                <!-- Products Rendering -->
                 <div class="row">
                     <% if (products && products.length > 0) { %>
                         <% products.forEach(product => { %>
@@ -927,35 +759,40 @@
                                     <a href="/productDetails/<%= product._id %>">
                                         <div class="product-img">
                                             <img class="img-fluid w-100" src="/Uploads/product-Images/<%= product.productImage[0] %>" alt="<%= product.productName %>">
-                                            <div class="p_icon">
-                                                <!-- Add any additional icons or badges here -->
-                                            </div>
                                         </div>
                                     </a>
                                     <div class="product-details">
                                         <a href="/productDetails/<%= product._id %>">
                                             <h6><%= product.productName %></h6>
                                         </a>
+                                        <div class="stock-status <%= product.status %>">
+                                            <%= product.status.charAt(0).toUpperCase() + product.status.slice(1) %>
+                                        </div>
+                                        <div class="color-options">
+                                            Colors: 
+                                            <% const availableColors = Object.keys(product.colorStock).filter(color => product.colorStock[color] > 0); %>
+                                            <%= availableColors.length > 0 ? availableColors.join(', ') : 'None' %>
+                                        </div>
                                         <div class="price">
-                                            <h6>₹<%= product.offerprice %></h6>
-                                            <% if (product.offerprice < product.price) { %>
+                                            <h6>₹<%= product.offerprice > 0 ? product.offerprice : product.price %></h6>
+                                            <% if (product.offerprice > 0 && product.offerprice < product.price) { %>
                                                 <h6 class="l-through">₹<%= product.price %></h6>
                                             <% } %>
                                         </div>
                                         <div class="prd-bottom">
-                                            <a href="" class="social-info">
+                                            <a href="/add-to-cart/<%= product._id %>" class="social-info">
                                                 <span class="ti-bag"></span>
                                                 <p class="hover-text">Add to Bag</p>
                                             </a>
-                                            <a href="" class="social-info">
+                                            <a href="/add-to-wishlist/<%= product._id %>" class="social-info">
                                                 <span class="lnr lnr-heart"></span>
                                                 <p class="hover-text">Wishlist</p>
                                             </a>
-                                            <a href="" class="social-info">
+                                            <a href="/compare/<%= product._id %>" class="social-info">
                                                 <span class="lnr lnr-sync"></span>
                                                 <p class="hover-text">Compare</p>
                                             </a>
-                                            <a href="" class="social-info">
+                                            <a href="/productDetails/<%= product._id %>" class="social-info">
                                                 <span class="lnr lnr-move"></span>
                                                 <p class="hover-text">View More</p>
                                             </a>
@@ -971,7 +808,6 @@
                         </div>
                     <% } %>
                 </div>
-
                 <!-- Pagination Controls -->
                 <div class="col-12">
                     <nav aria-label="Page navigation">
@@ -979,21 +815,19 @@
                             <% if (currentPage > 1) { %>
                                 <li class="page-item">
                                     <a class="page-link" href="?page=<%= currentPage - 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
+                                        <span aria-hidden="true">«</span>
                                     </a>
                                 </li>
                             <% } %>
-
                             <% for (let i = 1; i <= totalPages; i++) { %>
                                 <li class="page-item <%= currentPage === i ? 'active' : '' %>">
                                     <a class="page-link" href="?page=<%= i %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>"><%= i %></a>
                                 </li>
                             <% } %>
-
                             <% if (currentPage < totalPages) { %>
                                 <li class="page-item">
                                     <a class="page-link" href="?page=<%= currentPage + 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
+                                        <span aria-hidden="true">»</span>
                                     </a>
                                 </li>
                             <% } %>
@@ -1003,62 +837,56 @@
             </div>
         </div>
     </div>
-
-    <script>
-    // Handle form submissions with loading indicators
-    document.addEventListener('DOMContentLoaded', function() {
-        // Filter form submission
-        const filterForm = document.getElementById('filterForm');
-        if (filterForm) {
-            filterForm.addEventListener('submit', function(e) {
-                // Validate price range
-                const minPrice = parseFloat(this.elements.minPrice.value) || 0;
-                const maxPrice = parseFloat(this.elements.maxPrice.value) || <%= priceRange.maxPrice %>;
-
-                if (minPrice > maxPrice) {
-                    e.preventDefault();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid Price Range',
-                        text: 'Minimum price cannot be greater than maximum price'
-                    });
-                    return;
-                }
-
-                showLoading('Applying filters...');
-            });
-        }
-
-        // Sort form submission
-        const sortForm = document.getElementById('sortForm');
-        if (sortForm) {
-            sortForm.addEventListener('submit', function() {
-                showLoading('Sorting products...');
-            });
-        }
-
-        // Search icon click event
-        const searchIcon = document.getElementById('searchIcon');
-        const searchInputGroup = document.getElementById('searchInputGroup');
-
-        if (searchIcon && searchInputGroup) {
-            searchIcon.addEventListener('click', function() {
-                searchInputGroup.classList.toggle('active');
-            });
-        }
-
-        function showLoading(message) {
-            Swal.fire({
-                title: message,
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-        }
-    });
-
-    // Initialize price range slider if needed
-    // You can add a range slider implementation here if desired
-    </script>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter form submission
+    const filterForm = document.getElementById('filterForm');
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            const minPrice = parseFloat(this.elements.minPrice.value) || 0;
+            const maxPrice = parseFloat(this.elements.maxPrice.value) || <%= priceRange.maxPrice %>;
+            if (minPrice > maxPrice) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Price Range',
+                    text: 'Minimum price cannot be greater than maximum price'
+                });
+                return;
+            }
+            showLoading('Applying filters...');
+        });
+    }
+
+    // Sort form submission
+    const sortForm = document.getElementById('sortForm');
+    if (sortForm) {
+        sortForm.addEventListener('submit', function() {
+            showLoading('Sorting products...');
+        });
+    }
+
+    // Search icon click event
+    const searchIcon = document.getElementById('searchIcon');
+    const searchInputGroup = document.getElementById('searchInputGroup');
+    if (searchIcon && searchInputGroup) {
+        searchIcon.addEventListener('click', function() {
+            searchInputGroup.classList.toggle('active');
+        });
+    }
+
+    function showLoading(message) {
+        Swal.fire({
+            title: message,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../../views/partials/user/footer') %>

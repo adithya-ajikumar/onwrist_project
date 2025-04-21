@@ -22,8 +22,8 @@ router.post("/resend-otp", userController.resendOtp);
 
 
 
-router.get("/shop",shopController.loadShopPage);
-// router.get('/productDetails/:id',shopController.loadProductDetails);
+router.get("/shop",shopController.getShopPage);
+router.get('/productDetails/:id',shopController.loadProductDetails);
 
 
 

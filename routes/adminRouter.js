@@ -15,6 +15,9 @@ router.get("/category",categoryController.categoryInfo)
 router.post('/listCategory',categoryController.listCategory);
 router.post('/unlistCategory',categoryController.unlistCategory);
 router.post('/addCategory',categoryController.addCategory)
+router.get('/editCategory/:id',categoryController.loadEditCategory);
+router.post('/editCategory/:id',categoryController.editCategory);
+
 
 
 

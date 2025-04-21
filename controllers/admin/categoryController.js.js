@@ -128,14 +128,13 @@ const loadEditCategory = async (req, res) => {
             return res.render("admin/edit-Category", { category: null, error: "Category not found." });
         }
         console.log('rendered')
-        res.render("edit-Category", {category }); 
+        res.render("editCategory", {category }); 
 
     } catch (error) {
         console.error("Error loading category:", error);
         res.redirect("/pageNotfound");
     }
 };
-
 
 const editCategory = async (req, res) => {
     try {
