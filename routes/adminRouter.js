@@ -28,9 +28,10 @@ router.post('/toggleUserStatus', admincontroller.toggleUserStatus);
 router.get("/products",productController.getAllProducts);
 router.get("/addproduct",productController.loadAddProduct);
 router.post("/addproduct",upload.array('productImages', 4),productController.addProduct);
-router.get("/editProduct",productController.loadEditProduct);
+router.post("/editProduct/:id",productController.editProduct);
 router.get('/editProduct/:id',productController.loadEditProduct);
 router.get('/blockProduct',productController.blockProduct)
 router.get('/unblockProduct',productController.unblockProduct)
+router.post('/deleteImage',productController.deleteSingleImg);
 
 module.exports=router;

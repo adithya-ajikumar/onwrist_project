@@ -6,6 +6,7 @@ const Category = require('../../models/catogerySchema');
 const mongoose = require('mongoose');
 const path = require('path');
 const sharp = require('sharp');
+const fs = require('fs') // Use promises for fs operations
 
 const loadAddProduct = async (req, res) => {
     try {
@@ -60,7 +61,7 @@ const addProduct = async (req, res) => {
         if (req.files && Array.isArray(req.files)) {
             req.files.forEach(file => {
                 // Assuming file.path contains the path to the saved image
-                productImages.push(file.path);
+                productImages.push(file.filename);
             });
         }
         console.log("Product Images:", productImages);
@@ -257,6 +258,43 @@ const unblockProduct=async(req,res)=>{
     }
 }
 
+
+
+
+const deleteSingleImg = async (req, res) => {
+    try {
+        const { imageNameToServer, productIdToServer } = req.body;
+
+        console.log("Image Name to Server:", imageNameToServer);
+        const product = await Product.findByIdAndUpdate(
+            productIdToServer,
+            { $pull: { productImage: imageNameToServer } }
+        );
+
+
+        console.log('=======1')
+        
+        const imagePath = path.join(__dirname, 'public','Uploads','product-Images', imageNameToServer);
+
+        console.log("=======3",imagePath)
+
+        if (fs.existsSync(imagePath)) {
+            await fs.unlinkSync(imagePath);
+            console.log(`Image deleted successfully: ${imageNameToServer}`);
+        } else {
+            console.log(`Image not found: ${imageNameToServer}`);
+        }
+
+        console.log('=======2');
+
+        res.json({ status: true ,message:"Image deleted successfully"});
+
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.redirect('/pageNotFound');
+    }
+};
+
 module.exports = {
     loadAddProduct,
     addProduct,
@@ -264,5 +302,6 @@ module.exports = {
     editProduct,
     loadEditProduct,
     blockProduct,
-    unblockProduct
+    unblockProduct,
+    deleteSingleImg
 };

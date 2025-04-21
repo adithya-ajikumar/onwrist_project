@@ -322,7 +322,7 @@
                                                         <div class="col-12">
                                                             <td>
                                                                 <input type="hidden" name="existingImages[]" value="<%=product.productImage[i]%>">
-                                                                <img class="rounded" style="width: 100%; height: auto;" src="/uploads/product-Images/<%=product.productImage[i]%>" alt="">
+                                                                <img class="rounded" style="width: 100%; height: auto;" src="/Uploads/product-Images/<%=product.productImage[i]%>" alt="">
                                                                 <i onclick="deleteSingleImage('<%=product.productImage[i]%>','<%=product._id%>')" class="fa fa-times"></i>
                                                             </td>
                                                         </div>
@@ -633,18 +633,27 @@
         }
 
         function deleteSingleImage(imageId, productId) {
-            $.ajax({
-                url: "/admin/deleteImage",
-                method: "post",
-                data: { imageNameToServer: imageId, productIdToServer: productId },
-                success: (response) => {
-                    console.log(response);
-                    if (response.status) {
-                        console.log(document.getElementById(`existingImages${imageId}`));
-                        document.getElementById(`existingImages${imageId}`).remove();
-                    }
+            fetch("/admin/deleteImage", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ imageNameToServer: imageId, productIdToServer: productId })
+            })
+            .then(response => response.json())
+            
+            .then(data => {
+                if (data.status) {
+                    document.getElementById(`existingImages${imageId}`).remove();
+                } else {
+                    console.error('Failed to delete image:', data.message);
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
+
+            
         }
 
         // Add event listener to form
