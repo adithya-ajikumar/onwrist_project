@@ -165,8 +165,9 @@ const editProduct = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        console.log("Data------------", data);
 
-        console.log("file------------", req.files);
+        console.log("file------------", req.files); 
 
         // Fetch the existing product
         const product = await Product.findOne({ _id: id });

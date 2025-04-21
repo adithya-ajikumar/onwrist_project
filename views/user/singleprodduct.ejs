@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Verses Store - Product Details</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/nouislider.min.css">
+    <link rel="stylesheet" href="/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="/css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- Keep your existing product page styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --amazon-orange: #FF9900;
+            --amazon-dark: #131921;
+            --amazon-light: #232F3E;
+            --amazon-gray: #EAEDED;
+            --amazon-text: #0F1111;
+            --amazon-price: #B12704;
+            --amazon-success: #007600;
+            --header-height: 80px;
+        }
+
+        body {
+            background-color: #EAEDED;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--amazon-text);
+        }
+
+        .main-content {
+            padding-top: 80px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .product-container {
+            display: flex;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        * {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+        }
+
+        .product-images {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 10px;
+            justify-content: center;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            padding: 2px;
+        }
+
+        .thumbnail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--amazon-orange);
+        }
+
+        .thumbnail.active {
+            border-color: var(--amazon-orange);
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--amazon-orange);
+        }
+
+        .main-image-container {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #fff;
+            cursor: zoom-in;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease-out;
+        }
+
+        .main-image-container:hover .main-image {
+            transform: scale(1.5);
+        }
+
+        .product-details {
+            position: relative;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .brand {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            color: #2c3e50;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .brand:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .price-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .price {
+            font-size: 32px;
+            color: #2c3e50;
+        }
+
+        .inclusive {
+            font-size: 12px;
+            color: #565959;
+        }
+
+        .in-stock {
+            color: var(--amazon-success);
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .size-section {
+            margin: 20px 0;
+        }
+
+        .size-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .size-btn {
+            width: 70px;
+            height: 45px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-btn:hover:not(.disabled) {
+            border-color: var(--amazon-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .size-btn.selected {
+            background: var(--amazon-orange);
+            color: white;
+            border-color: var(--amazon-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,153,0,0.3);
+        }
+
+        .size-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #565959;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .discount {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .add-to-cart, .add-to-wishlist {
+            flex: 1;
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart {
+            background: var(--amazon-orange);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255,153,0,0.3);
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(255,153,0,0.4);
+        }
+
+        .add-to-wishlist {
+            background: #f8f9fa;
+            color: #2c3e50;
+            border: 2px solid #dee2e6;
+        }
+
+        .add-to-wishlist:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .description {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .description h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .description p {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+
+        .out-of-stock {
+            color: #d00;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+            }
+
+            .main-image-container {
+                height: 350px;
+            }
+
+            .product-details {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Add these styles to your existing style section */
+        .header_area {
+            transition: all 0.3s ease;
+        }
+
+        .header_area.navbar-shrink {
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+
+        .navbar-shrink .main_box {
+            padding: 0;
+        }
+
+        .navbar-shrink .logo_h img {
+            height: 40px; /* Adjust based on your logo size */
+            transition: all 0.3s ease;
+        }
+
+        .main_menu {
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .main_box {
+            padding: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        .breadcrumb-container {
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--amazon-orange);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--amazon-text);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Header Area -->
+    <header class="header_area sticky-header">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light main_box">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="/"><img src="/img/logo.png" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto">
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item submenu dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                    aria-expanded="false">Shop</a>
+                            </li>
+                            <li class="nav-item submenu dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                    aria-expanded="false">Wishlist</a>
+                            </li>
+
+                            <% if (typeof user !== 'undefined' && user) { %>
+                                <li class="nav-item submenu dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                        <%= user.name %>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            <% } else { %>
+                                <li class="nav-item"><a class="nav-link" href="/signin">Sign in</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                            <% } %>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                            <li class="nav-item">
+                                <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- End Header Area -->
+
+    <!-- Keep your existing product content -->
+    <div class="main-content">
+        <div class="main-container">
+            <div class="breadcrumb-container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><%= product.productName %></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="product-container">
+                <div class="product-images">
+                    <div class="main-image-container">
+                        <img src="/Uploads/product-Images/<%= product.productImage[0] %>"
+                             alt="<%= product.productName %>"
+                             class="main-image"
+                             id="mainImage">
+                    </div>
+                    <div class="thumbnail-container">
+                        <% product.productImage.forEach((image, index) => { %>
+                            <img src="/Uploads/product-Images/<%= image %>"
+                                 alt="Product thumbnail"
+                                 class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                                 onclick="changeImage(this.src)">
+                        <% }); %>
+                    </div>
+                </div>
+
+                <div class="product-details">
+                    <h1 class="product-title"><%= product.productName %></h1>
+                    <a href="#" class="brand">Brand: <%= product.brand %></a>
+
+                    <div class="price-container">
+                        <% if (product.offerprice < product.price) { %>
+                            <div class="price">
+                                ₹<%= product.offerprice %><sup>.00</sup>
+                                <span class="original-price">₹<%= product.price %></span>
+                            </div>
+                            <div class="discount">
+                                Save ₹<%= product.price - product.offerprice %>
+                                (<%= Math.round((product.price - product.offerprice) / product.price * 100) %>% off)
+                            </div>
+                        <% } else { %>
+                            <div class="price">₹<%= product.price %><sup>.00</sup></div>
+                        <% } %>
+                        <div class="inclusive">Inclusive of all taxes</div>
+                    </div>
+
+                    <div class="color-section">
+                        <h3>Select Color</h3>
+                        <div class="color-buttons">
+                            <% Object.keys(product.colorStock).forEach(color => { %>
+                                <button class="color-btn <%= product.colorStock[color] > 0 ? '' : 'disabled' %>"
+                                        onclick="selectColor('<%= color %>')"
+                                        <%= product.colorStock[color] > 0 ? '' : 'disabled' %>>
+                                    <%= color.charAt(0).toUpperCase() + color.slice(1) %>
+                                </button>
+                            <% }); %>
+                        </div>
+                    </div>
+
+                    <div class="stock-info">
+                        <% if (product.totalStock > 0) { %>
+                            <div class="in-stock">In Stock</div>
+                        <% } else { %>
+                            <div class="out-of-stock">Out of Stock</div>
+                        <% } %>
+                    </div>
+
+                    <div class="description">
+                        <h3>About this item</h3>
+                        <p><%= product.description %></p>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="add-to-cart" onclick="addToCart('<%= product._id %>')">
+                            Add to Cart
+                        </button>
+                        <button class="add-to-wishlist" onclick="addToWishlist('<%= product._id %>')">
+                            Add to Wishlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add required scripts at the bottom -->
+    <script src="/js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
+    <script>
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumb => {
+                thumb.classList.remove('active');
+                if (thumb.src === src) {
+                    thumb.classList.add('active');
+                }
+            });
+        }
+
+        let selectedColor = null;
+
+        function selectColor(color) {
+            const buttons = document.querySelectorAll('.color-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            selectedColor = color;
+        }
+
+        async function addToCart(productId) {
+            if (!selectedColor) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select a color',
+                    text: 'You must select a color before adding to cart'
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch('/addToCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId,
+                        color: selectedColor
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Cart!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            }
+        }
+
+        // Add this to your existing script section
+        let isZoomed = false;
+        const mainImageContainer = document.querySelector('.main-image-container');
+        const mainImage = document.getElementById('mainImage');
+
+        mainImageContainer.addEventListener('mousemove', function(e) {
+            if (!isZoomed) return;
+
+            const bounds = mainImageContainer.getBoundingClientRect();
+            const x = (e.clientX - bounds.left) / bounds.width;
+            const y = (e.clientY - bounds.top) / bounds.height;
+
+            mainImage.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+        });
+
+        mainImageContainer.addEventListener('mouseenter', function() {
+            isZoomed = true;
+            mainImage.style.transform = 'scale(2)';
+        });
+
+        mainImageContainer.addEventListener('mouseleave', function() {
+            isZoomed = false;
+            mainImage.style.transform = 'scale(1)';
+        });
+
+        // Add this to your existing script section
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header_area');
+            if (window.scrollY > 100) {
+                header.classList.add('navbar-shrink', 'fixed-top');
+            } else {
+                header.classList.remove('navbar-shrink', 'fixed-top');
+            }
+        });
+
+        // Ensure proper spacing when header becomes fixed
+        const header = document.querySelector('.header_area');
+        const mainContent = document.querySelector('.main-content');
+
+        function updateHeaderSpace() {
+            const headerHeight = header.offsetHeight;
+            mainContent.style.paddingTop = headerHeight + 'px';
+        }
+
+        window.addEventListener('load', updateHeaderSpace);
+        window.addEventListener('resize', updateHeaderSpace);
+    </script>
+
+</body>
+</html>
