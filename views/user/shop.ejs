@@ -796,6 +796,7 @@
                     <div class="sorting-options d-flex align-items-center">
                       <label class="me-2 text-muted">Sort by:</label>
                       <form id="sortForm" method="GET" action="/shop" class="mb-0">
+                        <!-- Retain current filters -->
                         <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
                         <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
                         <input type="hidden" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>">

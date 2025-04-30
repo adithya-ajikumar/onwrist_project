@@ -5,6 +5,7 @@ const { isLogin, checksession } = require('../middlewares/userAuth');
 const shopController = require('../controllers/user/shopController');
 const multer = require('../middlewares/multer');
 const passport = require('passport');
+const ProfileController = require('../controllers/user/ProfileController');
 
 router.get("/",  userController.loadHome);
 router.get("/signup", userController.loadSignup);
@@ -12,6 +13,8 @@ router.get("/login", userController.loadLogin);
 router.post("/login", userController.signin);
 // router.post("/logout", userController.logout);
 router.get("/pagenotfound", userController.loadPagenotfound);
+router.get ("/forgetpassword",ProfileController.getForgetPassword);
+
 
 // Auth routes
 router.post("/auth/register", userController.signup);
@@ -19,6 +22,10 @@ router.get('/verify-otp', isLogin, userController.loadVerifyOtp);
 router.post("/verify-otp", userController.verifyOtp);
 router.post("/resend-otp", userController.resendOtp);
 
+
+
+
+router.post("/forgot-password", ProfileController.forgotPassword);
 
 
 

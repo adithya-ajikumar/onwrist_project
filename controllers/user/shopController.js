@@ -110,6 +110,8 @@ const getShopPage = async (req, res) => {
 };
 
 
+
+
 const loadProductDetails = async (req, res) => {
     try {
         const user = req.session.user;
