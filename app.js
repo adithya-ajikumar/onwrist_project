@@ -5,6 +5,7 @@ const app = express()
 require('dotenv').config();
 const userRouter = require("./routes/userRouter")
 const adminRouter=require("./routes/adminRouter")
+require("./config/passport");
 
 const path = require('path');
 const db = require("./config/db");

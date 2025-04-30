@@ -1,892 +1,1063 @@
-<%- include('../../views/partials/user/header') %>
-
-<!-- Modernized CSS for better spacing and visual design -->
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxury Watches | Prime Selections</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <style>
     :root {
-        --primary-color: #4a6cf7;
-        --secondary-color: #ff6b6b;
-        --dark-color: #0e1133;
-        --light-color: #f5f5f5;
-        --body-color: #fbfbfb;
-        --border-color: #eeeeee;
-        --shadow-color: rgba(0, 0, 0, 0.05);
-        --font-primary: 'Inter', sans-serif;
+      --primary-color: #4a6cf7;
+      --secondary-color: #ff6b6b;
+      --dark-color: #0e1133;
+      --light-color: #f5f5f5;
+      --body-color: #fbfbfb;
+      --border-color: #eeeeee;
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --font-primary: 'Inter', sans-serif;
     }
 
     body {
-        font-family: var(--font-primary);
-        background-color: var(--body-color);
-        color: var(--dark-color);
-    }
-
-    .banner-area {
-        margin-top: 80px;
-        position: relative;
-    }
-
-    .banner-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
-        z-index: 1;
-    }
-
-    .banner-content {
-        position: absolute;
-        top: 50%;
-        left: 10%;
-        transform: translateY(-50%);
-        z-index: 2;
-        color: white;
-        max-width: 500px;
-    }
-
-    .banner-content h1 {
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-    }
-
-    .banner-content p {
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-    }
-
-    .btn-shop {
-        background-color: var(--secondary-color);
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        border: none;
-    }
-
-    .btn-shop:hover {
-        background-color: var(--primary-color);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      font-family: var(--font-primary);
+      background-color: var(--body-color);
+      color: var(--dark-color);
+      margin: 0;
+      padding: 0;
     }
 
     .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 2px 15px var(--shadow-color);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 15px var(--shadow-color);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
     }
 
-    .main-content {
-        position: relative;
-        z-index: 1;
+    .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--primary-color);
     }
 
-    /* Features section */
-    .features-area {
-        padding: 4rem 0;
-        background-color: white;
+    .nav-menu {
+      display: flex;
+      align-items: center;
     }
 
-    .features-inner {
-        margin-top: -70px;
-        position: relative;
-        z-index: 2;
+    .nav-menu ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
     }
 
-    .single-features {
-        padding: 2rem;
-        background-color: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px var(--shadow-color);
-        transition: all 0.3s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      transition: color 0.3s;
     }
 
-    .single-features:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    .nav-menu a:hover {
+      color: var(--primary-color);
     }
 
-    .f-icon {
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--light-color);
-        border-radius: 50%;
-        margin-bottom: 1.5rem;
-    }
-
-    .single-features h6 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 0.8rem;
-    }
-
-    /* Category Area */
-    .category-area {
-        padding: 5rem 0;
-        background-color: var(--body-color);
-    }
-
-    .single-deal {
-        position: relative;
-        border-radius: 15px;
-        overflow: hidden;
-        margin-bottom: 30px;
-        box-shadow: 0 5px 15px var(--shadow-color);
-        transition: all 0.3s ease;
-    }
-
-    .single-deal:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-        z-index: 1;
-        opacity: 0.7;
-        transition: all 0.3s ease;
-    }
-
-    .single-deal:hover .overlay {
-        opacity: 0.9;
-    }
-
-    .deal-details {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        z-index: 2;
-    }
-
-    .deal-title {
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-
-    /* Sorting and Filtering */
-    .sorting-wrapper {
-        margin-bottom: 2rem;
-    }
-
-    .sorting-box {
-        background-color: white;
-        padding: 1.2rem;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px var(--shadow-color);
-        transition: all 0.3s ease;
-    }
-
-    .sorting-box:hover {
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    }
-
-    .form-select {
-        min-width: 200px;
-        border-radius: 30px;
-        padding: 10px 20px;
-        border: 1px solid var(--border-color);
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .form-select:hover, .form-select:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
-    }
-
-    /* Filter Sidebar */
-    .filter-wrapper {
-        background-color: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        position: sticky;
-        top: 100px;
-        box-shadow: 0 5px 15px var(--shadow-color);
-    }
-
-    .category-list {
-        max-height: 200px;
-        overflow-y: auto;
-        padding-right: 10px;
-        scrollbar-width: thin;
-    }
-
-    .category-list::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    .category-list::-webkit-scrollbar-thumb {
-        background-color: var(--border-color);
-        border-radius: 10px;
-    }
-
-    .form-check-input:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-
-    .form-check-label {
-        font-weight: 500;
-    }
-
-    .price-range input {
-        border-radius: 30px;
-        border: 1px solid var(--border-color);
-        padding: 8px 15px;
-    }
-
-    /* Product Cards */
-    .single-product {
-        background-color: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px var(--shadow-color);
-        margin-bottom: 30px;
-        transition: all 0.3s ease;
-    }
-
-    .single-product:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-
-    .product-img {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .product-img img {
-        transition: all 0.5s ease;
-    }
-
-    .single-product:hover .product-img img {
-        transform: scale(1.05);
-    }
-
-    .product-details {
-        padding: 1.5rem;
-    }
-
-    .product-details h6 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        height: 50px;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-
-    .price {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .price h6 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 0;
-        height: auto;
-    }
-
-    .l-through {
-        text-decoration: line-through;
-        color: #999;
-        margin-left: 10px;
-        font-size: 0.9rem;
-        font-weight: 400;
-    }
-
-    .prd-bottom {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .social-info {
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        border-radius: 50%;
-        background-color: var(--light-color);
-        color: var(--dark-color);
-        transition: all 0.3s ease;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .social-info:hover {
-        background-color: var(--primary-color);
-        color: white;
-    }
-
-    .hover-text {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        min-width: 100px;
-        background-color: var(--primary-color);
-        color: white;
-        text-align: center;
-        border-radius: 5px;
-        padding: 5px 10px;
-        visibility: hidden;
-        opacity: 0;
-        transition: all 0.3s ease;
-        font-size: 0.8rem;
-        margin-bottom: 5px;
-    }
-
-    .social-info:hover .hover-text {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .stock-status {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .stock-status.instock {
-        color: green;
-    }
-
-    .stock-status.outofstock {
-        color: red;
-    }
-
-    .stock-status.available {
-        color: orange;
-    }
-
-    .color-options {
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    /* Search Box Animation */
     .search-bar-container {
-        position: relative;
+      position: relative;
+      margin-left: 20px;
     }
 
     .search-wrapper {
-        display: flex;
-        align-items: center;
+      display: flex;
+      align-items: center;
     }
 
     .search-input-group {
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .search-input-group.active {
-        opacity: 1;
-        visibility: visible;
+      opacity: 1;
+      visibility: visible;
     }
 
     .search-input {
-        border: 1px solid var(--border-color);
-        border-radius: 30px;
-        padding: 10px 20px;
-        width: 300px;
-        margin-right: 10px;
-        transition: width 0.3s ease;
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 10px 20px;
+      width: 300px;
+      margin-right: 10px;
+      transition: width 0.3s ease;
     }
 
     .search-input:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
     }
 
     .search-button {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .search-button:hover {
-        background-color: var(--secondary-color);
+      background-color: var(--secondary-color);
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .banner-content h1 {
-            font-size: 2.5rem;
-        }
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+    }
 
-        .features-inner {
-            margin-top: 0;
-        }
+    .icon-btn {
+      background: none;
+      border: none;
+      color: var(--dark-color);
+      font-size: 18px;
+      cursor: pointer;
+      margin-left: 20px;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .icon-btn:hover {
+      color: var(--primary-color);
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      width: 300px;
+      z-index: 200;
+      padding: 15px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .dropdown.active {
+      display: block;
+    }
+
+    .dropdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .dropdown-header h3 {
+      font-size: 16px;
+      color: var(--primary-color);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .dropdown-item-img {
+      width: 60px;
+      height: 60px;
+      background-color: var(--border-color);
+      border-radius: 4px;
+      margin-right: 15px;
+    }
+
+    .dropdown-item-info {
+      flex-grow: 1;
+    }
+
+    .dropdown-item-name {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .dropdown-item-price {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .dropdown-item-remove {
+      color: #dc3545;
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .dropdown-footer {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .dropdown-link {
+      display: inline-block;
+      padding: 8px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown-link:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 992px) {
+      .search-input {
+        width: 150px;
+      }
+
+      .search-input:focus {
+        width: 180px;
+      }
+
+      .nav-menu ul {
+        gap: 20px;
+      }
     }
 
     @media (max-width: 768px) {
-        .banner-area {
-            margin-top: 60px;
-        }
+      .mobile-menu-toggle {
+        display: block;
+      }
 
-        .banner-content {
-            left: 5%;
-            max-width: 80%;
-        }
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        width: 80%;
+        background-color: white;
+        z-index: 300;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px 30px;
+        transition: left 0.3s ease;
+      }
 
-        .banner-content h1 {
-            font-size: 2rem;
-        }
+      .nav-menu.active {
+        left: 0;
+      }
 
-        .sorting-box {
-            flex-direction: column;
-            gap: 15px;
-        }
+      .nav-menu ul {
+        flex-direction: column;
+        width: 100%;
+      }
+      
 
-        .form-select {
-            width: 100%;
-        }
+      .nav-menu li {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .search-bar-container {
+        margin: 20px 0;
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+
+      .mobile-icons {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .nav-icons {
+        display: none;
+      }
+
+      .close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 200;
+        display: none;
+      }
+
+      .overlay.active {
+        display: block;
+      }
     }
-</style>
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">ONWRIST</div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/owl.carousel.css">
+    <button class="mobile-menu-toggle">
+      <i class="fas fa-bars"></i>
+    </button>
 
-<div class="main-content">
+    <nav class="nav-menu">
+      <button class="close-menu">
+        <i class="fas fa-times"></i>
+      </button>
+      <ul>
+        
+        <li><a href="#">Home</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Signup</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+
+      <div class="search-bar-container">
+        <div class="search-wrapper">
+          <div class="search-input-group" id="searchInputGroup">
+            <input type="text" class="search-input" placeholder="Search...">
+          </div>
+          <button class="search-button" id="searchIcon">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+    </nav>
+
+    <div class="nav-icons">
+      <button class="icon-btn" id="wishlist-btn">
+        <i class="far fa-heart"></i>
+        <span class="badge">3</span>
+      </button>
+      <button class="icon-btn" id="cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge">2</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Wishlist Dropdown -->
+  <div class="dropdown" id="wishlist-dropdown">
+    <div class="dropdown-header">
+      <h3>My Wishlist (3)</h3>
+    </div>
+    <div class="dropdown-item">
+      <div class="dropdown-item-img"></div>
+      <div class="dropdown-item-info">
+        <div class="dropdown-item-name">Rolex Submariner</div>
+        <div class="dropdown-item-price">$12,999</div>
+      </div>
+      <button class="dropdown-item-remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="dropdown-item">
+      <div class="dropdown-item-img"></div>
+      <div class="dropdown-item-info">
+        <div class="dropdown-item-name">Omega Speedmaster</div>
+        <div class="dropdown-item-price">$6,299</div>
+      </div>
+      <button class="dropdown-item-remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="dropdown-item">
+      <div class="dropdown-item-img"></div>
+      <div class="dropdown-item-info">
+        <div class="dropdown-item-name">TAG Heuer Carrera</div>
+        <div class="dropdown-item-price">$3,499</div>
+      </div>
+      <button class="dropdown-item-remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="dropdown-footer">
+      <a href="#" class="dropdown-link">View Wishlist</a>
+    </div>
+  </div>
+
+  <!-- Cart Dropdown -->
+  <div class="dropdown" id="cart-dropdown">
+    <div class="dropdown-header">
+      <h3>Shopping Cart (2)</h3>
+    </div>
+    <div class="dropdown-item">
+      <div class="dropdown-item-img"></div>
+      <div class="dropdown-item-info">
+        <div class="dropdown-item-name">Rolex Datejust</div>
+        <div class="dropdown-item-price">₹8,995</div>
+      </div>
+      <button class="dropdown-item-remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="dropdown-item">
+      <div class="dropdown-item-img"></div>
+      <div class="dropdown-item-info">
+        <div class="dropdown-item-name">Breitling Navitimer</div>
+        <div class="dropdown-item-price">$7,250</div>
+      </div>
+      <button class="dropdown-item-remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="dropdown-footer">
+      <a href="#" class="dropdown-link">Checkout</a>
+    </div>
+  </div>
+
+  <div class="overlay" id="menu-overlay"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+ <!-- Start Banner Area -->
+ <section class="banner-area">
+    <div class="container-fluid p-0">
+        <div class="row m-0">
+            <div class="col-12 p-0">
+                <div class="active-banner-slider owl-carousel">
+                    <div class="single-slide position-relative">
+                        <div class="banner-img">
+                            <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
+                        </div>
+                        <div class="banner-overlay"></div>
+                        <div class="banner-content">
+                            <h1>Shop The Latest Collection</h1>
+                            <p>Discover the season's finest pieces designed for your unique style.</p>
+                            <a href="#products" class="btn-shop">Shop Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                    <div class="single-slide position-relative">
+                        <div class="banner-img">
+                            <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
+                        </div>
+                        <div class="banner-overlay"></div>
+                        <div class="banner-content">
+                            <h1>New Arrivals 2025</h1>
+                            <p>Elevate your wardrobe with our exclusive collection of premium products.</p>
+                            <a href="#products" class="btn-shop">Explore More <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!-- Start Features Area -->
+<section class="features-area section_gap">
+    <div class="container">
+        <div class="row features-inner">
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <i class="fas fa-truck fa-lg" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h6>Free Delivery</h6>
+                    <p>On all orders above ₹500</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <i class="fas fa-undo fa-lg" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h6>Return Policy</h6>
+                    <p>30-day easy returns</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <i class="fas fa-headset fa-lg" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h6>24/7 Support</h6>
+                    <p>Customer service excellence</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <i class="fas fa-shield-alt fa-lg" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h6>Secure Payment</h6>
+                    <p>100% secure checkout</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- End Features Area -->
+
+
+
+
+
+
+
     <!-- Start Banner Area -->
     <section class="banner-area">
-        <div class="search-bar-container">
-            <div class="container">
-                <div class="search-wrapper">
-                    <div class="search-icon" id="searchIcon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="search-input-group" id="searchInputGroup">
-                        <form action="/shop" method="GET" class="search-form">
-                            <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
-                            <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
-                            <input type="hidden" name="maxPrice" value="<%= currentMaxPrice %>">
-                            <input type="hidden" name="sort" value="<%= currentSort %>">
-                            <input type="hidden" name="page" value="1">
-                            <input type="text" name="search" class="search-input" placeholder="Search products..." value="<%= searchQuery || '' %>">
-                            <button type="submit" class="search-button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
-                    </div>
+      <div class="container-fluid p-0">
+        <div class="row m-0">
+          <div class="col-12 p-0">
+            <div class="active-banner-slider owl-carousel">
+              <div class="single-slide position-relative">
+                <div class="banner-img">
+                  <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
                 </div>
-            </div>
-        </div>
-        <div class="container-fluid p-0">
-            <div class="row m-0">
-                <div class="col-12 p-0">
-                    <div class="active-banner-slider owl-carousel">
-                        <div class="single-slide position-relative">
-                            <div class="banner-img">
-                                <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
-                            </div>
-                            <div class="banner-overlay"></div>
-                            <div class="banner-content">
-                                <h1>Shop The Latest Collection</h1>
-                                <p>Discover the season's finest pieces designed for your unique style.</p>
-                                <a href="#products" class="btn-shop">Shop Now <i class="fas fa-arrow-right ml-2"></i></a>
-                            </div>
-                        </div>
-                        <div class="single-slide position-relative">
-                            <div class="banner-img">
-                                <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
-                            </div>
-                            <div class="banner-overlay"></div>
-                            <div class="banner-content">
-                                <h1>New Arrivals 2025</h1>
-                                <p>Elevate your wardrobe with our exclusive collection of premium products.</p>
-                                <a href="#products" class="btn-shop">Explore More <i class="fas fa-arrow-right ml-2"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                  <h1>Shop The Latest Collection</h1>
+                  <p>Discover the season's finest pieces designed for your unique style.</p>
+                  <a href="#products" class="btn-shop">Shop Now <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
+              </div>
+              <div class="single-slide position-relative">
+                <div class="banner-img">
+                  <img class="img-fluid w-100" src="/img/banner/banner-img.png" alt="Banner" style="height: 80vh; object-fit: cover;">
+                </div>
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                  <h1>New Arrivals 2025</h1>
+                  <p>Elevate your wardrobe with our exclusive collection of premium products.</p>
+                  <a href="#products" class="btn-shop">Explore More <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
     <!-- End Banner Area -->
 
     <!-- Start Features Area -->
     <section class="features-area section_gap">
-        <div class="container">
-            <div class="row features-inner">
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <i class="fas fa-truck fa-lg" style="color: var(--primary-color);"></i>
-                        </div>
-                        <h6>Free Delivery</h6>
-                        <p>On all orders above ₹500</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <i class="fas fa-undo fa-lg" style="color: var(--primary-color);"></i>
-                        </div>
-                        <h6>Return Policy</h6>
-                        <p>30-day easy returns</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <i class="fas fa-headset fa-lg" style="color: var(--primary-color);"></i>
-                        </div>
-                        <h6>24/7 Support</h6>
-                        <p>Customer service excellence</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <i class="fas fa-shield-alt fa-lg" style="color: var(--primary-color);"></i>
-                        </div>
-                        <h6>Secure Payment</h6>
-                        <p>100% secure checkout</p>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row features-inner">
+          <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="single-features">
+              <div class="f-icon">
+                <i class="fas fa-truck fa-lg" style="color: var(--primary-color);"></i>
+              </div>
+              <h6>Free Delivery</h6>
+              <p>On all orders above ₹500</p>
             </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="single-features">
+              <div class="f-icon">
+                <i class="fas fa-undo fa-lg" style="color: var(--primary-color);"></i>
+              </div>
+              <h6>Return Policy</h6>
+              <p>30-day easy returns</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="single-features">
+              <div class="f-icon">
+                <i class="fas fa-headset fa-lg" style="color: var(--primary-color);"></i>
+              </div>
+              <h6>24/7 Support</h6>
+              <p>Customer service excellence</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="single-features">
+              <div class="f-icon">
+                <i class="fas fa-shield-alt fa-lg" style="color: var(--primary-color);"></i>
+              </div>
+              <h6>Secure Payment</h6>
+              <p>100% secure checkout</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
     <!-- End Features Area -->
 
     <!-- Start Category Area -->
     <section class="category-area">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8">
-                    <div class="section-title text-center">
-                        <h2>Shop by Category</h2>
-                        <p>Explore our wide range of products across popular categories</p>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8">
+            <div class="section-title text-center">
+              <h2>Shop by Category</h2>
+              <p>Explore our wide range of products across popular categories</p>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-12">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8">
-                            <div class="single-deal">
-                                <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="/img/category/c1.jpg" alt="">
-                                <a href="/img/category/c1.jpg" class="img-pop-up" target="_blank">
-                                    <div class="deal-details">
-                                        <h6 class="deal-title">Sneaker for Sports</h6>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="single-deal">
-                                <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="/img/category/c2.jpg" alt="">
-                                <a href="/img/category/c2.jpg" class="img-pop-up" target="_blank">
-                                    <div class="deal-details">
-                                        <h6 class="deal-title">Casual Footwear</h6>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="single-deal">
-                                <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="/img/category/c3.jpg" alt="">
-                                <a href="/img/category/c3.jpg" class="img-pop-up" target="_blank">
-                                    <div class="deal-details">
-                                        <h6 class="deal-title">Couples Collection</h6>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-8">
-                            <div class="single-deal">
-                                <div class="overlay"></div>
-                                <img class="img-fluid w-100" src="/img/category/c4.jpg" alt="">
-                                <a href="/img/category/c4.jpg" class="img-pop-up" target="_blank">
-                                    <div class="deal-details">
-                                        <h6 class="deal-title">Premium Sneakers</h6>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-deal">
-                        <div class="overlay"></div>
-                        <img class="img-fluid w-100" src="/img/category/c5.jpg" alt="">
-                        <a href="/img/category/c5.jpg" class="img-pop-up" target="_blank">
-                            <div class="deal-details">
-                                <h6 class="deal-title">Designer Collection</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-12">
+            <div class="row">
+              <div class="col-lg-8 col-md-8">
+                <div class="single-deal">
+                  <div class="overlay"></div>
+                  <img class="img-fluid w-100" src="https://image.lexica.art/full_webp/03aaf4a4-b973-4399-8e0e-e5ed3c0dbf5e" alt="">
+                  <a href="/img/category/c1.jpg" class="img-pop-up" target="_blank">
+                    <div class="deal-details">
+                      <h6 class="deal-title">Spotlights</h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="single-deal">
+                  <div class="overlay"></div>
+                  <img class="img-fluid w-100" src="https://image.lexica.art/full_webp/02bebfdc-29b9-442d-baf5-dd744a18724a" alt="">
+                  <a href="/img/category/c2.jpg" class="img-pop-up" target="_blank">
+                    <div class="deal-details">
+                      <h6 class="deal-title">Casuals</h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="single-deal">
+                  <div class="overlay"></div>
+                  <img class="img-fluid w-100" src="https://image.lexica.art/full_webp/166d59ef-8216-41c3-937d-92af7682a5ae" alt="">
+                  <a href="/img/category/c3.jpg" class="img-pop-up" target="_blank">
+                    <div class="deal-details">
+                      <h6 class="deal-title">Couples Collection</h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-8 col-md-8">
+                <div class="single-deal">
+                  <div class="overlay"></div>
+                  <img class="img-fluid w-100" src="https://image.lexica.art/full_webp/1b3a582c-ae67-464e-9566-644c87a81752" alt="">
+                  <a href="/img/category/c4.jpg" class="img-pop-up" target="_blank">
+                    <div class="deal-details">
+                      <h6 class="deal-title">Premium</h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="single-deal">
+              <div class="overlay"></div>
+              <img class="img-fluid w-100" src="/img/category/c5.jpg" alt="">
+              <a href="/img/category/c5.jpg" class="img-pop-up" target="_blank">
+                <div class="deal-details">
+                  <h6 class="deal-title">Designer Collection</h6>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- End Category Area -->
 
     <!-- Products Section -->
     <div class="container" id="products">
-        <div class="row">
-            <!-- Filter Sidebar -->
-            <div class="col-lg-3">
-                <div class="filter-wrapper bg-white p-4 rounded shadow-sm">
-                    <h4 class="mb-4 fw-bold">Refine Results</h4>
-                    <form id="filterForm" method="GET" action="/shop">
-                        <!-- Category Filter -->
-                        <div class="mb-4">
-                            <h5 class="fw-semibold mb-3">Categories</h5>
-                            <div class="category-list">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="category" id="allCategories" value="" <%= !selectedCategory ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="allCategories">All Categories</label>
-                                </div>
-                                <% categories.forEach(category => { %>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="<%= category._id %>" value="<%= category._id %>" <%= selectedCategory === category._id.toString() ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="<%= category._id %>"><%= category.name %></label>
-                                    </div>
-                                <% }); %>
-                            </div>
-                        </div>
-                        <!-- Price Range Filter -->
-                        <div class="mb-4">
-                            <h5 class="fw-semibold mb-3">Price Range</h5>
-                            <div class="price-range">
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text">₹</span>
-                                    <input type="number" class="form-control" name="minPrice" value="<%= currentMinPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Min price">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-text">₹</span>
-                                    <input type="number" class="form-control" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Max price">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Keep current sort and search values -->
-                        <input type="hidden" name="sort" value="<%= currentSort %>">
-                        <input type="hidden" name="search" value="<%= searchQuery || '' %>">
-                        <!-- Apply Filters Button -->
-                        <button type="submit" class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none; border-radius: 30px; padding: 10px;">
-                            <i class="fas fa-filter me-2"></i> Apply Filters
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <!-- Products Grid -->
-            <div class="col-lg-9">
-                <div class="container mb-5">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="sorting-wrapper">
-                                <div class="sorting-box d-flex justify-content-between align-items-center p-3 bg-white rounded shadow-sm">
-                                    <div class="found-items">
-                                        <span class="text-muted"><i class="fas fa-tag me-2"></i> Showing <%= products.length %> products</span>
-                                    </div>
-                                    <div class="sorting-options d-flex align-items-center">
-                                        <label class="me-2 text-muted">Sort by:</label>
-                                        <form id="sortForm" method="GET" action="/shop" class="mb-0">
-                                            <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
-                                            <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
-                                            <input type="hidden" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>">
-                                            <input type="hidden" name="search" value="<%= searchQuery || '' %>">
-                                            <input type="hidden" name="page" value="<%= currentPage %>">
-                                            <select class="form-select" name="sort" onchange="this.form.submit()">
-                                                <option value="default" <%= currentSort === 'default' ? 'selected' : '' %>>Featured</option>
-                                                <option value="priceAsc" <%= currentSort === 'priceAsc' ? 'selected' : '' %>>Price: Low to High</option>
-                                                <option value="priceDesc" <%= currentSort === 'priceDesc' ? 'selected' : '' %>>Price: High to Low</option>
-                                                <option value="nameAsc" <%= currentSort === 'nameAsc' ? 'selected' : '' %>>Name: A to Z</option>
-                                                <option value="nameDesc" <%= currentSort === 'nameDesc' ? 'selected' : '' %>>Name: Z to A</option>
-                                            </select>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-lg-3">
+          <div class="filter-wrapper bg-white p-4 rounded shadow-sm">
+            <h4 class="mb-4 fw-bold">Refine Results</h4>
+            <form id="filterForm" method="GET" action="/shop">
+              <!-- Category Filter -->
+              <div class="mb-4">
+                <h5 class="fw-semibold mb-3">Categories</h5>
+                <div class="category-list">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="category" id="allCategories" value="" <%= !selectedCategory ? 'checked' : '' %>>
+                    <label class="form-check-label" for="allCategories">All Categories</label>
+                  </div>
+                  <% categories.forEach(category => { %>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="category" id="<%= category._id %>" value="<%= category._id %>" <%= selectedCategory === category._id.toString() ? 'checked' : '' %>>
+                      <label class="form-check-label" for="<%= category._id %>"><%= category.name %></label>
                     </div>
+                  <% }); %>
                 </div>
-                <!-- Products Rendering -->
-                <div class="row">
-                    <% if (products && products.length > 0) { %>
-                        <% products.forEach(product => { %>
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <div class="single-product">
-                                    <a href="/productDetails/<%= product._id %>">
-                                        <div class="product-img">
-                                            <img class="img-fluid w-100" src="/Uploads/product-Images/<%= product.productImage[0] %>" alt="<%= product.productName %>">
-                                        </div>
-                                    </a>
-                                    <div class="product-details">
-                                        <a href="/productDetails/<%= product._id %>">
-                                            <h6><%= product.productName %></h6>
-                                        </a>
-                                        <div class="stock-status <%= product.status %>">
-                                            <%= product.status.charAt(0).toUpperCase() + product.status.slice(1) %>
-                                        </div>
-                                        <div class="color-options">
-                                            Colors: 
-                                            <% const availableColors = Object.keys(product.colorStock).filter(color => product.colorStock[color] > 0); %>
-                                            <%= availableColors.length > 0 ? availableColors.join(', ') : 'None' %>
-                                        </div>
-                                        <div class="price">
-                                            <h6>₹<%= product.offerprice > 0 ? product.offerprice : product.price %></h6>
-                                            <% if (product.offerprice > 0 && product.offerprice < product.price) { %>
-                                                <h6 class="l-through">₹<%= product.price %></h6>
-                                            <% } %>
-                                        </div>
-                                        <div class="prd-bottom">
-                                            <a href="/add-to-cart/<%= product._id %>" class="social-info">
-                                                <span class="ti-bag"></span>
-                                                <p class="hover-text">Add to Bag</p>
-                                            </a>
-                                            <a href="/add-to-wishlist/<%= product._id %>" class="social-info">
-                                                <span class="lnr lnr-heart"></span>
-                                                <p class="hover-text">Wishlist</p>
-                                            </a>
-                                            <a href="/compare/<%= product._id %>" class="social-info">
-                                                <span class="lnr lnr-sync"></span>
-                                                <p class="hover-text">Compare</p>
-                                            </a>
-                                            <a href="/productDetails/<%= product._id %>" class="social-info">
-                                                <span class="lnr lnr-move"></span>
-                                                <p class="hover-text">View More</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }); %>
-                    <% } else { %>
-                        <div class="col-12 text-center py-5">
-                            <h4>No products found matching your criteria</h4>
-                            <p>Try adjusting your filters or search term</p>
-                        </div>
-                    <% } %>
+              </div>
+              <!-- Price Range Filter -->
+              <div class="mb-4">
+                <h5 class="fw-semibold mb-3">Price Range</h5>
+                <div class="price-range">
+                  <div class="input-group mb-2">
+                    <span class="input-group-text">₹</span>
+                    <input type="number" class="form-control" name="minPrice" value="<%= currentMinPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Min price">
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-text">₹</span>
+                    <input type="number" class="form-control" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>" min="<%= priceRange.minPrice %>" max="<%= priceRange.maxPrice %>" placeholder="Max price">
+                  </div>
                 </div>
-                <!-- Pagination Controls -->
-                <div class="col-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <% if (currentPage > 1) { %>
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=<%= currentPage - 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Previous">
-                                        <span aria-hidden="true">«</span>
-                                    </a>
-                                </li>
-                            <% } %>
-                            <% for (let i = 1; i <= totalPages; i++) { %>
-                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                    <a class="page-link" href="?page=<%= i %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>"><%= i %></a>
-                                </li>
-                            <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=<%= currentPage + 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                    </a>
-                                </li>
-                            <% } %>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+              </div>
+              <!-- Keep current sort and search values -->
+              <input type="hidden" name="sort" value="<%= currentSort %>">
+              <input type="hidden" name="search" value="<%= searchQuery || '' %>">
+              <!-- Apply Filters Button -->
+              <button type="submit" class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none; border-radius: 30px; padding: 10px;">
+                <i class="fas fa-filter me-2"></i> Apply Filters
+              </button>
+            </form>
+          </div>
         </div>
+        <!-- Products Grid -->
+        <div class="col-lg-9">
+          <div class="container mb-5">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="sorting-wrapper">
+                  <div class="sorting-box d-flex justify-content-between align-items-center p-3 bg-white rounded shadow-sm">
+                    <div class="found-items">
+                      <span class="text-muted"><i class="fas fa-tag me-2"></i> Showing <%= products.length %> products</span>
+                    </div>
+                    <div class="sorting-options d-flex align-items-center">
+                      <label class="me-2 text-muted">Sort by:</label>
+                      <form id="sortForm" method="GET" action="/shop" class="mb-0">
+                        <input type="hidden" name="category" value="<%= selectedCategory || '' %>">
+                        <input type="hidden" name="minPrice" value="<%= currentMinPrice %>">
+                        <input type="hidden" name="maxPrice" value="<%= currentMaxPrice === priceRange.maxPrice ? '' : currentMaxPrice %>">
+                        <input type="hidden" name="search" value="<%= searchQuery || '' %>">
+                        <input type="hidden" name="page" value="<%= currentPage %>">
+                        <select class="form-select" name="sort" onchange="this.form.submit()">
+                          <option value="default" <%= currentSort === 'default' ? 'selected' : '' %>>Featured</option>
+                          <option value="priceAsc" <%= currentSort === 'priceAsc' ? 'selected' : '' %>>Price: Low to High</option>
+                          <option value="priceDesc" <%= currentSort === 'priceDesc' ? 'selected' : '' %>>Price: High to Low</option>
+                          <option value="nameAsc" <%= currentSort === 'nameAsc' ? 'selected' : '' %>>Name: A to Z</option>
+                          <option value="nameDesc" <%= currentSort === 'nameDesc' ? 'selected' : '' %>>Name: Z to A</option>
+                        </select>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Products Rendering -->
+          <div class="row">
+            <% if (products && products.length > 0) { %>
+              <% products.forEach(product => { %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="single-product">
+                    <a href="/productDetails/<%= product._id %>">
+                      <div class="product-img">
+                        <img class="img-fluid w-100" src="/Uploads/product-Images/<%= product.productImage[0] %>" alt="<%= product.productName %>">
+                      </div>
+                    </a>
+                    <div class="product-details">
+                      <a href="/productDetails/<%= product._id %>">
+                        <h6><%= product.productName %></h6>
+                      </a>
+                      <div class="stock-status <%= product.status %>">
+                        <%= product.status.charAt(0).toUpperCase() + product.status.slice(1) %>
+                      </div>
+                      <div class="color-options">
+                        Colors:
+                        <% const availableColors = Object.keys(product.colorStock).filter(color => product.colorStock[color] > 0); %>
+                        <%= availableColors.length > 0 ? availableColors.join(', ') : 'None' %>
+                      </div>
+                      <div class="price">
+                        <h6>₹<%= product.offerprice > 0 ? product.offerprice : product.price %></h6>
+                        <% if (product.offerprice > 0 && product.offerprice < product.price) { %>
+                          <h6 class="l-through">₹<%= product.price %></h6>
+                        <% } %>
+                      </div>
+                      <div class="prd-bottom">
+                        <a href="/add-to-cart/<%= product._id %>" class="social-info">
+                          <span class="ti-bag"></span>
+                          <p class="hover-text">Add to Bag</p>
+                        </a>
+                        <a href="/add-to-wishlist/<%= product._id %>" class="social-info">
+                          <span class="lnr lnr-heart"></span>
+                          <p class="hover-text">Wishlist</p>
+                        </a>
+                        <a href="/compare/<%= product._id %>" class="social-info">
+                          <span class="lnr lnr-sync"></span>
+                          <p class="hover-text">Compare</p>
+                        </a>
+                        <a href="/productDetails/<%= product._id %>" class="social-info">
+                          <span class="lnr lnr-move"></span>
+                          <p class="hover-text">View More</p>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="col-12 text-center py-5">
+                <h4>No products found matching your criteria</h4>
+                <p>Try adjusting your filters or search term</p>
+              </div>
+            <% } %>
+          </div>
+          <!-- Pagination Controls -->
+          <div class="col-12">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="?page=<%= currentPage - 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Previous">
+                      <span aria-hidden="true">«</span>
+                    </a>
+                  </li>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                  <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>"><%= i %></a>
+                  </li>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="?page=<%= currentPage + 1 %>&sort=<%= currentSort %>&category=<%= selectedCategory %>&minPrice=<%= currentMinPrice %>&maxPrice=<%= currentMaxPrice %>&search=<%= searchQuery %>" aria-label="Next">
+                      <span aria-hidden="true">»</span>
+                    </a>
+                  </li>
+                <% } %>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Filter form submission
-    const filterForm = document.getElementById('filterForm');
-    if (filterForm) {
-        filterForm.addEventListener('submit', function(e) {
-            const minPrice = parseFloat(this.elements.minPrice.value) || 0;
-            const maxPrice = parseFloat(this.elements.maxPrice.value) || <%= priceRange.maxPrice %>;
-            if (minPrice > maxPrice) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid Price Range',
-                    text: 'Minimum price cannot be greater than maximum price'
-                });
-                return;
-            }
-            showLoading('Applying filters...');
-        });
-    }
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+      const closeMenuBtn = document.querySelector('.close-menu');
+      const navMenu = document.querySelector('.nav-menu');
+      const overlay = document.getElementById('menu-overlay');
 
-    // Sort form submission
-    const sortForm = document.getElementById('sortForm');
-    if (sortForm) {
-        sortForm.addEventListener('submit', function() {
-            showLoading('Sorting products...');
-        });
-    }
+      mobileMenuToggle.addEventListener('click', () => {
+        navMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
 
-    // Search icon click event
-    const searchIcon = document.getElementById('searchIcon');
-    const searchInputGroup = document.getElementById('searchInputGroup');
-    if (searchIcon && searchInputGroup) {
+      closeMenuBtn.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+
+      function closeMenu() {
+        navMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Search icon click event
+      const searchIcon = document.getElementById('searchIcon');
+      const searchInputGroup = document.getElementById('searchInputGroup');
+      if (searchIcon && searchInputGroup) {
         searchIcon.addEventListener('click', function() {
-            searchInputGroup.classList.toggle('active');
+          searchInputGroup.classList.toggle('active');
         });
-    }
+      }
 
-    function showLoading(message) {
-        Swal.fire({
-            title: message,
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
+      // Wishlist dropdown toggle
+      const wishlistBtn = document.getElementById('wishlist-btn');
+      const mobileWishlistBtn = document.getElementById('mobile-wishlist-btn');
+      const wishlistDropdown = document.getElementById('wishlist-dropdown');
+
+      wishlistBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wishlistDropdown.classList.toggle('active');
+        cartDropdown.classList.remove('active');
+      });
+
+      mobileWishlistBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wishlistDropdown.classList.toggle('active');
+        cartDropdown.classList.remove('active');
+        closeMenu();
+      });
+
+      // Cart dropdown toggle
+      const cartBtn = document.getElementById('cart-btn');
+      const mobileCartBtn = document.getElementById('mobile-cart-btn');
+      const cartDropdown = document.getElementById('cart-dropdown');
+
+      cartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cartDropdown.classList.toggle('active');
+        wishlistDropdown.classList.remove('active');
+      });
+
+      mobileCartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cartDropdown.classList.toggle('active');
+        wishlistDropdown.classList.remove('active');
+        closeMenu();
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', () => {
+        wishlistDropdown.classList.remove('active');
+        cartDropdown.classList.remove('active');
+      });
+
+      // Prevent dropdown closing when clicking inside it
+      wishlistDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      cartDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // Remove item functionality
+      const removeButtons = document.querySelectorAll('.dropdown-item-remove');
+
+      removeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const item = e.target.closest('.dropdown-item');
+          const dropdown = item.closest('.dropdown');
+          item.remove();
+
+       
+          const remainingItems = dropdown.querySelectorAll('.dropdown-item').length;
+          const headerText = dropdown.querySelector('h3');
+
+          if (dropdown.id === 'wishlist-dropdown') {
+            headerText.textContent = `My Wishlist (${remainingItems})`;
+            document.querySelectorAll('.fa-heart').forEach(icon => {
+              icon.parentElement.querySelector('.badge').textContent = remainingItems;
+            });
+          } else {
+            headerText.textContent = `Shopping Cart (${remainingItems})`;
+            document.querySelectorAll('.fa-shopping-cart').forEach(icon => {
+              icon.parentElement.querySelector('.badge').textContent = remainingItems;
+            });
+          }
+        });
+      });
+
+      // Search functionality
+      const searchInputs = document.querySelectorAll('.search-input');
+
+      searchInputs.forEach(input => {
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            const searchTerm = input.value.trim();
+            if (searchTerm) {
+              alert(`Searching for: ${searchTerm}`);
+             
             }
+          }
         });
-    }
-});
-</script>
+      });
 
-<%- include('../../views/partials/user/footer') %>
+      // Filter form submission
+      const filterForm = document.getElementById('filterForm');
+      if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+          const minPrice = parseFloat(this.elements.minPrice.value) || 0;
+          const maxPrice = parseFloat(this.elements.maxPrice.value) || <%-priceRange.maxPrice%>;
+          if (minPrice > maxPrice) {
+            e.preventDefault();
+            Swal.fire({
+              icon: 'error',
+              title: 'Invalid Price Range',
+              text: 'Minimum price cannot be greater than maximum price'
+            });
+            return;
+          }
+          showLoading('Applying filters...');
+        });
+      }
+
+      // Sort form submission
+      const sortForm = document.getElementById('sortForm');
+      if (sortForm) {
+        sortForm.addEventListener('submit', function() {
+          showLoading('Sorting products...');
+        });
+      }
+
+      function showLoading(message) {
+        Swal.fire({
+          title: message,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

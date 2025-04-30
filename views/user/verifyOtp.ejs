@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Verify OTP</title>
 
-  
-  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
@@ -69,9 +66,19 @@
     .resend-link {
       margin-top: 15px;
       display: block;
-      color: #007bff;
-      cursor: pointer;
       text-decoration: underline;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .resend-disabled {
+      color: gray;
+      pointer-events: none;
+    }
+
+    .resend-enabled {
+      color: #007bff;
+      pointer-events: auto;
     }
 
     .expired {
@@ -103,7 +110,7 @@
       <button type="submit">Verify</button>
     </form>
 
-    <span class="resend-link" onclick="resendOTP()">Resend OTP</span>
+    <span id="resendLink" class="resend-link resend-disabled" onclick="resendOTP()">Resend OTP</span>
   </div>
 
   <script>
@@ -162,26 +169,42 @@
 
     function startTimer() {
       timer = 60;
-      document.getElementById("timerValue").classList.remove("expired");
+      const timerValue = document.getElementById("timerValue");
+      const resendLink = document.getElementById("resendLink");
+
+      resendLink.classList.remove("resend-enabled");
+      resendLink.classList.add("resend-disabled");
+
+      timerValue.classList.remove("expired");
+
       timerInterval = setInterval(() => {
-        document.getElementById("timerValue").textContent = timer;
+        timerValue.textContent = timer;
+
         if (timer <= 0) {
           clearInterval(timerInterval);
-          document.getElementById("timerValue").textContent = "Expired";
-          document.getElementById("timerValue").classList.add("expired");
+          timerValue.textContent = "Expired";
+          timerValue.classList.add("expired");
 
-          document.querySelectorAll('.otp-input input').forEach(input => input.disabled = true);
+          resendLink.classList.remove("resend-disabled");
+          resendLink.classList.add("resend-enabled");
         }
+
         timer--;
       }, 1000);
     }
 
     function resendOTP() {
+      const resendLink = document.getElementById("resendLink");
+      resendLink.classList.remove("resend-enabled");
+      resendLink.classList.add("resend-disabled");
+
       clearInterval(timerInterval);
+
       document.querySelectorAll('.otp-input input').forEach(input => {
         input.disabled = false;
         input.value = '';
       });
+
       startTimer();
 
       $.ajax({
@@ -211,4 +234,3 @@
   </script>
 </body>
 </html>
-``` 

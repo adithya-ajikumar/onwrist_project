@@ -12,11 +12,11 @@
           <form method="post" onsubmit="handleFormSubmit(event)">
             <div class="mb-4">
               <label for="product_name" class="form-label">Name</label>
-              <input type="text" name="name" placeholder="Type here" class="form-control" id="product_name" required />
+              <input type="text" name="name" placeholder="Type here" class="form-control" id="product_name"  />
             </div>
             <div class="mb-4">
               <label class="form-label">Description</label>
-              <textarea placeholder="Type here" name="description" class="form-control" id="descriptionId" required></textarea>
+              <textarea placeholder="Type here" name="description" class="form-control" id="descriptionId" ></textarea>
             </div>
             <div class="d-grid">
               <button class="btn btn-primary" type="submit">Create category</button>
@@ -102,7 +102,7 @@
                      id="offerPercentage" 
                      min="0" 
                      max="90" 
-                     required>
+                     >
               <div class="form-text">Enter a value between 0 and 90</div>
             </div>
           </form>
@@ -121,24 +121,31 @@
     event.preventDefault();
     if (!validationForm()) return;
 
-    const name = document.getElementsByName('name')[0].value.trim();
+    const name = document.getElementsByName('name')[0].value.trim();//input id vachu acess cheythu value eduthu
     const description = document.getElementById('descriptionId').value.trim();
 
     fetch('/admin/addCategory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, description })
+      body: JSON.stringify({ name, description })  //these value passed value 
     })
-    .then(response => response.json())
+    .then(response => response.json())///returing json datafrom promise
     .then(data => {
-      if (data.status) {
+      if (data.status) {//if data status is true then it will show success message
         Swal.fire({
           icon: 'success',
           title: 'Success',
           text: data.message,
           timer: 1500,
           showConfirmButton: false
-        }).then(() => location.reload());
+        }).then(() => location.reload());//href route it will redirect:
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: data.message,
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => location.reload());//href route it will redirect:
       } else {
         Swal.fire({
           icon: 'error',
@@ -147,7 +154,7 @@
         });
       }
     })
-    .catch(error => {
+    .catch(error => {//if there is error  then it will show error message
       Swal.fire({
         icon: 'error',
         title: 'Error',

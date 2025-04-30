@@ -17,6 +17,12 @@ const checksession = (req, res, next) => {
     }
 }
 
+const authMiddleware = (req,res,next)=>{
+    const protectedRoutes = ["/profile", "/cart", "/checkout", "/orders"];
+    const notProtectedRoutes = ["/login", "/signup", "/forgot-password"];
+    // if()
+}
+
 module.exports = {
     isLogin,
     checksession

@@ -2,8 +2,8 @@ const User = require('../../models/userschema');
 const nodemailer = require("nodemailer");
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
-const genrateOTP = require("../../utils/genrateOTP");
-
+const generateOTP = require("../../utils/genrateOTP"); // Corrected the typo in the function name
+const passport = require("passport");
 
 const loadHome = async (req, res) => {
     try {
@@ -14,7 +14,6 @@ const loadHome = async (req, res) => {
         res.status(500).send("Server error");
     }
 };
-
 
 const loadSignup = async (req, res) => {
     try {
@@ -46,9 +45,6 @@ const loadPagenotfound = async (req, res) => {
     }
 };
 
-
-
-
 async function sendVerificationEmail(email, otp) {
     try {
         const transporter = nodemailer.createTransport({
@@ -77,7 +73,6 @@ async function sendVerificationEmail(email, otp) {
     }
 }
 
-
 const securePassword = async (password) => {
     try {
         const passwordHash = await bcrypt.hash(password, 10);
@@ -89,20 +84,17 @@ const securePassword = async (password) => {
 
 const signup = async (req, res) => {
     try {
-
         const { name, email, password } = req.body;
-console.log(req.body)
-       
+        console.log(req.body);
 
         const existingUser = await User.findOne({ email });
-        console.log("EXISTING USER : ",existingUser)
+        console.log("EXISTING USER : ", existingUser);
         if (existingUser) {
-            return res.status(400).json({success:false,message:"User Already Exisit"});
+            return res.status(400).json({ success: false, message: "User Already Exists" });
         }
 
-        const otp = genrateOTP();
+        const otp = generateOTP(); // Corrected the typo in the function name
         await sendVerificationEmail(email, otp);
-
 
         req.session.userOtp = otp;
         req.session.userData = { name, email, password };
@@ -110,7 +102,7 @@ console.log(req.body)
         console.log("OTP sent:", otp);
         res.render('verifyOtp', { success: true, message: "OTP sent successfully" });
 
-       console.log('success')
+        console.log('success');
     } catch (error) {
         console.error("Error in signup:", error);
         res.redirect("/pagenotfound");
@@ -148,17 +140,15 @@ const verifyOtp = async (req, res) => {
     }
 };
 
-
-
 const resendOtp = async (req, res) => {
     try {
-        const { email } = req.session.userData;
+        const { email } = req.session.userData || {};
 
         if (!email) {
             return res.status(400).json({ success: false, message: "Email not found in session." });
         }
 
-        const otp = generateOtp();
+        const otp = generateOTP(); // Corrected the typo in the function name
         req.session.userOtp = otp;
 
         const emailSent = await sendVerificationEmail(email, otp);
@@ -174,64 +164,46 @@ const resendOtp = async (req, res) => {
     }
 };
 
-
-
-const loadVerifyOtp=async(req,res)=>{
+const loadVerifyOtp = async (req, res) => {
     try {
-        res.render('verifyOtp')
+        res.render('verifyOtp');
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
-
-
-
+};
 
 const signin = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      console.log("Sign in request:", req.body);
-  
-      
-      const user = await User.findOne({ email });
-      if (!user) {
-        res.json({message:'User not found'});
-        return res.redirect('/signup');
-      }
-  
-      
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        res.json({message:'Invalid credentials'})
-        return res.redirect('/login');
-      }
-  
-      req.session.user = user;
-      return res.redirect('/')
-  
+        const { email, password } = req.body;
+        console.log("Sign in request:", req.body);
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.json({ message: 'User not found' });
+            return res.redirect('/signup');
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            res.json({ message: 'Invalid credentials' });
+            return res.redirect('/login');
+        }
+
+        req.session.user = user;
+        return res.redirect('/');
     } catch (error) {
-      console.error('Error in sign in:', error);
-      return res.status(500).send('Server error');
+        console.error('Error in sign in:', error);
+        return res.status(500).send('Server error');
     }
-  };
+};
 
-
-
-const loadForgotPassword=async(req,res)=>{
-    try{
-    res.render('forgotPassword');
-    }catch(error){
-    console.log(error)
+const loadForgotPassword = async (req, res) => {
+    try {
+        res.render('forgotPassword');
+    } catch (error) {
+        console.log(error);
     }
-    }
-
-
-
-
-
-
-
-
+};
 
 module.exports = {
     loadHome,
@@ -243,5 +215,5 @@ module.exports = {
     resendOtp,
     loadVerifyOtp,
     signin,
-    loadForgotPassword
+    loadForgotPassword,
 };

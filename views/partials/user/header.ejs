@@ -14,20 +14,20 @@
       --dark: #212529;
       --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: var(--font-primary);
       color: var(--dark);
       line-height: 1.6;
       background-color: white;
     }
-    
+
     header {
       background-color: white;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -39,41 +39,41 @@
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .logo {
       font-weight: 700;
       font-size: 24px;
       color: var(--primary);
     }
-    
+
     nav {
       display: flex;
       align-items: center;
     }
-    
+
     nav ul {
       display: flex;
       list-style: none;
       gap: 30px;
     }
-    
+
     nav a {
       text-decoration: none;
       color: var(--dark);
       font-weight: 500;
       transition: color 0.3s;
     }
-    
+
     nav a:hover {
       color: var(--accent);
     }
-    
+
     /* Search Bar Styles */
     .search-container {
       position: relative;
       margin-left: 20px;
     }
-    
+
     .search-container input {
       padding: 8px 15px 8px 35px;
       border: 1px solid var(--gray);
@@ -83,13 +83,13 @@
       width: 180px;
       transition: all 0.3s;
     }
-    
+
     .search-container input:focus {
       width: 220px;
       outline: none;
       border-color: var(--accent);
     }
-    
+
     .search-container .search-icon {
       position: absolute;
       left: 12px;
@@ -98,14 +98,13 @@
       color: #6c757d;
       font-size: 14px;
     }
-    
+
     /* Icons Section */
     .nav-icons {
       display: flex;
       align-items: center;
-      margin-left: 20px;
     }
-    
+
     .icon-btn {
       background: none;
       border: none;
@@ -116,11 +115,11 @@
       position: relative;
       transition: color 0.3s;
     }
-    
+
     .icon-btn:hover {
       color: var(--accent);
     }
-    
+
     .badge {
       position: absolute;
       top: -8px;
@@ -136,7 +135,7 @@
       align-items: center;
       justify-content: center;
     }
-    
+
     /* Dropdown Menus */
     .dropdown {
       position: absolute;
@@ -151,11 +150,11 @@
       margin-top: 10px;
       display: none;
     }
-    
+
     .dropdown.active {
       display: block;
     }
-    
+
     .dropdown-header {
       display: flex;
       justify-content: space-between;
@@ -164,19 +163,19 @@
       padding-bottom: 10px;
       margin-bottom: 15px;
     }
-    
+
     .dropdown-header h3 {
       font-size: 16px;
       color: var(--primary);
     }
-    
+
     .dropdown-item {
       display: flex;
       align-items: center;
       padding: 10px 0;
       border-bottom: 1px solid var(--gray);
     }
-    
+
     .dropdown-item-img {
       width: 60px;
       height: 60px;
@@ -184,21 +183,21 @@
       border-radius: 4px;
       margin-right: 15px;
     }
-    
+
     .dropdown-item-info {
       flex-grow: 1;
     }
-    
+
     .dropdown-item-name {
       font-weight: 500;
       margin-bottom: 5px;
     }
-    
+
     .dropdown-item-price {
       color: var(--accent);
       font-weight: 700;
     }
-    
+
     .dropdown-item-remove {
       color: #dc3545;
       background: none;
@@ -206,12 +205,12 @@
       font-size: 14px;
       cursor: pointer;
     }
-    
+
     .dropdown-footer {
       margin-top: 15px;
       text-align: center;
     }
-    
+
     .dropdown-link {
       display: inline-block;
       padding: 8px 20px;
@@ -222,11 +221,11 @@
       font-weight: 500;
       transition: background-color 0.3s;
     }
-    
+
     .dropdown-link:hover {
       background-color: #b89346;
     }
-    
+
     /* Mobile Menu */
     .mobile-menu-toggle {
       display: none;
@@ -236,26 +235,26 @@
       cursor: pointer;
       color: var(--primary);
     }
-    
+
     @media (max-width: 992px) {
       .search-container input {
         width: 150px;
       }
-      
+
       .search-container input:focus {
         width: 180px;
       }
-      
+
       nav ul {
         gap: 20px;
       }
     }
-    
+
     @media (max-width: 768px) {
       .mobile-menu-toggle {
         display: block;
       }
-      
+
       .nav-menu {
         position: fixed;
         top: 0;
@@ -269,40 +268,40 @@
         padding: 80px 30px 30px;
         transition: left 0.3s ease;
       }
-      
+
       .nav-menu.active {
         left: 0;
       }
-      
+
       nav ul {
         flex-direction: column;
         width: 100%;
       }
-      
+
       nav li {
         width: 100%;
         margin-bottom: 15px;
       }
-      
+
       .search-container {
         margin: 20px 0;
         width: 100%;
       }
-      
+
       .search-container input {
         width: 100%;
       }
-      
+
       .mobile-icons {
         display: flex;
         gap: 20px;
         margin-top: 20px;
       }
-      
+
       .nav-icons {
         display: none;
       }
-      
+
       .close-menu {
         position: absolute;
         top: 20px;
@@ -312,7 +311,7 @@
         font-size: 24px;
         cursor: pointer;
       }
-      
+
       .overlay {
         position: fixed;
         top: 0;
@@ -323,12 +322,12 @@
         z-index: 200;
         display: none;
       }
-      
+
       .overlay.active {
         display: block;
       }
     }
-    
+
     /* Keep your existing styles below */
     .hero {
       height: 85vh;
@@ -341,23 +340,23 @@
       color: white;
       padding: 0 80px;
     }
-    
+
     .hero-content {
       max-width: 600px;
     }
-    
+
     .hero h1 {
       font-size: 48px;
       margin-bottom: 20px;
       line-height: 1.2;
     }
-    
+
     .hero p {
       font-size: 18px;
       margin-bottom: 30px;
       opacity: 0.9;
     }
-    
+
     .btn {
       display: inline-block;
       background-color: var(--accent);
@@ -371,33 +370,33 @@
       border: none;
       cursor: pointer;
     }
-    
+
     .btn:hover {
       background-color: #b89346;
       transform: translateY(-2px);
     }
-    
+
     .section {
       padding: 80px 30px;
     }
-    
+
     .section-header {
       text-align: center;
       margin-bottom: 60px;
     }
-    
+
     .section-header h2 {
       font-size: 36px;
       color: var(--primary);
       margin-bottom: 20px;
     }
-    
+
     .section-header p {
       max-width: 700px;
       margin: 0 auto;
       color: #6c757d;
     }
-    
+
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -405,7 +404,7 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .product-card {
       background-color: white;
       border-radius: 8px;
@@ -413,43 +412,43 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    
+
     .product-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
-    
+
     .product-image {
       height: 300px;
       overflow: hidden;
     }
-    
+
     .product-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s;
     }
-    
+
     .product-card:hover .product-image img {
       transform: scale(1.05);
     }
-    
+
     .product-info {
       padding: 20px;
     }
-    
+
     .product-info h3 {
       font-size: 18px;
       margin-bottom: 10px;
     }
-    
+
     .price {
       color: var(--accent);
       font-weight: 700;
       font-size: 20px;
     }
-    
+
     .category-label {
       display: inline-block;
       background-color: var(--gray);
@@ -458,7 +457,7 @@
       font-size: 12px;
       margin-bottom: 10px;
     }
-    
+
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -467,33 +466,33 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .gallery-item {
       position: relative;
       overflow: hidden;
       border-radius: 8px;
     }
-    
+
     .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s;
     }
-    
+
     .gallery-item:hover img {
       transform: scale(1.05);
     }
-    
+
     .gallery-item:nth-child(1) {
       grid-column: span 2;
       grid-row: span 2;
     }
-    
+
     .collection {
       background-color: var(--gray);
     }
-    
+
     .collection-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -501,13 +500,13 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     footer {
       background-color: var(--primary);
       color: white;
       padding: 60px 30px 30px;
     }
-    
+
     .footer-content {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -515,30 +514,30 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .footer-column h3 {
       margin-bottom: 20px;
       font-size: 18px;
     }
-    
+
     .footer-column ul {
       list-style: none;
     }
-    
+
     .footer-column li {
       margin-bottom: 10px;
     }
-    
+
     .footer-column a {
       color: rgba(255,255,255,0.8);
       text-decoration: none;
       transition: color 0.3s;
     }
-    
+
     .footer-column a:hover {
       color: var(--accent);
     }
-    
+
     .copyright {
       text-align: center;
       margin-top: 50px;
@@ -552,16 +551,12 @@
 <body>
   <header>
     <div class="logo">ONWRIST</div>
-    
+
     <button class="mobile-menu-toggle">
       <i class="fas fa-bars"></i>
     </button>
-    
+
     <nav class="nav-menu">
-      <!-- <button class="close-menu">
-        <i class="fas fa-times"></i>
-      </button> -->
-      
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="/shop">Shop</a></li>
@@ -570,34 +565,27 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
-      
-     
     </nav>
-    
+
     <div class="nav-icons">
-      <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Search for watches...">
-      </div>
-      
       <button class="icon-btn" id="wishlist-btn">
         <i class="far fa-heart"></i>
         <span class="badge">3</span>
       </button>
-      
+
       <button class="icon-btn" id="cart-btn">
         <i class="fas fa-shopping-cart"></i>
         <span class="badge">2</span>
       </button>
     </div>
   </header>
-  
+
   <!-- Wishlist Dropdown -->
   <div class="dropdown" id="wishlist-dropdown">
     <div class="dropdown-header">
       <h3>My Wishlist (3)</h3>
     </div>
-    
+
     <div class="dropdown-item">
       <div class="dropdown-item-img"></div>
       <div class="dropdown-item-info">
@@ -608,7 +596,7 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="dropdown-item">
       <div class="dropdown-item-img"></div>
       <div class="dropdown-item-info">
@@ -619,7 +607,7 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="dropdown-item">
       <div class="dropdown-item-img"></div>
       <div class="dropdown-item-info">
@@ -630,18 +618,18 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="dropdown-footer">
       <a href="#" class="dropdown-link">View Wishlist</a>
     </div>
   </div>
-  
+
   <!-- Cart Dropdown -->
   <div class="dropdown" id="cart-dropdown">
     <div class="dropdown-header">
       <h3>Shopping Cart (2)</h3>
     </div>
-    
+
     <div class="dropdown-item">
       <div class="dropdown-item-img"></div>
       <div class="dropdown-item-info">
@@ -652,7 +640,7 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="dropdown-item">
       <div class="dropdown-item-img"></div>
       <div class="dropdown-item-info">
@@ -663,14 +651,14 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="dropdown-footer">
       <a href="#" class="dropdown-link">Checkout</a>
     </div>
   </div>
-  
+
   <div class="overlay" id="menu-overlay"></div>
-  
+
   <!-- Add the following script at the end of the body -->
   <script>
     // Mobile menu toggle
@@ -678,86 +666,86 @@
     const closeMenuBtn = document.querySelector('.close-menu');
     const navMenu = document.querySelector('.nav-menu');
     const overlay = document.getElementById('menu-overlay');
-    
+
     mobileMenuToggle.addEventListener('click', () => {
       navMenu.classList.add('active');
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
-    
+
     closeMenuBtn.addEventListener('click', closeMenu);
     overlay.addEventListener('click', closeMenu);
-    
+
     function closeMenu() {
       navMenu.classList.remove('active');
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     }
-    
+
     // Wishlist dropdown toggle
     const wishlistBtn = document.getElementById('wishlist-btn');
     const mobileWishlistBtn = document.getElementById('mobile-wishlist-btn');
     const wishlistDropdown = document.getElementById('wishlist-dropdown');
-    
+
     wishlistBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       wishlistDropdown.classList.toggle('active');
       cartDropdown.classList.remove('active');
     });
-    
+
     mobileWishlistBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       wishlistDropdown.classList.toggle('active');
       cartDropdown.classList.remove('active');
       closeMenu();
     });
-    
+
     // Cart dropdown toggle
     const cartBtn = document.getElementById('cart-btn');
     const mobileCartBtn = document.getElementById('mobile-cart-btn');
     const cartDropdown = document.getElementById('cart-dropdown');
-    
+
     cartBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       cartDropdown.classList.toggle('active');
       wishlistDropdown.classList.remove('active');
     });
-    
+
     mobileCartBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       cartDropdown.classList.toggle('active');
       wishlistDropdown.classList.remove('active');
       closeMenu();
     });
-    
+
     // Close dropdowns when clicking outside
     document.addEventListener('click', () => {
       wishlistDropdown.classList.remove('active');
       cartDropdown.classList.remove('active');
     });
-    
+
     // Prevent dropdown closing when clicking inside it
     wishlistDropdown.addEventListener('click', (e) => {
       e.stopPropagation();
     });
-    
+
     cartDropdown.addEventListener('click', (e) => {
       e.stopPropagation();
     });
-    
+
     // Remove item functionality
     const removeButtons = document.querySelectorAll('.dropdown-item-remove');
-    
+
     removeButtons.forEach(button => {
       button.addEventListener('click', (e) => {
         const item = e.target.closest('.dropdown-item');
         const dropdown = item.closest('.dropdown');
         item.remove();
-        
+
         // Update count in dropdown header
         const remainingItems = dropdown.querySelectorAll('.dropdown-item').length;
         const headerText = dropdown.querySelector('h3');
-        
+
         if (dropdown.id === 'wishlist-dropdown') {
           headerText.textContent = `My Wishlist (${remainingItems})`;
           document.querySelectorAll('.fa-heart').forEach(icon => {
@@ -771,10 +759,10 @@
         }
       });
     });
-    
+
     // Search functionality
     const searchInputs = document.querySelectorAll('.search-container input');
-    
+
     searchInputs.forEach(input => {
       input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
