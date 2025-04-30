@@ -1,4 +1,3 @@
-
 const User = require('../../models/userschema');  
 const nodemailer = require("nodemailer");   
  
@@ -91,10 +90,10 @@ const otpVerify=async(req,res)=>{
         console.log("OTP verification request:", req.body);
         if (otp === req.session.otp) {
             res.json({ success:true, message: 'OTP verified successfully' });
-            return res.redirect('/resetpassword');
+           
         } else {
             res.json({ success:false, message: 'Invalid OTP' });
-            return res.redirect('/signup');///forgot route
+            
         }
     } catch (error) {
         res.json({success:false,message:"Internal server error"})

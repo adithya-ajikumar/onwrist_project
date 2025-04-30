@@ -26,6 +26,9 @@ router.post("/resend-otp", userController.resendOtp);
 
 
 router.post("/forgot-password", ProfileController.forgotPassword);
+router.post('/otp-verify', ProfileController.otpVerify);
+
+// router.post('/reset-password', ProfileController.resetPassword);
 
 
 
