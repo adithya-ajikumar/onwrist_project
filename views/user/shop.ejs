@@ -384,12 +384,20 @@
 
       <div class="search-bar-container">
         <div class="search-wrapper">
-          <div class="search-input-group" id="searchInputGroup">
-            <input type="text" class="search-input" placeholder="Search...">
-          </div>
-          <button class="search-button" id="searchIcon">
-            <i class="fas fa-search"></i>
-          </button>
+          <form id="searchForm" method="GET" action="/shop">
+            <div class="search-input-group" id="searchInputGroup">
+              <input 
+                type="text" 
+                class="search-input" 
+                name="search" 
+                placeholder="Search..." 
+                value="<%= searchQuery || '' %>"
+              >
+            </div>
+            <button type="submit" class="search-button" id="searchIcon">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
         </div>
       </div>
 
@@ -923,8 +931,11 @@
       const searchIcon = document.getElementById('searchIcon');
       const searchInputGroup = document.getElementById('searchInputGroup');
       if (searchIcon && searchInputGroup) {
-        searchIcon.addEventListener('click', function() {
-          searchInputGroup.classList.toggle('active');
+        searchIcon.addEventListener('click', function (e) {
+          if (!searchInputGroup.classList.contains('active')) {
+            e.preventDefault(); // Prevent form submission on the first click
+            searchInputGroup.classList.add('active');
+          }
         });
       }
 
