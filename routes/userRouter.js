@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user/userController');
-const { isLogin, checksession } = require('../middlewares/userAuth');
+const { isLogin, checksession ,blockCheck} = require('../middlewares/userAuth');
 const shopController = require('../controllers/user/shopController');
 const multer = require('../middlewares/multer');
 const passport = require('passport');
 const ProfileController = require('../controllers/user/ProfileController');
 
-router.get("/",  userController.loadHome);
+router.get("/", blockCheck,      userController.loadHome);
 router.get("/signup", userController.loadSignup);
 router.get("/login", userController.loadLogin);
 router.post("/login", userController.signin);
 // router.post("/logout", userController.logout);
 router.get("/pagenotfound", userController.loadPagenotfound);
 router.get ("/forgetpassword",ProfileController.getForgetPassword);
+
 
 
 
