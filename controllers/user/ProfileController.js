@@ -100,6 +100,10 @@ const otpVerify=async(req,res)=>{
     }
 }
 
+
+
+
+
 module.exports = {
     getForgetPassword,
     forgotPassword,
