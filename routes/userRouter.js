@@ -16,6 +16,7 @@ router.get("/pagenotfound", userController.loadPagenotfound);
 router.get ("/forgetpassword",ProfileController.getForgetPassword);
 
 
+
 // Auth routes
 router.post("/auth/register", userController.signup);
 router.get('/verify-otp', isLogin, userController.loadVerifyOtp);
@@ -27,6 +28,7 @@ router.post("/resend-otp", userController.resendOtp);
 
 router.post("/forgot-password", ProfileController.forgotPassword);
 router.post('/otp-verify', ProfileController.otpVerify);
+router.post('/resendOtp', ProfileController.resendOtp);
 
 // router.post('/reset-password', ProfileController.resetPassword);
 
@@ -40,6 +42,7 @@ router.get('/auth/google', (req, res, next) => {
         scope: ["profile", "email"],
     })(req, res, next);
 });
+
 router.get('/google/callback', (req, res, next) => {
     passport.authenticate(
         "google",

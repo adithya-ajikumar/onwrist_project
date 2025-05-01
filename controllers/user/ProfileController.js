@@ -34,6 +34,7 @@ const forgotPassword=async(req,res)=>{
         console.log("selogin",sent);
         
         req.session.otp=otp;
+        req.session.email=email;
 
 
         res.json({ success:true, message: 'Verification success,OTP sent to your email' });
@@ -102,12 +103,40 @@ const otpVerify=async(req,res)=>{
 
 
 
+const resendOtp = async (req, res) => {
+    try {
+        console.log("Resend OTP request:");
+        const email= req.session.email// Assuming email is stored in session
+        console.log("emial", email);
+
+        if (!email) {
+            return res.json({ success: false, message: "Email not found in session.//////////////////////" });
+        }
+
+        const otp =generateOtp()
+        console.log("Generated OTP for resend:", otp);
+        req.session.otp = otp;
+
+        const emailSent = await sendResetPasswordOTP(email,otp);
+        console.log("Email sent status:", emailSent);
+    
+        return res.json({ success: true, message: "OTP resent successfully." });
+        
+    } catch (error) {
+        console.error("Error resending OTP:", error);
+        res.json({ success: false, message: "Internal Server Error. Please try again." });
+    }
+};
+
+
+
 
 
 module.exports = {
     getForgetPassword,
     forgotPassword,
-    otpVerify
+    otpVerify,
+    resendOtp
 
    
 }
