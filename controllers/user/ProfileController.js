@@ -1,5 +1,7 @@
 const User = require('../../models/userschema');  
-const nodemailer = require("nodemailer");   
+const nodemailer = require("nodemailer");  
+const bcrypt = require("bcrypt");
+const env = require("dotenv").config(); 
  
  
  
@@ -21,7 +23,7 @@ const forgotPassword=async(req,res)=>{
         console.log("Forgot password request:", req.body);
         const user = await User .findOne({ email });
         
-        if(!user) {
+        if(!user) {bcript
             res.json({ success:false, message: 'User not found' });
             return res.redirect('/signup');
         }
@@ -124,9 +126,45 @@ const resendOtp = async (req, res) => {
         
     } catch (error) {
         console.error("Error resending OTP:", error);
-        res.json({ success: false, message: "Internal Server Error. Please try again." });
+        res.json({ success: false, message: "Failed to sent otp" });
     }
 };
+
+
+
+const resetPassword = async (req, res) => {
+    try {
+        const {password,confirmPassword } = req.body;
+
+        const email = req.session.email; // Assuming email is stored in session
+        console.log("Email from session:", email);
+
+        console.log("Reset password request:", req.body);
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.json({ success:false, message: 'User not found' });     
+        }
+
+        if(password !== confirmPassword) {
+           return res.json({ success:false, message: 'Passwords do not match' });
+            
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+
+        user.save()
+
+        res.json({ success:true, message: 'Password reset successfully' });
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        res.json({ success:false, message: 'Internal server error' });
+        
+    }
+}
+    
+        
+
 
 
 
@@ -136,7 +174,8 @@ module.exports = {
     getForgetPassword,
     forgotPassword,
     otpVerify,
-    resendOtp
+    resendOtp,
+    resetPassword,
 
    
 }
