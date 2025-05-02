@@ -14,7 +14,6 @@ const categoryInfo = async (req, res) => {
         const skip = (page - 1) * limit;
         const search = req.query.search || '';
 
-        // Build search query
         const searchQuery = search ? {
             name: { $regex: search, $options: 'i' }
         } : {};
@@ -82,11 +81,14 @@ const addCategory=async(req,res)=>{
 const listCategory = async (req, res) => {
     try {
         const id = req.body.id;
+        console.log(id)
+        console.log('------------------')
+        console.log(req.body)
         if (!id || !mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ status: false, message: "Invalid category ID" });
         }
-        // Set isListed to false to unlist the category
-        const result = await Category.updateOne({ _id: id }, { $set: { isListed: false } });
+        
+        const result = await Category.updateOne({ _id: id }, { $set: { isListed: true } });
         if (result.matchedCount === 0) {
             return res.status(404).json({ status: false, message: "Category not found" });
         }
@@ -100,15 +102,20 @@ const listCategory = async (req, res) => {
 const unlistCategory = async (req, res) => {
     try {
         const id = req.body.id;
+        console.log('unl;ist')
         if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ status: false, message: "Invalid category ID" });
+            return res.json({ status: false, message: "Invalid category ID" });
         }
-        // Set isListed to true to list the category
-        const result = await Category.updateOne({ _id: id }, { $set: { isListed: true } });
+     
+        const result = await Category.updateOne({ _id: id }, { $set: { isListed: false} });
+        console.log('result',result)
+
         if (result.matchedCount === 0) {
-            return res.status(404).json({ status: false, message: "Category not found" });
+            return res.json({ status: false, message: "Category not found" });
         }
-        res.json({ status: true, message: "Category listed successfully" });
+
+    
+        res.json({ status: true, message: "Category unlisted successfully" });
     } catch (error) {
         console.error("Error in unlistCategory:", error);
         res.status(500).json({ status: false, message: error.message });

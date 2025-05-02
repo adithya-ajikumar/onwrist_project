@@ -7,7 +7,7 @@ const multer = require('../middlewares/multer');
 const passport = require('passport');
 const ProfileController = require('../controllers/user/ProfileController');
 
-router.get("/", blockCheck,      userController.loadHome);
+router.get("/", blockCheck,userController.loadHome);
 router.get("/signup", userController.loadSignup);
 router.get("/login", userController.loadLogin);
 router.post("/login", userController.signin);
