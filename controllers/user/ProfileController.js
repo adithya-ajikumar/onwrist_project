@@ -163,8 +163,28 @@ const resetPassword = async (req, res) => {
     }
 }
     
-        
+   const userprofile=async(req,res)=>{
+    try {
+        const userId=req.session.user
+        const userData=await User.findOne(userId)
+        res.render("userprofile",{
+            user:userData
+        })
 
+    } catch (error) {
+       console.log("error in the profile managment page")
+       res.redirect("/pagenotfound")
+    }
+   }     
+  const changepassword=async(req,res)=>{
+    try {
+        res.render("changepassword")
+        
+    } catch (error) {
+    console.log("error in the change passwordpage")
+       res.redirect("/pagenotfound") 
+    }
+  }
 
 
 
@@ -176,6 +196,8 @@ module.exports = {
     otpVerify,
     resendOtp,
     resetPassword,
+    userprofile,
+    changepassword
 
    
 }

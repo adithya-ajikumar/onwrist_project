@@ -46,11 +46,13 @@ const categoryInfo = async (req, res) => {
 
 
 const addCategory=async(req,res)=>{
-    const{name,description}=req.body
+    
 
     try {
-        const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
+        const{name,description}=req.body
 
+        const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
+                                 
         console.log("-----------------------")
 
         if(existingCategory){
@@ -65,7 +67,7 @@ const addCategory=async(req,res)=>{
         console.log('++++++++++++++++_----------------',newCategory)
         
         await newCategory.save()
-        console.log('sabve')
+        console.log('save')
         return res.json({ status:true,message:'Category added successfully'});
     } catch (error) {
         console.log(error)

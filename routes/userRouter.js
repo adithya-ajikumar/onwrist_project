@@ -14,8 +14,8 @@ router.post("/login", userController.signin);
 // router.post("/logout", userController.logout);
 router.get("/pagenotfound", userController.loadPagenotfound);
 router.get ("/forgetpassword",ProfileController.getForgetPassword);
-
-
+router.get("/userprofile",ProfileController.userprofile)
+router.get("/changepassword",ProfileController.changepassword)
 
 
 // Auth routes

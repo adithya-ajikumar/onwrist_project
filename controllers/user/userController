@@ -8,7 +8,9 @@ const passport = require("passport");
 const loadHome = async (req, res) => {
     try {
         console.log("Home Page");
-        res.render('home');
+        const user=req.session.user
+        console.log("user",user)
+        res.render('home', {user})
     } catch (error) {
         console.error("Home load error:", error);
         res.status(500).send("Server error");

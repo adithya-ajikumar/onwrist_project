@@ -39,34 +39,33 @@ const addProduct = async (req, res) => {
         console.log(req.body);
         console.log("Files:", req.files);
 
-        // Validate required fields
+      
         if (!productName || !description || !brand || !categoryId || !price || !colorStock || !status) {
             return res.status(400).json({ success: false, message: 'All required fields must be provided' });
         }
 
-        // Validate colorStock
+       
         const validColorStock = {
             silver: parseInt(colorStock.silver) || 0,
             gold: parseInt(colorStock.gold) || 0,
             black: parseInt(colorStock.black) || 0,
         };
 
-        // Calculate totalStock
+        
         const totalStock = Object.values(validColorStock).reduce((total, stock) => total + stock, 0);
 
-        // Create an array to hold the image paths or URLs
         let productImages = [];
 
-        // Check if req.files exists and is an array
+      
         if (req.files && Array.isArray(req.files)) {
             req.files.forEach(file => {
-                // Assuming file.path contains the path to the saved image
+              
                 productImages.push(file.filename);
             });
         }
         console.log("Product Images:", productImages);
 
-        // Create a new product
+       
         const newProduct = new Product({
             productName,
             description,
@@ -80,7 +79,7 @@ const addProduct = async (req, res) => {
             warranty: warranty === 'true',
             status,
             productImage: productImages, // Save the productImages array
-            isListed: true // Default value
+            isListed: true 
         });
 
         // Save the product to the database
@@ -137,7 +136,7 @@ const loadEditProduct = async (req, res) => {
         const productId = req.query.id;
         console.log("Product ID:", productId);
 
-        // Fetch the product details by ID
+        
         const product = await Product.findById(productId);
         console.log("Product Details:", product);
         if (!product) {
@@ -147,10 +146,10 @@ const loadEditProduct = async (req, res) => {
             });
         }
 
-        // Fetch the categories
+    
         const categories = await Category.find({});
 
-        // Render the edit product page with the product details and categories
+     
         res.render('editProduct', { product, cat: categories });
     } catch (error) {
         console.error('Error loading edit product page:', error);
@@ -169,13 +168,13 @@ const editProduct = async (req, res, next) => {
 
         console.log("file------------", req.files); 
 
-        // Fetch the existing product
+        
         const product = await Product.findOne({ _id: id });
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
 
-        // Check for duplicate product name
+        
         const existingProduct = await Product.findOne({
             productName: data.productName,
             _id: { $ne: id }
@@ -185,7 +184,7 @@ const editProduct = async (req, res, next) => {
             return res.status(400).json({ error: "Product with this name already exists. Please try with another name" });
         }
 
-        // Initialize images with existing images
+       
         let images = product.productImage || [];
 
         // Handle image uploads and resizing

@@ -560,10 +560,22 @@
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="/shop">Shop</a></li>
+        <li><a href="#">About</a></li>
+       
+        <% if (typeof user !== 'undefined' && user) { %>
+          <li><a href="/logout">logout</a></li>
+          <li><a href="/userprofile">profile</a></li>
+
+          
+
+          <% } else { %>
+
         <li><a href="/login">Login</a></li>
         <li><a href="/signup">signup</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+
+        <% } %>
+
+        
       </ul>
     </nav>
 
@@ -656,8 +668,16 @@
       <a href="#" class="dropdown-link">Checkout</a>
     </div>
   </div>
-
+   
   <div class="overlay" id="menu-overlay"></div>
+
+ 
+
+
+
+
+
+
 
   <!-- Add the following script at the end of the body -->
   <script>

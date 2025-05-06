@@ -20,19 +20,19 @@ const login = async (req, res) => {
 
     console.log('Admin Data:', admin);
 
-    // Check if admin exists and is actually an admin
+    
     if (admin && admin.isAdmin) {
 
-      // Compare passwords with await
+    
       const passwordMatch = await bcrypt.compare(password, admin.password);
       console.log('Password Match:', passwordMatch);
 
       if (passwordMatch) {
-        // Set session for admin
+       
         req.session.admin = true;
         return res.redirect("/admin/dashboard");
       } else {
-        // Invalid password
+       
         return res.redirect("/admin/login");
       }
 
