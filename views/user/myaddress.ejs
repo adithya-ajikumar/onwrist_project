@@ -1,0 +1,374 @@
+\<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Address</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* Main Layout */
+    .container-fluid {
+      padding: 0;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      min-height: 100vh;
+      background-color: #343a40;
+      color: white;
+      position: fixed;
+      width: 260px;
+    }
+
+    .sidebar .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      padding: 10px 20px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
+
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+    }
+
+    /* Content Area */
+    .main-content {
+      margin-left: 260px;
+      padding: 30px;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    /* Address Grid */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card p {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .card strong {
+      color: #000;
+      font-weight: 600;
+      min-width: 100px;
+      display: inline-block;
+    }
+
+    .card-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: flex-end;
+    }
+
+    .btn-edit, .btn-delete {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .btn-edit {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-edit:hover, .btn-delete:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    #addAddressBtn {
+      background-color: #000;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    #addAddressBtn:hover {
+      background-color: #333;
+      transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .address-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 col-lg-2 sidebar p-0">
+        <div class="d-flex flex-column p-3">
+          <div class="text-center mb-4">
+            <h4>Account</h4>
+          </div>
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a href="/profile" class="nav-link">
+                <i class="fas fa-user"></i> Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/my-address" class="nav-link active">
+                <i class="fas fa-map-marker-alt"></i> My Address
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/my-orders" class="nav-link">
+                <i class="fas fa-shopping-bag"></i> My Orders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/wallet" class="nav-link">
+                <i class="fas fa-envelope"></i> My Wallet
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/settings" class="nav-link">
+                <i class="fas fa-cog"></i> Settings
+              </a>
+            </li>
+            <li class="nav-item mt-5">
+              <a href="/logout" class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 col-lg-10 main-content">
+        <h2 class="mb-4">My Addresses</h2>
+
+        <button id="addAddressBtn" class="btn btn-dark mb-4">
+          <i class="fas fa-plus"></i> Add New Address
+        </button>
+
+        <div class="address-grid">
+          <!-- Address Cards will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Address Modal -->
+  <div id="addAddressModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Address</h5>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+          <form id="addressForm">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" class="form-control" id="fullName" required>
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="text" class="form-control" id="phone" required>
+            </div>
+            <div class="form-group">
+              <label>Street Address</label>
+              <input type="text" class="form-control" id="street" required>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" id="city" required>
+            </div>
+            <div class="form-group">
+              <label>Landmark</label>
+              <input type="text" class="form-control" id="landmark" required>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" class="form-control" id="state" required>
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <input type="text" class="form-control" id="country" required>
+            </div>
+            <div class="form-group">
+              <label>Flat Number</label>
+              <input type="number" class="form-control" id="flatNumber" required>
+            </div>
+            <div class="form-group">
+              <label>Zip Code</label>
+              <input type="number" class="form-control" id="zipCode" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Save Address</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Address Modal -->
+  <div id="editAddressModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Address</h5>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+          <form id="editAddressForm">
+            <input type="hidden" id="editAddressId">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" class="form-control" id="editFullName" required>
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="text" class="form-control" id="editPhone" required>
+            </div>
+            <div class="form-group">
+              <label>Street Address</label>
+              <input type="text" class="form-control" id="editStreet" required>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" id="editCity" required>
+            </div>
+            <div class="form-group">
+              <label>Landmark</label>
+              <input type="text" class="form-control" id="editLandmark" required>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" class="form-control" id="editState" required>
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <input type="text" class="form-control" id="editCountry" required>
+            </div>
+            <div class="form-group">
+              <label>Flat Number</label>
+              <input type="number" class="form-control" id="editFlatNumber" required>
+            </div>
+            <div class="form-group">
+              <label>Zip Code</label>
+              <input type="number" class="form-control" id="editZipCode" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Update Address</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#addAddressBtn').click(function () {
+        $('#addAddressModal').modal('show');
+      });
+
+      $('#addressForm').submit(function (event) {
+        event.preventDefault();
+        const addressData = {
+          address: $('#street').val(),
+          name: $('#fullName').val(),
+          city: $('#city').val(),
+          state: $('#state').val(),
+          country: $('#country').val(),
+          landMark: $('#landmark').val(),
+          flatNumber: $('#flatNumber').val(),
+          pincode: $('#zipCode').val(),
+          phone: $('#phone').val()
+        };
+
+        // Send addressData to the server
+        console.log(addressData);
+        // Add your AJAX call here to save the address
+
+        $('#addAddressModal').modal('hide');
+        Swal.fire('Success', 'Address added successfully!', 'success');
+      });
+
+      $('#editAddressForm').submit(function (event) {
+        event.preventDefault();
+        const addressData = {
+          id: $('#editAddressId').val(),
+          address: $('#editStreet').val(),
+          name: $('#editFullName').val(),
+          city: $('#editCity').val(),
+          state: $('#editState').val(),
+          country: $('#editCountry').val(),
+          landMark: $('#editLandmark').val(),
+          flatNumber: $('#editFlatNumber').val(),
+          pincode: $('#editZipCode').val(),
+          phone: $('#editPhone').val()
+        };
+
+        // Send addressData to the server
+        console.log(addressData);
+        // Add your AJAX call here to update the address
+
+        $('#editAddressModal').modal('hide');
+        Swal.fire('Success', 'Address updated successfully!', 'success');
+      });
+    });
+  </script>
+</body>
+</html>

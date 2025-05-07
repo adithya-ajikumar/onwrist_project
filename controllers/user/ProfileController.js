@@ -237,6 +237,7 @@ const verifyOtp = async (req, res) => {
     }
 };
 
+
 module.exports = {
     getForgetPassword,
     forgotPassword,

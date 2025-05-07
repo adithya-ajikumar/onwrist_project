@@ -6,6 +6,9 @@ const shopController = require('../controllers/user/shopController');
 const multer = require('../middlewares/multer');
 const passport = require('passport');
 const ProfileController = require('../controllers/user/ProfileController');
+const AddressController = require('../controllers/user/addressController');
+
+
 
 router.get("/", blockCheck,userController.loadHome);
 router.get("/signup", userController.loadSignup);
@@ -18,7 +21,6 @@ router.get("/userprofile",ProfileController.userprofile)
 router.post("/change-password",ProfileController.changepasswordotp)
 router.post('/verify-otp',ProfileController.verifyOtp);
 router.post('/reset-password', ProfileController.resetPassword);
-
 
 
 // Auth routes
@@ -71,8 +73,8 @@ router.get('/google/callback', (req, res, next) => {
     )(req, res, next);
 }
 );
-
-
+////addressmangment
+router.get('/myaddress', AddressController.loadAddress);   
 
 
 module.exports = router;
