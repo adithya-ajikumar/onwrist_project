@@ -77,5 +77,6 @@ router.get('/google/callback', (req, res, next) => {
 router.get('/myaddress', AddressController.loadAddress);   
 router.post('/add-address', AddressController.addAddress);
 router.post('/edit-address', AddressController.editAddress);
+router.post('/delete-address', AddressController.deleteAddress);
 
 module.exports = router;

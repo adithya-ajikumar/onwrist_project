@@ -454,6 +454,45 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to delete an address
+        window.deleteAddress = async (addressId) => {
+            const confirmation = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
+            if (confirmation.isConfirmed) {
+                try {
+                    const response = await fetch('/delete-address', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ addressId })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        Swal.fire('Deleted!', result.message, 'success');
+                        location.reload(); // Optionally reload the page or update the address list dynamically
+                    } else {
+                        Swal.fire('Error', result.message || 'Failed to delete address', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'An unexpected error occurred. Please try again.', 'error');
+                }
+            }
+        };
+    });
   </script>
 </body>
 </html>

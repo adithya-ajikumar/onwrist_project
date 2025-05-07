@@ -92,8 +92,37 @@ const editAddress = async (req, res) => {
     }
 };
 
+const deleteAddress = async (req, res) => {
+    try {
+        const userId = req.session.user._id;
+        const { addressId } = req.body;
+
+        const userAddress = await Address.findOne({ userId });
+        if (!userAddress) {
+            return res.status(404).json({ success: false, message: "Address not found" });
+        }
+
+        // Find the index of the address to delete
+        const addressIndex = userAddress.address.findIndex(addr => addr._id.toString() === addressId);
+        if (addressIndex === -1) {
+            return res.status(404).json({ success: false, message: "Address not found" });
+        }
+
+        // Use splice to remove the address
+        userAddress.address.splice(addressIndex, 1);
+
+        await userAddress.save();
+
+        res.status(200).json({ success: true, message: "Address deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting address:", error);
+        res.status(500).json({ success: false, message: "Failed to delete address" });
+    }
+};
+
 module.exports = { 
     loadAddress,
     addAddress,
-    editAddress
+    editAddress,
+    deleteAddress
 };
