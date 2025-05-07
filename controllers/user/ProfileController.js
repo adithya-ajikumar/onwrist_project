@@ -63,6 +63,7 @@ async function sendResetPasswordOTP(email, otp) {
 
         await transporter.sendMail(mailOptions);
         console.log("Password reset OTP sent to:", email);
+
         return true;
     } catch (error) {
         console.error("Error sending password reset OTP:", error);
@@ -71,6 +72,7 @@ async function sendResetPasswordOTP(email, otp) {
 }
 
 function generateOtp() {
+    
     return Math.floor(100000 + Math.random() * 900000).toString(); 
 }
 
@@ -78,6 +80,7 @@ const otpVerify = async (req, res) => {
     try {
         const { otp } = req.body;
         console.log("OTP verification request:", req.body);
+       
         if (otp === req.session.otp) {
             res.json({ success: true, message: 'OTP verified successfully' });
         } else {

@@ -131,6 +131,7 @@
           <div id="new-password-section" style="display: none;">
             <p>Enter your new password.</p>
             <input type="password" id="new-password" class="form-control mb-3" placeholder="New Password">
+            <div id="password-strength-message" class="mb-3"></div>
             <input type="password" id="confirm-password" class="form-control mb-3" placeholder="Confirm Password">
             <button class="btn btn-primary" id="change-password-submit-btn">Change Password</button>
           </div>
@@ -226,6 +227,41 @@
       const verifyOtpBtn = document.getElementById('verify-otp-btn');
       const otpSection = document.getElementById('otp-section');
       const newPasswordSection = document.getElementById('new-password-section');
+      const newPasswordInput = document.getElementById('new-password');
+      const passwordStrengthMessage = document.getElementById('password-strength-message');
+
+      // Mock function to simulate password strength check
+      async function checkPasswordStrength(password) {
+        // Simulate a network request delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Mock response based on password length and complexity
+        if (password.length < 8) {
+          return { strength: 'weak', message: 'Password is too short.' };
+        } else if (password.length >= 8 && password.length < 12) {
+          return { strength: 'medium', message: 'Password strength is medium.' };
+        } else {
+          return { strength: 'strong', message: 'Password strength is strong.' };
+        }
+      }
+
+      // Handle password input
+      newPasswordInput.addEventListener('input', async function () {
+        const password = newPasswordInput.value;
+        const strengthCheck = await checkPasswordStrength(password);
+
+        // Display strength message using SweetAlert
+        Swal.fire({
+          icon: strengthCheck.strength === 'strong' ? 'success' : (strengthCheck.strength === 'medium' ? 'warning' : 'error'),
+          title: 'Password Strength',
+          text: strengthCheck.message,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      });
 
       // Handle OTP request
       document.getElementById('change-password-btn').addEventListener('click', async function () {
