@@ -61,7 +61,6 @@ const addAddress = async (req, res) => {
 const editAddress = async (req, res) => {
     try {
         const userId = req.session.user._id;
-        console.log("User ID:", userId);
         const { addressId, address, name, city, state, country, landMark, flatNumber, pincode, phone } = req.body;
 
         const userAddress = await Address.findOne({ userId });

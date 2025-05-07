@@ -396,10 +396,8 @@
 
         // Show the edit modal with pre-filled data
         window.editAddress = (addressId) => {
-            // Find the address object by its ID
             const address = addresses.find(addr => addr._id === addressId);
             if (address) {
-                // Populate the modal fields with the existing address details
                 document.getElementById('editAddressId').value = addressId;
                 document.getElementById('editFullName').value = address.name;
                 document.getElementById('editPhone').value = address.phone;
@@ -411,7 +409,6 @@
                 document.getElementById('editFlatNumber').value = address.flatNumber;
                 document.getElementById('editZipCode').value = address.pincode;
 
-                // Show the edit modal
                 $('#editAddressModal').modal('show');
             }
         };
@@ -435,7 +432,7 @@
 
             try {
                 const response = await fetch('/edit-address', {
-                    method: 'POST', // Changed to POST
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -447,8 +444,7 @@
                 if (response.ok && result.success) {
                     Swal.fire('Success', result.message, 'success');
                     $('#editAddressModal').modal('hide');
-                    // Optionally reload the page or update the address list dynamically
-                    location.reload();
+                    location.reload(); // Optionally reload the page or update the address list dynamically
                 } else {
                     Swal.fire('Error', result.message || 'Failed to edit address', 'error');
                 }
@@ -456,10 +452,8 @@
                 console.error('Error:', error);
                 Swal.fire('Error', 'An unexpected error occurred. Please try again.', 'error');
             }
-        }
-      )
+        });
     });
   </script>
 </body>
 </html>
-``` 
