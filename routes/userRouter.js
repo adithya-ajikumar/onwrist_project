@@ -13,9 +13,12 @@ router.get("/login", userController.loadLogin);
 router.post("/login", userController.signin);
 // router.post("/logout", userController.logout);
 router.get("/pagenotfound", userController.loadPagenotfound);
-router.get ("/forgetpassword",ProfileController.getForgetPassword);
+router.get("/forgetpassword",ProfileController.getForgetPassword)
 router.get("/userprofile",ProfileController.userprofile)
-router.get("/changepassword",ProfileController.changepassword)
+router.post("/change-password",ProfileController.changepasswordotp)
+router.post('/verify-otp',ProfileController.verifyOtp);
+router.post('/reset-password', ProfileController.resetPassword);
+
 
 
 // Auth routes
@@ -33,7 +36,8 @@ router.post('/resendOtp', ProfileController.resendOtp);
 router.post('/update-password', ProfileController.resetPassword);
 
 // router.post('/reset-password', ProfileController.resetPassword);
-
+///profile
+router.post('/edit-profile',ProfileController.editprofile);
 
 
 router.get("/shop", shopController.getShopPage);

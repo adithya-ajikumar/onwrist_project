@@ -177,25 +177,24 @@ const loadVerifyOtp = async (req, res) => {
 const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log("Sign in request:", req.body);
-
+        console.log("Login data:", req.body);
+     
         const user = await User.findOne({ email });
+        console.log("User found:", user);
         if (!user) {
-            res.json({ message: 'User not found' });
-            return res.redirect('/signup');
+            return res.json({ success: false, message: 'User not found' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            res.json({ message: 'Invalid credentials' });
-            return res.redirect('/login');
+            return res.json({ success: false, message: 'Invalid credentials' });
         }
 
         req.session.user = user;
-        return res.redirect('/');
+        res.json({ success: true, redirectUrl: '/', message: 'Login successful' });
     } catch (error) {
         console.error('Error in sign in:', error);
-        return res.status(500).send('Server error');
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
 
@@ -220,4 +219,3 @@ module.exports = {
     loadForgotPassword,
 };
 
-  

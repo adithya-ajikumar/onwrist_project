@@ -3,141 +3,349 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .main-content {
+      padding: 20px;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .profile-header .profile-img-container {
+      margin-right: 20px;
+    }
+    .profile-info {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .info-item {
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
-  <div class="flex h-screen">
+<body class=".container-fluid">
+
+  <div class="d-flex vh-100">
     <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 text-white">
-      <div class="p-6 text-xl font-bold">Account</div>
-
-      <nav class="mt-6">
-        <!-- Profile -->
-        <div class="flex items-center px-6 py-3 cursor-pointer bg-gray-700 hover:bg-gray-700 transition-colors">
-          <div class="mr-3"><i class="fas fa-user"></i></div>
-          <span>Profile</span>
-        </div>
-
-        <!-- My Address -->
-        <div class="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-700 transition-colors">
-          <div class="mr-3"><i class="fas fa-map-marker-alt"></i></div>
-          <span>My Address</span>
-        </div>
-
-        <!-- My Orders -->
-        <div class="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-700 transition-colors">
-          <div class="mr-3"><i class="fas fa-file-alt"></i></div>
-          <span>My Orders</span>
-        </div>
-
-        <!-- My Wallet -->
-        <div class="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-700 transition-colors">
-          <div class="mr-3"><i class="fas fa-wallet"></i></div>
-          <span>My Wallet</span>
-        </div>
-
-        <!-- Settings -->
-        <div class="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-700 transition-colors">
-          <div class="mr-3"><i class="fas fa-cog"></i></div>
-          <span>Settings</span>
-        </div>
-
-        <!-- Logout - positioned at the bottom -->
-        <div class="mt-auto pt-20">
-          <div class="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-700 transition-colors text-red-400">
-            <div class="mr-3"><i class="fas fa-sign-out-alt"></i></div>
-            <span>Logout</span>
-          </div>
-        </div>
-      </nav>
+    <div class="bg-dark text-white p-4 " >
+      <h4 class="mb-4">Account</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Profile</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-white">My Address</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-white">My Orders</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-white">My Wallet</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Settings</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link text-danger">Logout</a></li>
+      </ul>
     </div>
 
-    <!-- Main content -->
-    <div class="flex-1 overflow-y-auto">
-      <header class="bg-white shadow">
-        <div class="p-4 flex items-center justify-end">
-          <div class="flex items-center space-x-2">
-            <span>Sign in</span>
-            <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+    <!-- Main Content -->
+    <div class="flex-grow-1 main-content">
+      <div class="container-fluid p-3">
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="profile-img-container text-center">
+            <img src="/Uploads/Profile-photos/cool-profile-pictures-for-tiktok-5-678x1024.webp" alt="Profile Picture" class="profile-img">
           </div>
-        </div>
-      </header>
-
-      <main class="p-6">
-        <!-- Profile Section -->
-        <div class="bg-white p-6 rounded-md shadow-sm mb-6">
-          <div class="flex items-center space-x-4">
-            <img
-              src="<%= user.profilePicture || '/images/default-avatar.png' %>"
-              alt="Profile Picture"
-              class="w-16 h-16 rounded-full object-cover"
-            />
-            <div>
-              <h1 class="text-2xl font-bold"><%= user.name %></h1>
-              <button
-                class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md flex items-center"
-              >
-                <i class="fas fa-user mr-2"></i> Edit Profile
-              </button>
-              <button
-                class="mt-2 bg-green-500 text-white px-4 py-2 rounded-md flex items-center"
-              >
-                <i class="fas fa-key mr-2"></i><a href="changepassword.ejs"></a> Change Password
-              </button>
-            </div>
+          <div class="d-flex flex-column">
+            <h2 id="display-name"><%= user.name || "Not provided" %></h2>
+            <button id="edit-profile-btn" class="btn btn-primary edit-btn align-self-start mt-2">
+              <i class="fas fa-edit me-2"></i> Edit Profile
+            </button>
           </div>
         </div>
 
-        <!-- Personal Information -->
-        <div class="bg-white p-6 rounded-md shadow-sm">
-          <h2 class="text-xl font-semibold mb-6">Personal Information</h2>
-
-          <div class="space-y-6">
-            <!-- Email -->
-            <div class="flex items-start space-x-3">
-              <i class="fas fa-envelope h-6 w-6 text-blue-500 mt-1"></i>
+        <!-- Profile Info -->
+        <div class="profile-info">
+          <h4>Personal Information</h4>
+          <div id="info-display">
+            <div class="info-item d-flex align-items-center">
+              <i class="fas fa-envelope text-primary me-3 fa-fw"></i>
               <div>
-                <p class="text-gray-500">Email</p>
-                <p><%= user.email %></p>
+                <small class="text-muted d-block">Email</small>
+                <div id="display-email"><%= user.email || "Not provided" %></div>
               </div>
             </div>
-
-            <!-- Phone -->
-            <div class="flex items-start space-x-3">
-              <i class="fas fa-phone h-6 w-6 text-blue-500 mt-1"></i>
+            <div class="info-item d-flex align-items-center">
+              <i class="fas fa-phone text-primary me-3 fa-fw"></i>
               <div>
-                <p class="text-gray-500">Phone</p>
-                <p><%= user.phone %></p>
+                <small class="text-muted d-block">Phone</small>
+                <div id="display-phone"><%= user.phone || "Not provided" %></div>
               </div>
             </div>
+            <button id="change-password-btn" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+              Change Password
+            </button>
           </div>
+
+          <!-- Edit Form (Hidden by default) -->
+          <form id="edit-form" class="p-3 border-top mt-3" style="display: none;">
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= user.name %>">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>">
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" name="phone" value="<%= user.phone %>">
+            </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <button type="button" id="cancel-edit" class="btn btn-outline-secondary">Cancel</button>
+            </div>
+          </form>
         </div>
-      </main>
+      </div>
     </div>
   </div>
 
-  <script>
-    // Any client-side JavaScript can go here
-    document.addEventListener('DOMContentLoaded', function() {
-      // For example, handle the Edit Profile button click
-      const editProfileBtn = document.querySelector('button');
-      if (editProfileBtn) {
-        editProfileBtn.addEventListener('click', function() {
-          window.location.href = '/profile/edit';
-        });
-      }
+  <!-- Change Password Modal -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="otp-section">
+            <p>Enter the OTP sent to your email/phone.</p>
+            <input type="text" id="otp" class="form-control mb-3" placeholder="Enter OTP">
+            <button class="btn btn-primary" id="verify-otp-btn">Verify OTP</button>
+          </div>
+          <div id="new-password-section" style="display: none;">
+            <p>Enter your new password.</p>
+            <input type="password" id="new-password" class="form-control mb-3" placeholder="New Password">
+            <input type="password" id="confirm-password" class="form-control mb-3" placeholder="Confirm Password">
+            <button class="btn btn-primary" id="change-password-submit-btn">Change Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      // Handle the Change Password button click
-      const changePasswordBtn = document.querySelectorAll('button')[1];
-      if (changePasswordBtn) {
-        changePasswordBtn.addEventListener('click', function() {
-          window.location.href = '/profile/change-password';
-        });
-      }
+  <!-- Bootstrap & JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get elements
+      const editBtn = document.getElementById('edit-profile-btn');
+      const cancelBtn = document.getElementById('cancel-edit');
+      const infoDisplay = document.getElementById('info-display');
+      const editForm = document.getElementById('edit-form');
+      const form = document.getElementById('edit-form');
+
+      // Handle edit button click
+      editBtn.addEventListener('click', function() {
+        infoDisplay.style.display = 'none';
+        editForm.style.display = 'block';
+        editBtn.style.display = 'none';
+      });
+
+      // Handle cancel button click
+      cancelBtn.addEventListener('click', function() {
+        infoDisplay.style.display = 'block';
+        editForm.style.display = 'none';
+        editBtn.style.display = 'inline-block';
+      });
+
+      // Handle form submission
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+
+        try {
+          const response = await fetch('/edit-profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, phone })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Update display values
+            document.getElementById('display-name').textContent = data.user.name;
+            document.getElementById('display-email').textContent = data.user.email;
+            document.getElementById('display-phone').textContent = data.user.phone;
+
+            // Show info display, hide form
+            infoDisplay.style.display = 'block';
+            editForm.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+
+            // Show success message
+            Swal.fire({
+              icon: 'success',
+              title: 'Profile Updated',
+              text: data.message
+            });
+          } else {
+            // Show error message
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.message
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text:'An error occurred while updating your profile.'
+          });
+        }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const changePasswordSubmitBtn = document.getElementById('change-password-submit-btn');
+      const verifyOtpBtn = document.getElementById('verify-otp-btn');
+      const otpSection = document.getElementById('otp-section');
+      const newPasswordSection = document.getElementById('new-password-section');
+
+      // Handle OTP request
+      document.getElementById('change-password-btn').addEventListener('click', async function () {
+        try {
+          const email = document.getElementById('display-email').textContent.trim();
+
+          const response = await fetch('/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await response.json();
+          console.log(data);
+
+          if (data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'OTP Sent',
+              text: data.message,
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while requesting OTP.',
+          });
+        }
+      });
+
+      // Handle OTP verification
+      verifyOtpBtn.addEventListener('click', async function () {
+        const otp = document.getElementById('otp').value;
+
+        try {
+          const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ otp }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            otpSection.style.display = 'none';
+            newPasswordSection.style.display = 'block';
+            Swal.fire({
+              icon: 'success',
+              title: 'OTP Verified',
+              text: data.message,
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while verifying OTP.',
+          });
+        }
+      });
+
+      // Handle password change
+      changePasswordSubmitBtn.addEventListener('click', async function () {
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (newPassword !== confirmPassword) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Passwords do not match.',
+          });
+          return;
+        }
+
+        try {
+          const response = await fetch('/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: newPassword, confirmPassword }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: data.message,
+            });
+            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+            modal.hide();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while changing the password.',
+          });
+        }
+      });
     });
   </script>
 </body>
