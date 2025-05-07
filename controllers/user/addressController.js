@@ -29,12 +29,13 @@ const addAddress = async (req, res) => {
 
         console.log("User ID:", userId);
         const { address, name, city, state, country, landMark, flatNumber, pincode, phone } = req.body;
-        console.log("User session:", userId);
-        console.log("Address data:", req.body);
 
-        const newAddress = new Address({
-            userId,
-            address: [{
+        // Find the user's address document
+        const userAddress = await Address.findOne({ userId });
+
+        if (userAddress) {
+            // If the user already has an address document, push the new address into the array
+            userAddress.address.push({
                 address,
                 name,
                 city,
@@ -44,13 +45,30 @@ const addAddress = async (req, res) => {
                 flatNumber,
                 pincode,
                 phone
-            }]
-        });
+            });
 
-        console.log("New address:", newAddress);
+            await userAddress.save();
+            res.status(200).json({ success: true, message: "Address added successfully" });
+        } else {
+            // If no address document exists, create a new one
+            const newAddress = new Address({
+                userId,
+                address: [{
+                    address,
+                    name,
+                    city,
+                    state,
+                    country,
+                    landMark,
+                    flatNumber,
+                    pincode,
+                    phone
+                }]
+            });
 
-        await newAddress.save();
-        res.status(200).json({ success: true, message: "Address added successfully" });
+            await newAddress.save();
+            res.status(200).json({ success: true, message: "Address added successfully" });
+        }
     } catch (error) {
         console.error("Error adding address:", error);
         res.status(500).json({ success: false, message: "Failed to add address" });
