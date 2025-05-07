@@ -5,16 +5,20 @@ const loadAddress = async (req, res) => {
     try {
         const userId = req.session.user._id;
         console.log("User session:", userId);
+
+        // Fetch the user's addresses
         const addresses = await Address.findOne({ userId }).populate('userId', 'name email phone');
-        const user= await User.findById(userId);
+        const user = await User.findById(userId);
+
         console.log("Addresses:", addresses);
-        res.render('myaddress', { user, addresses });
+
+        // Pass the user and addresses to the view
+        res.render('myaddress', { user, addresses: addresses ? addresses.address : [] });
     } catch (error) {
         console.error("Error loading address:", error);
         res.redirect('/pagenotfound');
     }
-}
-
+};
 
 
 const addAddress = async (req, res) => {

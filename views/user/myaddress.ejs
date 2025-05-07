@@ -204,7 +204,27 @@
         </button>
 
         <div class="address-grid">
-          <!-- Address Cards will be dynamically inserted here -->
+          <% if (addresses && addresses.length > 0) { %>
+            <% addresses.forEach((address) => { %>
+              <div class="card">
+                <p><strong>Name:</strong> <%= address.name %></p>
+                <p><strong>Phone:</strong> <%= address.phone %></p>
+                <p><strong>Address:</strong> <%= address.address %></p>
+                <p><strong>City:</strong> <%= address.city %></p>
+                <p><strong>State:</strong> <%= address.state %></p>
+                <p><strong>Country:</strong> <%= address.country %></p>
+                <p><strong>Landmark:</strong> <%= address.landMark %></p>
+                <p><strong>Flat Number:</strong> <%= address.flatNumber %></p>
+                <p><strong>Zip Code:</strong> <%= address.pincode %></p>
+                <div class="card-buttons">
+                  <button class="btn btn-edit" onclick="editAddress('<%= address._id %>')">Edit</button>
+                  <button class="btn btn-delete" onclick="deleteAddress('<%= address._id %>')">Delete</button>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <p>No addresses found. Please add a new address.</p>
+          <% } %>
         </div>
       </div>
     </div>
