@@ -389,6 +389,77 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const editAddressForm = document.getElementById('editAddressForm');
+        const addresses = <%- JSON.stringify(addresses) %>;
+
+        // Show the edit modal with pre-filled data
+        window.editAddress = (addressId) => {
+            // Find the address object by its ID
+            const address = addresses.find(addr => addr._id === addressId);
+            if (address) {
+                // Populate the modal fields with the existing address details
+                document.getElementById('editAddressId').value = addressId;
+                document.getElementById('editFullName').value = address.name;
+                document.getElementById('editPhone').value = address.phone;
+                document.getElementById('editStreet').value = address.address;
+                document.getElementById('editCity').value = address.city;
+                document.getElementById('editState').value = address.state;
+                document.getElementById('editCountry').value = address.country;
+                document.getElementById('editLandmark').value = address.landMark;
+                document.getElementById('editFlatNumber').value = address.flatNumber;
+                document.getElementById('editZipCode').value = address.pincode;
+
+                // Show the edit modal
+                $('#editAddressModal').modal('show');
+            }
+        };
+
+        // Handle edit form submission
+        editAddressForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const addressData = {
+                addressId: document.getElementById('editAddressId').value,
+                name: document.getElementById('editFullName').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editStreet').value,
+                city: document.getElementById('editCity').value,
+                state: document.getElementById('editState').value,
+                country: document.getElementById('editCountry').value,
+                landMark: document.getElementById('editLandmark').value,
+                flatNumber: document.getElementById('editFlatNumber').value,
+                pincode: document.getElementById('editZipCode').value
+            };
+
+            try {
+                const response = await fetch('/edit-address', {
+                    method: 'POST', // Changed to POST
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addressData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    Swal.fire('Success', result.message, 'success');
+                    $('#editAddressModal').modal('hide');
+                    // Optionally reload the page or update the address list dynamically
+                    location.reload();
+                } else {
+                    Swal.fire('Error', result.message || 'Failed to edit address', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire('Error', 'An unexpected error occurred. Please try again.', 'error');
+            }
+        }
+      )
+    });
   </script>
 </body>
 </html>
+``` 

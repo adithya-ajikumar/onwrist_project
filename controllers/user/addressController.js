@@ -58,7 +58,43 @@ const addAddress = async (req, res) => {
 };
 
 
+const editAddress = async (req, res) => {
+    try {
+        const userId = req.session.user._id;
+        console.log("User ID:", userId);
+        const { addressId, address, name, city, state, country, landMark, flatNumber, pincode, phone } = req.body;
+
+        const userAddress = await Address.findOne({ userId });
+        if (!userAddress) {
+            return res.status(404).json({ success: false, message: "Address not found" });
+        }
+
+        const addressToEdit = userAddress.address.id(addressId);
+        if (!addressToEdit) {
+            return res.status(404).json({ success: false, message: "Address not found" });
+        }
+
+        // Update the address fields
+        addressToEdit.address = address;
+        addressToEdit.name = name;
+        addressToEdit.city = city;
+        addressToEdit.state = state;
+        addressToEdit.country = country;
+        addressToEdit.landMark = landMark;
+        addressToEdit.flatNumber = flatNumber;
+        addressToEdit.pincode = pincode;
+        addressToEdit.phone = phone;
+
+        await userAddress.save();
+        res.status(200).json({ success: true, message: "Address updated successfully" });
+    } catch (error) {
+        console.error("Error editing address:", error);
+        res.status(500).json({ success: false, message: "Failed to edit address" });
+    }
+};
+
 module.exports = { 
     loadAddress,
-    addAddress
- }
+    addAddress,
+    editAddress
+};
