@@ -14,6 +14,47 @@ const loadAddress = async (req, res) => {
         res.redirect('/pagenotfound');
     }
 }
+
+
+
+const addAddress = async (req, res) => {
+    try {
+        console.log("Adding address...");
+        console.log("Request body:", req.body);
+        const userId = req.session.user._id;
+
+        console.log("User ID:", userId);
+        const { address, name, city, state, country, landMark, flatNumber, pincode, phone } = req.body;
+        console.log("User session:", userId);
+        console.log("Address data:", req.body);
+
+        const newAddress = new Address({
+            userId,
+            address: [{
+                address,
+                name,
+                city,
+                state,
+                country,
+                landMark,
+                flatNumber,
+                pincode,
+                phone
+            }]
+        });
+
+        console.log("New address:", newAddress);
+
+        await newAddress.save();
+        res.status(200).json({ success: true, message: "Address added successfully" });
+    } catch (error) {
+        console.error("Error adding address:", error);
+        res.status(500).json({ success: false, message: "Failed to add address" });
+    }
+};
+
+
 module.exports = { 
-    loadAddress
+    loadAddress,
+    addAddress
  }

@@ -75,6 +75,6 @@ router.get('/google/callback', (req, res, next) => {
 );
 ////addressmangment
 router.get('/myaddress', AddressController.loadAddress);   
-
+router.post('/add-address', AddressController.addAddress);
 
 module.exports = router;

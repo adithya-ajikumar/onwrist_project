@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -319,55 +319,55 @@
 
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('#addAddressBtn').click(function () {
-        $('#addAddressModal').modal('show');
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+        const addAddressBtn = document.getElementById('addAddressBtn');
+        const addressForm = document.getElementById('addressForm');
 
-      $('#addressForm').submit(function (event) {
-        event.preventDefault();
-        const addressData = {
-          address: $('#street').val(),
-          name: $('#fullName').val(),
-          city: $('#city').val(),
-          state: $('#state').val(),
-          country: $('#country').val(),
-          landMark: $('#landmark').val(),
-          flatNumber: $('#flatNumber').val(),
-          pincode: $('#zipCode').val(),
-          phone: $('#phone').val()
-        };
+        // Show the modal when the "Add Address" button is clicked
+        addAddressBtn.addEventListener('click', () => {
+            $('#addAddressModal').modal('show');
+        });
 
-        // Send addressData to the server
-        console.log(addressData);
-        // Add your AJAX call here to save the address
+        // Handle form submission
+        addressForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-        $('#addAddressModal').modal('hide');
-        Swal.fire('Success', 'Address added successfully!', 'success');
-      });
+            const addressData = {
+                address: document.getElementById('street').value,
+                name: document.getElementById('fullName').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                country: document.getElementById('country').value,
+                landMark: document.getElementById('landmark').value,
+                flatNumber: document.getElementById('flatNumber').value,
+                pincode: document.getElementById('zipCode').value,
+                phone: document.getElementById('phone').value
+            };
 
-      $('#editAddressForm').submit(function (event) {
-        event.preventDefault();
-        const addressData = {
-          id: $('#editAddressId').val(),
-          address: $('#editStreet').val(),
-          name: $('#editFullName').val(),
-          city: $('#editCity').val(),
-          state: $('#editState').val(),
-          country: $('#editCountry').val(),
-          landMark: $('#editLandmark').val(),
-          flatNumber: $('#editFlatNumber').val(),
-          pincode: $('#editZipCode').val(),
-          phone: $('#editPhone').val()
-        };
+            try {
+                const response = await fetch('/add-address', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addressData)
+                });
 
-        // Send addressData to the server
-        console.log(addressData);
-        // Add your AJAX call here to update the address
+                const result = await response.json();
 
-        $('#editAddressModal').modal('hide');
-        Swal.fire('Success', 'Address updated successfully!', 'success');
-      });
+                if (response.ok && result.success) {
+                    Swal.fire('Success', result.message, 'success');
+                    $('#addAddressModal').modal('hide');
+                    // Optionally reload the page or update the address list dynamically
+                    location.reload();
+                } else {
+                    Swal.fire('Error', result.message || 'Failed to add address', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire('Error', 'An unexpected error occurred. Please try again.', 'error');
+            }
+        });
     });
   </script>
 </body>
