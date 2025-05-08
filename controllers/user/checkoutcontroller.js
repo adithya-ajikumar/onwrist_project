@@ -1,4 +1,4 @@
-const Product =require('../../models/productsSchema')
+const Product = require('../../models/productsSchema');
 const Cart = require('../../models/cart');
 const mongoose = require('mongoose');
 
@@ -7,43 +7,29 @@ const getcheckout = async (req, res) => {
     const userId = req.session.user._id;
 
     // Find the cart and populate product details
-    const cart = await Cart.findOne({ userId }).populate('items.productId');
-    if (!cart || cart.items.length === 0) {
-      return res.render('checkout', { 
-        cartItems: [], 
-        totalPrice: 0, 
-        shipping: 0, 
-        tax: 0, 
-        total: 0, 
-        pageTitle: 'Checkout', 
-        addresses: req.session.user.addresses || [] 
-      });
+    const cart = await Cart.findOne({ userId })
+    console.log("cart",cart)
+    if (!cart) {
+      return res.status(404).render('error', { message: 'Cart not found' });
     }
 
     // Map cart items to include necessary details
-    const cartItems = cart.items.map(item => ({
-      name: item.productId?.name || 'Unknown Product',
-      image: item.productId?.image || '/images/placeholder.jpg',
-      size: item.color || 'N/A',
-      quantity: item.quantity || 0,
-      price: item.productId?.price || 0
-    }));
+    
 
     // Calculate total price
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalPrice = cart.totalPrice
+    console.log('totalPrice', totalPrice)
 
-    // Set shipping and tax to zero
-    const shipping = 0;
-    const tax = 0;
-    const total = totalPrice + shipping + tax;
+    console.log('cartItems', cart.items);
+
+
+
 
     // Render the checkout page
     res.render('checkout', { 
-      cartItems, 
+      cartItems: cart.items,
       totalPrice, 
-      shipping, 
-      tax, 
-      total, 
+      total: totalPrice, 
       pageTitle: 'Checkout', 
       addresses: req.session.user.addresses || [] 
     });
@@ -52,7 +38,7 @@ const getcheckout = async (req, res) => {
     res.status(500).render('error', { message: 'Could not retrieve checkout at this time.' });
   }
 };
-  
-module.exports={
-    getcheckout
-}
+
+module.exports = {
+  getcheckout
+};

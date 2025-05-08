@@ -154,9 +154,9 @@
                         <img src="<%= item.image %>" alt="<%= item.name %>" class="item-image">
                         <div class="item-details">
                             <h3><%= item.name %></h3>
-                            <p>Size: <%= item.size %></p>
+                            <p>Color: <%= item.color %></p>
                             <p>Qty: <%= item.quantity %></p>
-                            <p class="price">₹<%= item.price %></p>
+                            <p class="price">₹<%= (item.price * item.quantity).toFixed(2) %></p>
                         </div>
                     </div>
                 <% }) %>
@@ -165,19 +165,29 @@
             <% } %>
 
             <div class="summary-row">
-                <span>Total</span>
+                <span>Subtotal</span>
                 <span>₹<%= totalPrice.toFixed(2) %></span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>₹ 0</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax</span>
+                <span>₹ 0</span>
+            </div>
+            <div class="total-row">
+                <span>Total</span>
+                <span>₹<%= total %></span>
             </div>
 
             <h2>Shipping Address</h2>
             <select id="addressSelect" class="address-select">
                 <% if (addresses && addresses.length > 0) { %>
-                    <% addresses.forEach(addressObj => { %>
-                        <% addressObj.address.forEach((address, index) => { %>
-                            <option value="<%= addressObj._id %>-<%= index %>">
-                                <%= address.name %>, <%= address.flatNumber %>, <%= address.address %>, <%= address.landMark %>, <%= address.city %>, <%= address.state %> - <%= address.pincode %>
-                            </option>
-                        <% }) %>
+                    <% addresses.forEach((addressObj, index) => { %>
+                        <option value="<%= addressObj._id %>-<%= index %>">
+                            <%= addressObj.name %>, <%= addressObj.flatNumber %>, <%= addressObj.address %>, <%= addressObj.landMark %>, <%= addressObj.city %>, <%= addressObj.state %> - <%= addressObj.pincode %>
+                        </option>
                     <% }) %>
                 <% } else { %>
                     <option value="">No addresses available</option>
@@ -190,15 +200,15 @@
             <h2>Order Summary</h2>
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>₹<%= totalPrice.toFixed(2) %></span>
+                <span>₹<%= totalPrice %></span>
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
-                <span>₹<%= shipping.toFixed(2) %></span>
+                <span>₹ 0</span>
             </div>
             <div class="summary-row">
                 <span>Tax</span>
-                <span>₹<%= tax.toFixed(2) %></span>
+                <span>₹ 0</span>
             </div>
             <div class="total-row">
                 <span>Total</span>
