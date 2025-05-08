@@ -227,9 +227,53 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function removeItem(productId) {
-    document.getElementById('removeProductId').value = productId;
-    document.getElementById('removeItemForm').submit();
+  async function removeItem(productId) {
+    const confirmation = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to remove this item from your cart?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, remove it!',
+    });
+
+    if (confirmation.isConfirmed) {
+      try {
+        const response = await fetch('/remove', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Removed!',
+            text: result.message,
+          }).then(() => {
+            location.reload(); // Reload the page to reflect changes
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: result.message || 'Could not remove the item.',
+          });
+        }
+      } catch (error) {
+        console.error('Error removing item:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An unexpected error occurred.',
+        });
+      }
+    }
   }
   
   async function updateQuantity(productId, newQuantity) {

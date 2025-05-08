@@ -93,35 +93,32 @@ exports.updateCartItem = async (req, res) => {
 exports.removeCartItem = async (req, res) => {
   try {
     const { productId } = req.body;
-    const userId = req.user ? req.user._id : '64a5e4e31b7d44ce5f8c1234'; // Example userId
-    
+    const userId = req.session.user._id;
+
     // Find the user's cart
     const cart = await Cart.findOne({ userId });
     if (!cart) {
-      req.flash('error', 'Cart not found');
-      return res.redirect('/cart');
+      return res.status(404).json({ message: 'Cart not found' });
     }
-    
+
     // Remove the item from the cart
-    cart.items = cart.items.filter(item => item.productId !== productId);
-    
-    // Recalculate total price
-    let totalPrice = 0;
-    for (const item of cart.items) {
-      totalPrice += item.price * item.quantity;
+    const itemIndex = cart.items.findIndex(item => item.productId === productId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Item not found in cart' });
     }
-    cart.totalPrice = totalPrice;
-    
+
+    cart.items.splice(itemIndex, 1);
+
+    // Recalculate total price
+    cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
     // Save the updated cart
     await cart.save();
-    
-    // Redirect back to cart
-    req.flash('success', 'Item removed from cart');
-    res.redirect('/cart');
+
+    res.status(200).json({ message: 'Item removed from cart successfully' });
   } catch (error) {
     console.error('Error removing cart item:', error);
-    req.flash('error', 'Could not remove cart item');
-    res.redirect('/cart');
+    res.status(500).json({ message: 'Could not remove item from cart' });
   }
 };
 
