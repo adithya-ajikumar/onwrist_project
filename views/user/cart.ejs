@@ -1,0 +1,225 @@
+<!-- views/cart.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+    }
+    .product-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+    .cart-empty {
+      text-align: center;
+      padding: 5rem 0;
+    }
+    .cart-empty i {
+      font-size: 4rem;
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+  <h1 class="mb-4">Shopping Cart</h1>
+  
+  <% if (!cart || !cart.items || cart.items.length === 0) { %>
+    <div class="cart-empty">
+      <i class="fas fa-shopping-cart"></i>
+      <h2>Your cart is empty</h2>
+      <p class="text-muted mb-4">Add items to your cart to see them here.</p>
+      <a href="/products" class="btn btn-primary">Continue Shopping</a>
+    </div>
+  <% } else { %>
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-header bg-white">
+            <h5 class="mb-0">Cart Items (<%= cart.items.length %>)</h5>
+          </div>
+          <div class="card-body">
+            <% cart.items.forEach(function(item) { %>
+              <div class="row mb-4 border-bottom pb-4">
+                <!-- Product Image -->
+                <div class="col-md-2 mb-3 mb-md-0">
+                  <img src="<%= item.image || '/images/placeholder.jpg' %>" alt="<%= item.productName || 'Product' %>" class="product-image rounded">
+                </div>
+                
+                <!-- Product Details -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <h5><%= item.productName || 'Product #' + item.productId %></h5>
+                  <% if (item.color !== undefined) { %>
+                    <p class="text-muted small">
+                      Color: 
+                      <% 
+                        const colorMap = {
+                          1: 'Blue',
+                          2: 'Black',
+                          3: 'Red',
+                          4: 'Green',
+                          5: 'White'
+                        };
+                        const colorName = colorMap[item.color] || 'Unknown';
+                      %>
+                      <%= colorName %>
+                    </p>
+                  <% } %>
+                  <p class="text-muted small">
+                    Added on: <%= new Date(item.createdAt).toLocaleDateString() %>
+                  </p>
+                  <form action="/cart/remove" method="POST" class="d-inline">
+                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash-alt"></i> Remove
+                    </button>
+                  </form>
+                </div>
+                
+                <!-- Price -->
+                <div class="col-md-2 mb-3 mb-md-0">
+                  <p class="fw-bold">Price</p>
+                  <p>$<%= item.price.toFixed(2) %></p>
+                </div>
+                
+                <!-- Quantity -->
+                <div class="col-md-2 mb-3 mb-md-0">
+                  <p class="fw-bold">Quantity</p>
+                  <form action="/cart/update" method="POST" class="d-flex align-items-center">
+                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                    <button type="button" class="btn btn-sm btn-outline-secondary decrease-qty">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control form-control-sm mx-2 quantity-input">
+                    <button type="button" class="btn btn-sm btn-outline-secondary increase-qty">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </form>
+                </div>
+                
+                <!-- Total -->
+                <div class="col-md-2 text-md-end">
+                  <p class="fw-bold">Total</p>
+                  <p class="fw-bold">$<%= (item.price * item.quantity).toFixed(2) %></p>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Summary -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <h5 class="mb-0">Order Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <span>Subtotal</span>
+              <span>$<%= cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2) %></span>
+            </div>
+            
+            <% if (cart.coupnId) { %>
+              <div class="d-flex justify-content-between mb-3 text-success">
+                <span>Discount</span>
+                <span>-$<%= (cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) - cart.totalPrice).toFixed(2) %></span>
+              </div>
+            <% } %>
+            
+            <div class="d-flex justify-content-between mb-3">
+              <span>Shipping</span>
+              <span>Calculated at checkout</span>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between mb-4">
+              <span class="fw-bold">Total</span>
+              <span class="fw-bold">$<%= cart.totalPrice.toFixed(2) %></span>
+            </div>
+            
+            <!-- Coupon -->
+            <% if (!cart.coupnId) { %>
+              <form action="/cart/apply-coupon" method="POST" class="mb-3">
+                <label for="couponCode" class="form-label">Apply Coupon</label>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter coupon code">
+                  <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fas fa-tag"></i> Apply
+                  </button>
+                </div>
+              </form>
+            <% } else { %>
+              <div class="alert alert-success d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="fw-bold">Coupon Applied</span>
+                  <% if (locals.couponCode) { %>
+                    <br><small><%= couponCode %></small>
+                  <% } %>
+                </div>
+                <form action="/cart/remove-coupon" method="POST">
+                  <button type="submit" class="btn btn-sm text-danger">Remove</button>
+                </form>
+              </div>
+            <% } %>
+            
+            <a href="/checkout" class="btn btn-primary w-100 mb-2">
+              Proceed to Checkout
+            </a>
+            <a href="/products" class="btn btn-outline-secondary w-100">
+              <i class="fas fa-shopping-cart"></i> Continue Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Increase quantity
+    $('.increase-qty').click(function() {
+      const input = $(this).siblings('input[name="quantity"]');
+      const currentVal = parseInt(input.val());
+      input.val(currentVal + 1);
+      $(this).closest('form').submit();
+    });
+    
+    // Decrease quantity
+    $('.decrease-qty').click(function() {
+      const input = $(this).siblings('input[name="quantity"]');
+      const currentVal = parseInt(input.val());
+      if (currentVal > 1) {
+        input.val(currentVal - 1);
+        $(this).closest('form').submit();
+      }
+    });
+    
+    // Auto-submit form when quantity changes manually
+    $('input[name="quantity"]').change(function() {
+      $(this).closest('form').submit();
+    });
+  });
+</script>
+
+</body>
+</html>

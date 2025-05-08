@@ -7,7 +7,8 @@ const CartItemSchema = new Schema({
     required: true
   },
   color: {
-    type: Number
+    type: String,
+    required: true
   },
   price: {
     type: Number,

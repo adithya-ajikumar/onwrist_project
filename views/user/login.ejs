@@ -541,7 +541,7 @@
                 </button>
 
                 <button class="icon-btn" id="mobile-cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
+                    <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
                     <span class="badge">2</span>
                 </button>
             </div>
@@ -601,39 +601,6 @@
 
         <div class="dropdown-footer">
             <a href="#" class="dropdown-link">View Wishlist</a>
-        </div>
-    </div>
-
-    <!-- Cart Dropdown -->
-    <div class="dropdown" id="cart-dropdown">
-        <div class="dropdown-header">
-            <h3>Shopping Cart (2)</h3>
-        </div>
-
-        <div class="dropdown-item">
-            <div class="dropdown-item-img"></div>
-            <div class="dropdown-item-info">
-                <div class="dropdown-item-name">Rolex Datejust</div>
-                <div class="dropdown-item-price">₹8,995</div>
-            </div>
-            <button class="dropdown-item-remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <div class="dropdown-item">
-            <div class="dropdown-item-img"></div>
-            <div class="dropdown-item-info">
-                <div class="dropdown-item-name">Breitling Navitimer</div>
-                <div class="dropdown-item-price">$7,250</div>
-            </div>
-            <button class="dropdown-item-remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <div class="dropdown-footer">
-            <a href="#" class="dropdown-link">Checkout</a>
         </div>
     </div>
 
@@ -699,7 +666,7 @@
         if (closeMenuBtn) {
             closeMenuBtn.addEventListener('click', closeMenu);
         }
-        
+
         overlay.addEventListener('click', closeMenu);
 
         function closeMenu() {
@@ -716,34 +683,29 @@
         wishlistBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             wishlistDropdown.classList.toggle('active');
-            cartDropdown.classList.remove('active');
         });
 
         if (mobileWishlistBtn) {
             mobileWishlistBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 wishlistDropdown.classList.toggle('active');
-                cartDropdown.classList.remove('active');
                 closeMenu();
             });
         }
 
-        // Cart dropdown toggle
+        // Cart button redirect
         const cartBtn = document.getElementById('cart-btn');
         const mobileCartBtn = document.getElementById('mobile-cart-btn');
-        const cartDropdown = document.getElementById('cart-dropdown');
 
         cartBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            cartDropdown.classList.toggle('active');
-            wishlistDropdown.classList.remove('active');
+            e.preventDefault();
+            window.location.href = '/cart'; // Redirect to the cart page
         });
 
         if (mobileCartBtn) {
             mobileCartBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                cartDropdown.classList.toggle('active');
-                wishlistDropdown.classList.remove('active');
+                e.preventDefault();
+                window.location.href = '/cart'; // Redirect to the cart page
                 closeMenu();
             });
         }
@@ -751,15 +713,10 @@
         // Close dropdowns when clicking outside
         document.addEventListener('click', () => {
             wishlistDropdown.classList.remove('active');
-            cartDropdown.classList.remove('active');
         });
 
         // Prevent dropdown closing when clicking inside it
         wishlistDropdown.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-
-        cartDropdown.addEventListener('click', (e) => {
             e.stopPropagation();
         });
 
@@ -779,12 +736,6 @@
                 if (dropdown.id === 'wishlist-dropdown') {
                     headerText.textContent = `My Wishlist (${remainingItems})`;
                     document.querySelectorAll('.fa-heart').forEach(icon => {
-                        const badge = icon.closest('.icon-btn').querySelector('.badge');
-                        if (badge) badge.textContent = remainingItems;
-                    });
-                } else {
-                    headerText.textContent = `Shopping Cart (${remainingItems})`;
-                    document.querySelectorAll('.fa-shopping-cart').forEach(icon => {
                         const badge = icon.closest('.icon-btn').querySelector('.badge');
                         if (badge) badge.textContent = remainingItems;
                     });

@@ -7,7 +7,7 @@ const multer = require('../middlewares/multer');
 const passport = require('passport');
 const ProfileController = require('../controllers/user/ProfileController');
 const AddressController = require('../controllers/user/addressController');
-
+const cartcontroller=require('../controllers/user/cartcontroller')
 
 
 router.get("/", blockCheck,userController.loadHome);
@@ -78,5 +78,37 @@ router.get('/myaddress', AddressController.loadAddress);
 router.post('/add-address', AddressController.addAddress);
 router.post('/edit-address', AddressController.editAddress);
 router.post('/delete-address', AddressController.deleteAddress);
+
+
+  //cart managment 
+  router.get('/cart',isLogin, cartcontroller.getCart);
+  router.post('/add', cartcontroller.addToCart);
+  router.post('/update', cartcontroller.updateCartItem);
+  router.post('/remove',  cartcontroller.removeCartItem);
+  router.post('/clear',cartcontroller.clearCart);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

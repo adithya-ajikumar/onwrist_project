@@ -402,6 +402,25 @@
             padding: 0 8px;
             color: var(--amazon-orange);
         }
+
+        .color-btn {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .color-btn.selected {
+            border: 3px solid #FF9900; /* Highlight selected color */
+            transform: scale(1.2);
+        }
+
+        .color-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
     </style>
 </head>
 
@@ -492,10 +511,13 @@
                         <h3>Select Color</h3>
                         <div class="color-buttons">
                             <% Object.keys(product.colorStock).forEach(color => { %>
-                                <button class="color-btn <%= product.colorStock[color] > 0 ? '' : 'disabled' %>"
-                                        onclick="selectColor('<%= color %>')"
-                                        <%= product.colorStock[color] > 0 ? '' : 'disabled' %>>
-                                    <%= color.charAt(0).toUpperCase() + color.slice(1) %>
+                                <button 
+                                    class="color-btn <%= product.colorStock[color] > 0 ? '' : 'disabled' %>" 
+                                    onclick="selectColor('<%= color %>')" 
+                                    <%= product.colorStock[color] > 0 ? '' : 'disabled' %>
+                                    style="background-color: <%= color %>; border: 2px solid #ddd; width: 40px; height: 40px; border-radius: 50%;"
+                                >
+                                    <%= product.colorStock[color] > 0 ? '' : 'X' %>
                                 </button>
                             <% }); %>
                         </div>
@@ -532,6 +554,7 @@
     <script src="/js/vendor/bootstrap.min.js"></script>
     <script src="/js/jquery.nice-select.min.js"></script>
     <script src="/js/jquery.sticky.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function changeImage(src) {
             document.getElementById('mainImage').src = src;
@@ -559,38 +582,46 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Please select a color',
-                    text: 'You must select a color before adding to cart'
+                    text: 'You must select a color before adding to cart',
                 });
                 return;
             }
 
             try {
-                const response = await fetch('/addToCart', {
+                const response = await fetch('/add', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         productId,
-                        color: selectedColor
-                    })
+                        color: selectedColor,
+                        quantity: 1, // Default quantity
+                    }),
                 });
 
                 const data = await response.json();
-                if (data.status) {
+
+                if (response.ok) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Added to Cart!',
+                        text: data.message || 'The product has been added to your cart!',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Failed to add the product to your cart.',
                     });
                 }
             } catch (error) {
-                console.error('Error:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!'
+                    text: 'Something went wrong! Please try again later.',
                 });
             }
         }
@@ -643,5 +674,69 @@
         window.addEventListener('resize', updateHeaderSpace);
     </script>
 
+    <script>
+        exports.addToCart = async (req, res) => {
+            try {
+                const { productId, color, quantity } = req.body;
+                const userId = req.session.user._id;
+
+                // Find the product to get its price
+                const product = await Product.findById(productId);
+                if (!product) {
+                    return res.status(404).json({ message: 'Product not found' });
+                }
+
+                // Validate quantity
+                const quantityNum = parseInt(quantity) || 1;
+                if (isNaN(quantityNum) || quantityNum < 1) {
+                    return res.status(400).json({ message: 'Invalid quantity' });
+                }
+
+                // Find or create the user's cart
+                let cart = await Cart.findOne({ userId });
+                if (!cart) {
+                    cart = new Cart({
+                        userId,
+                        totalPrice: 0,
+                        items: [],
+                    });
+                }
+
+                // Check if the product already exists in the cart
+                const itemIndex = cart.items.findIndex(
+                    (item) => item.productId === productId && item.color === color
+                );
+
+                if (itemIndex > -1) {
+                    // If item exists, update quantity
+                    cart.items[itemIndex].quantity += quantityNum;
+                } else {
+                    // Otherwise, add new item
+                    cart.items.push({
+                        productId,
+                        color,
+                        price: product.price,
+                        quantity: quantityNum,
+                    });
+                }
+
+                // Recalculate total price
+                cart.totalPrice = cart.items.reduce(
+                    (total, item) => total + item.price * item.quantity,
+                    0
+                );
+
+                // Save the cart
+                await cart.save();
+
+                res.status(200).json({ message: 'Item added to cart successfully' });
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                res.status(500).json({ message: 'Could not add item to cart' });
+            }
+        };
+    </script>
+
 </body>
 </html>
+``` 
