@@ -225,18 +225,58 @@
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   function removeItem(productId) {
     document.getElementById('removeProductId').value = productId;
     document.getElementById('removeItemForm').submit();
   }
   
-  function updateQuantity(productId, newQuantity) {
-    if (newQuantity < 1) return;
-    
-    document.getElementById('updateProductId').value = productId;
-    document.getElementById('updateQuantity').value = newQuantity;
-    document.getElementById('updateQuantityForm').submit();
+  async function updateQuantity(productId, newQuantity) {
+    if (newQuantity < 1) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Quantity',
+        text: 'Quantity must be at least 1.',
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch('/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId, quantity: newQuantity }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Quantity Updated',
+          text: result.message,
+        }).then(() => {
+          location.reload(); 
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: result.message || 'Could not update quantity.',
+        });
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An unexpected error occurred.',
+      });
+    }
   }
 </script>
 

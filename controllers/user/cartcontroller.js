@@ -52,49 +52,40 @@ exports.getCart = async (req, res) => {
 exports.updateCartItem = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-    const userId = req.user ? req.user._id : '64a5e4e31b7d44ce5f8c1234'; // Example userId
-    
+    console.log(req.body)
+    const userId = req.session.user._id;
+
     // Validate quantity
     const quantityNum = parseInt(quantity);
     if (isNaN(quantityNum) || quantityNum < 1) {
-      req.flash('error', 'Invalid quantity');
-      return res.redirect('/cart');
+      return res.status(400).json({ message: 'Invalid quantity' });
     }
-    
+
     // Find the user's cart
     const cart = await Cart.findOne({ userId });
     if (!cart) {
-      req.flash('error', 'Cart not found');
-      return res.redirect('/cart');
+      return res.status(404).json({ message: 'Cart not found' });
     }
-    
+
     // Find the item in the cart
     const itemIndex = cart.items.findIndex(item => item.productId === productId);
     if (itemIndex === -1) {
-      req.flash('error', 'Item not found in cart');
-      return res.redirect('/cart');
+      return res.status(404).json({ message: 'Item not found in cart' });
     }
-    
+
     // Update the quantity
     cart.items[itemIndex].quantity = quantityNum;
-    cart.items[itemIndex].updatedAt = new Date();
-    
+
     // Recalculate total price
-    let totalPrice = 0;
-    for (const item of cart.items) {
-      totalPrice += item.price * item.quantity;
-    }
-    cart.totalPrice = totalPrice;
-    
+    cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
     // Save the updated cart
     await cart.save();
-    
-    // Redirect back to cart
-    res.redirect('/cart');
+
+    res.status(200).json({ message: 'Quantity updated successfully' });
   } catch (error) {
     console.error('Error updating cart item:', error);
-    req.flash('error', 'Could not update cart item');
-    res.redirect('/cart');
+    res.status(500).json({ message: 'Could not update cart item' });
   }
 };
 
