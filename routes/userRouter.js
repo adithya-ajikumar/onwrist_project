@@ -8,6 +8,7 @@ const passport = require('passport');
 const ProfileController = require('../controllers/user/ProfileController');
 const AddressController = require('../controllers/user/addressController');
 const cartcontroller=require('../controllers/user/cartcontroller')
+const checkoutController = require('../controllers/user/checkoutcontroller');
 
 
 router.get("/", blockCheck,userController.loadHome);
@@ -87,6 +88,8 @@ router.post('/delete-address', AddressController.deleteAddress);
   router.post('/remove',  cartcontroller.removeCartItem);
   router.post('/clear',cartcontroller.clearCart);
   
+  ////checkout
+  router.get('/checkout', isLogin,checkoutController.getcheckout);
 
 
 

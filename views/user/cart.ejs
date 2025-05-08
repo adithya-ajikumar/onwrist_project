@@ -206,7 +206,8 @@
         <div class="summary-value">$<%= (cart.totalPrice || cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)).toFixed(2) %></div>
       </div>
       
-      <button class="checkout-btn">Checkout</button>
+      <button class="checkout-btn">
+        <a href="/checkout">Checkout</a></button>
       <br>
       <a href="/products" class="continue-shopping">Continue Shopping</a>
     </div>
@@ -214,11 +215,11 @@
 </div>
 
 <!-- Hidden forms for cart actions -->
-<form id="removeItemForm" action="/cart/remove" method="POST" style="display: none;">
+<form id="removeItemForm" action="/remove" method="POST" style="display: none;">
   <input type="hidden" name="productId" id="removeProductId">
 </form>
 
-<form id="updateQuantityForm" action="/cart/update" method="POST" style="display: none;">
+<form id="updateQuantityForm" action="/update" method="POST" style="display: none;">
   <input type="hidden" name="productId" id="updateProductId">
   <input type="hidden" name="quantity" id="updateQuantity">
 </form>
