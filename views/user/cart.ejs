@@ -4,221 +4,240 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart</title>
+  <title>Your Shopping Cart</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .quantity-input {
-      width: 50px;
+    body {
+      background-color: #f9f9f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .cart-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      padding: 30px;
+    }
+    .cart-title {
       text-align: center;
+      margin-bottom: 30px;
+      font-weight: 500;
+      color: #333;
+    }
+    .product-row {
+      display: flex;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
     }
     .product-image {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
+      background-color: #f5f5f5;
+      margin-right: 20px;
       object-fit: cover;
+    }
+    .product-details {
+      flex-grow: 1;
+    }
+    .product-name {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .remove-link {
+      color: #666;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .remove-link:hover {
+      text-decoration: underline;
+    }
+    .price-column, .total-column {
+      width: 100px;
+      text-align: right;
+    }
+    .quantity-column {
+      width: 120px;
+      text-align: center;
+    }
+    .quantity-input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      background: transparent;
+    }
+    .quantity-btn {
+      width: 28px;
+      height: 28px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .table-header {
+      display: flex;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .header-product {
+      flex-grow: 1;
+    }
+    .header-price, .header-total {
+      width: 100px;
+      text-align: right;
+    }
+    .header-quantity {
+      width: 120px;
+      text-align: center;
     }
     .cart-empty {
       text-align: center;
-      padding: 5rem 0;
+      padding: 40px 0;
     }
-    .cart-empty i {
-      font-size: 4rem;
-      color: #ccc;
-      margin-bottom: 1rem;
+    .summary-section {
+      margin-top: 30px;
+      text-align: right;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+    .summary-label {
+      margin-right: 30px;
+      width: 100px;
+    }
+    .summary-value {
+      width: 100px;
+      text-align: right;
+    }
+    .checkout-btn {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 4px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .continue-shopping {
+      color: #666;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .continue-shopping:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-<div class="container py-5">
-  <h1 class="mb-4">Shopping Cart</h1>
+<div class="cart-container">
+  <h1 class="cart-title">Your Shopping Cart</h1>
   
   <% if (!cart || !cart.items || cart.items.length === 0) { %>
     <div class="cart-empty">
-      <i class="fas fa-shopping-cart"></i>
-      <h2>Your cart is empty</h2>
-      <p class="text-muted mb-4">Add items to your cart to see them here.</p>
-      <a href="/products" class="btn btn-primary">Continue Shopping</a>
+      <p>Your cart is empty</p>
+      <a href="/products" class="continue-shopping">Continue Shopping</a>
     </div>
   <% } else { %>
-    <div class="row">
-      <!-- Cart Items -->
-      <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-header bg-white">
-            <h5 class="mb-0">Cart Items (<%= cart.items.length %>)</h5>
-          </div>
-          <div class="card-body">
-            <% cart.items.forEach(function(item) { %>
-              <div class="row mb-4 border-bottom pb-4">
-                <!-- Product Image -->
-                <div class="col-md-2 mb-3 mb-md-0">
-                  <img src="<%= item.image || '/images/placeholder.jpg' %>" alt="<%= item.productName || 'Product' %>" class="product-image rounded">
-                </div>
-                
-                <!-- Product Details -->
-                <div class="col-md-4 mb-3 mb-md-0">
-                  <h5><%= item.productName || 'Product #' + item.productId %></h5>
-                  <% if (item.color !== undefined) { %>
-                    <p class="text-muted small">
-                      Color: 
-                      <% 
-                        const colorMap = {
-                          1: 'Blue',
-                          2: 'Black',
-                          3: 'Red',
-                          4: 'Green',
-                          5: 'White'
-                        };
-                        const colorName = colorMap[item.color] || 'Unknown';
-                      %>
-                      <%= colorName %>
-                    </p>
-                  <% } %>
-                  <p class="text-muted small">
-                    Added on: <%= new Date(item.createdAt).toLocaleDateString() %>
-                  </p>
-                  <form action="/cart/remove" method="POST" class="d-inline">
-                    <input type="hidden" name="productId" value="<%= item.productId %>">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                      <i class="fas fa-trash-alt"></i> Remove
-                    </button>
-                  </form>
-                </div>
-                
-                <!-- Price -->
-                <div class="col-md-2 mb-3 mb-md-0">
-                  <p class="fw-bold">Price</p>
-                  <p>$<%= item.price.toFixed(2) %></p>
-                </div>
-                
-                <!-- Quantity -->
-                <div class="col-md-2 mb-3 mb-md-0">
-                  <p class="fw-bold">Quantity</p>
-                  <form action="/cart/update" method="POST" class="d-flex align-items-center">
-                    <input type="hidden" name="productId" value="<%= item.productId %>">
-                    <button type="button" class="btn btn-sm btn-outline-secondary decrease-qty">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control form-control-sm mx-2 quantity-input">
-                    <button type="button" class="btn btn-sm btn-outline-secondary increase-qty">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </form>
-                </div>
-                
-                <!-- Total -->
-                <div class="col-md-2 text-md-end">
-                  <p class="fw-bold">Total</p>
-                  <p class="fw-bold">$<%= (item.price * item.quantity).toFixed(2) %></p>
-                </div>
-              </div>
-            <% }); %>
-          </div>
+    <div class="table-header">
+      <div class="header-product">Product</div>
+      <div class="header-price">Price</div>
+      <div class="header-quantity">Quantity</div>
+      <div class="header-total">Total</div>
+    </div>
+    
+    <% cart.items.forEach(function(item) { %>
+      <div class="product-row">
+        <img src="<%= item.image || '/images/placeholder.jpg' %>" alt="<%= item.productName %>" class="product-image">
+        
+        <div class="product-details">
+          <div class="product-name"><%= item.productName %></div>
+          <a href="#" class="remove-link" onclick="removeItem('<%= item.productId %>')">Remove</a>
         </div>
+        
+        <div class="price-column">
+          $<%= item.price.toFixed(2) %>
+        </div>
+        
+        <div class="quantity-column">
+          <button class="quantity-btn decrease-qty" onclick="updateQuantity('<%= item.productId %>', <%= item.quantity - 1 %>)">-</button>
+          <input type="text" class="quantity-input" value="<%= item.quantity %>" readonly>
+          <button class="quantity-btn increase-qty" onclick="updateQuantity('<%= item.productId %>', <%= item.quantity + 1 %>)">+</button>
+        </div>
+        
+        <div class="total-column">
+          $<%= (item.price * item.quantity).toFixed(2) %>
+        </div>
+      </div>
+    <% }); %>
+    
+    <div class="summary-section">
+      <div class="summary-row">
+        <div class="summary-label">Subtotal</div>
+        <div class="summary-value">$<%= cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2) %></div>
       </div>
       
-      <!-- Order Summary -->
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header bg-white">
-            <h5 class="mb-0">Order Summary</h5>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
-              <span>Subtotal</span>
-              <span>$<%= cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2) %></span>
-            </div>
-            
-            <% if (cart.coupnId) { %>
-              <div class="d-flex justify-content-between mb-3 text-success">
-                <span>Discount</span>
-                <span>-$<%= (cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) - cart.totalPrice).toFixed(2) %></span>
-              </div>
-            <% } %>
-            
-            <div class="d-flex justify-content-between mb-3">
-              <span>Shipping</span>
-              <span>Calculated at checkout</span>
-            </div>
-            
-            <hr>
-            
-            <div class="d-flex justify-content-between mb-4">
-              <span class="fw-bold">Total</span>
-              <span class="fw-bold">$<%= cart.totalPrice.toFixed(2) %></span>
-            </div>
-            
-            <!-- Coupon -->
-            <% if (!cart.coupnId) { %>
-              <form action="/cart/apply-coupon" method="POST" class="mb-3">
-                <label for="couponCode" class="form-label">Apply Coupon</label>
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter coupon code">
-                  <button class="btn btn-outline-secondary" type="submit">
-                    <i class="fas fa-tag"></i> Apply
-                  </button>
-                </div>
-              </form>
-            <% } else { %>
-              <div class="alert alert-success d-flex justify-content-between align-items-center">
-                <div>
-                  <span class="fw-bold">Coupon Applied</span>
-                  <% if (locals.couponCode) { %>
-                    <br><small><%= couponCode %></small>
-                  <% } %>
-                </div>
-                <form action="/cart/remove-coupon" method="POST">
-                  <button type="submit" class="btn btn-sm text-danger">Remove</button>
-                </form>
-              </div>
-            <% } %>
-            
-            <a href="/checkout" class="btn btn-primary w-100 mb-2">
-              Proceed to Checkout
-            </a>
-            <a href="/products" class="btn btn-outline-secondary w-100">
-              <i class="fas fa-shopping-cart"></i> Continue Shopping
-            </a>
-          </div>
+      <% if (cart.discount && cart.discount > 0) { %>
+        <div class="summary-row">
+          <div class="summary-label">Discount</div>
+          <div class="summary-value">-$<%= cart.discount.toFixed(2) %></div>
         </div>
+      <% } %>
+      
+      <div class="summary-row">
+        <div class="summary-label">Total</div>
+        <div class="summary-value">$<%= (cart.totalPrice || cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)).toFixed(2) %></div>
       </div>
+      
+      <button class="checkout-btn">Checkout</button>
+      <br>
+      <a href="/products" class="continue-shopping">Continue Shopping</a>
     </div>
   <% } %>
 </div>
 
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Hidden forms for cart actions -->
+<form id="removeItemForm" action="/cart/remove" method="POST" style="display: none;">
+  <input type="hidden" name="productId" id="removeProductId">
+</form>
+
+<form id="updateQuantityForm" action="/cart/update" method="POST" style="display: none;">
+  <input type="hidden" name="productId" id="updateProductId">
+  <input type="hidden" name="quantity" id="updateQuantity">
+</form>
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-  $(document).ready(function() {
-    // Increase quantity
-    $('.increase-qty').click(function() {
-      const input = $(this).siblings('input[name="quantity"]');
-      const currentVal = parseInt(input.val());
-      input.val(currentVal + 1);
-      $(this).closest('form').submit();
-    });
+  function removeItem(productId) {
+    document.getElementById('removeProductId').value = productId;
+    document.getElementById('removeItemForm').submit();
+  }
+  
+  function updateQuantity(productId, newQuantity) {
+    if (newQuantity < 1) return;
     
-    // Decrease quantity
-    $('.decrease-qty').click(function() {
-      const input = $(this).siblings('input[name="quantity"]');
-      const currentVal = parseInt(input.val());
-      if (currentVal > 1) {
-        input.val(currentVal - 1);
-        $(this).closest('form').submit();
-      }
-    });
-    
-    // Auto-submit form when quantity changes manually
-    $('input[name="quantity"]').change(function() {
-      $(this).closest('form').submit();
-    });
-  });
+    document.getElementById('updateProductId').value = productId;
+    document.getElementById('updateQuantity').value = newQuantity;
+    document.getElementById('updateQuantityForm').submit();
+  }
 </script>
 
 </body>
