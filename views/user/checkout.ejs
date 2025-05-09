@@ -457,7 +457,7 @@
           title: 'Order Placed',
           text: 'Your order has been placed successfully!',
         }).then(() => {
-          window.location.href = `/order-confirmation/${result.orderId}`;
+          window.location.href = `/myorder`;
         });
       } else {
         const result = await response.json();

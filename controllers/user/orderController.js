@@ -6,9 +6,11 @@ const Order = require('../../models/order');
 const getOrders = async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.session.user._id })
-      .populate('items.product', 'name images price')
-      .populate('shippingAddress')
-      .sort({ createdAt: -1 });
+      .populate('items.product', 'productName productImage price') // Correct field names
+      .populate('shippingAddress') // Populate shipping address
+      .sort({ createdAt: -1 }); // Sort by creation date (newest first)
+
+    console.log('Orders:', orders);
 
     res.render('myorder', {
       orders,

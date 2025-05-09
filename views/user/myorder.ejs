@@ -244,15 +244,15 @@
                     <% order.items.forEach(item => { %>
                         <div class="order-card">
                             <div class="order-image">
-                                <% if (item.product && item.product.images && item.product.images[0]) { %>
-                                    <img src="<%= item.product.images[0] %>" alt="<%= item.product.name %>">
+                                <% if (item.product && item.product.productImage && item.product.productImage[0]) { %>
+                                    <img src="/Uploads/product-Images/<%= item.product.productImage[0] %>" alt="<%= item.product.productName %>">
                                 <% } else { %>
                                     <img src="/images/placeholder-product.png" alt="Product Image">
                                 <% } %>
                             </div>
                             <div class="order-details">
                                 <div class="order-product">
-                                    <%= item.product ? item.product.name : 'Product Name' %>
+                                    <%= item.product ? item.product.productName : 'Product Name' %>
                                     <% if (item.color) { %>
                                         - <span style="color: <%= item.color %>"><%= item.color %></span>
                                     <% } %>
@@ -267,12 +267,12 @@
                                     <strong>Quantity:</strong> <%= item.quantity %>
                                 </div>
                                 <div class="order-info">
-                                    <strong>Total:</strong> ₹<%= order.totalprice.toFixed(2) %>
+                                    <strong>Total:</strong> ₹<%= order.totalPrice.toFixed(2) %>
                                 </div>
                                 <div class="order-info">
                                     <strong>Status:</strong> 
-                                    <span class="status-badge status-<%= item.itemstatus %>">
-                                        <%= item.itemstatus %>
+                                    <span class="status-badge status-<%= item.itemStatus %>">
+                                        <%= item.itemStatus %>
                                     </span>
                                 </div>
                             </div>
