@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const CartItemSchema = new Schema({
   productId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'product', // Reference to the Product model
     required: true
   },
   color: {
@@ -28,6 +29,7 @@ const CartItemSchema = new Schema({
     default: Date.now
   }
 });
+
 
 const CartSchema = new Schema({
   userId: {

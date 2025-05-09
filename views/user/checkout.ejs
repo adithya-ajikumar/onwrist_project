@@ -113,15 +113,17 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow-y: auto; /* Allow scrolling if content overflows */
         }
         .modal-content {
             background-color: white;
-            margin: 10% auto;
+            margin: 5% auto; /* Adjusted margin for better visibility */
             padding: 30px;
             border-radius: 8px;
-            width: 500px;
-            max-width: 90%;
+            width: 90%; /* Adjusted width for smaller screens */
+            max-width: 500px; /* Maximum width for larger screens */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .close {
             float: right;
@@ -151,12 +153,12 @@
             <% if (cartItems && cartItems.length > 0) { %>
                 <% cartItems.forEach(item => { %>
                     <div class="cart-item">
-                        <img src="<%= item.image %>" alt="<%= item.name %>" class="item-image">
+                        <img src="<%= item.image %>" alt="<%= item.productName %>" class="item-image">
                         <div class="item-details">
-                            <h3><%= item.name %></h3>
-                            <p>Color: <%= item.color %></p>
+                            <h3><%= item.productName %></h3>
+                            <p> Color : <%= item.size %></p>
                             <p>Qty: <%= item.quantity %></p>
-                            <p class="price">₹<%= (item.price * item.quantity).toFixed(2) %></p>
+                            <p class="price">₹<%= item.totalPrice.toFixed(2) %></p>
                         </div>
                     </div>
                 <% }) %>
@@ -165,28 +167,16 @@
             <% } %>
 
             <div class="summary-row">
-                <span>Subtotal</span>
-                <span>₹<%= totalPrice.toFixed(2) %></span>
-            </div>
-            <div class="summary-row">
-                <span>Shipping</span>
-                <span>₹ 0</span>
-            </div>
-            <div class="summary-row">
-                <span>Tax</span>
-                <span>₹ 0</span>
-            </div>
-            <div class="total-row">
-                <span>Total</span>
-                <span>₹<%= total %></span>
+                <span>Total Amount</span>
+                <span>₹<%= totalAmount.toFixed(2) %></span>
             </div>
 
             <h2>Shipping Address</h2>
             <select id="addressSelect" class="address-select">
-                <% if (addresses && addresses.length > 0) { %>
-                    <% addresses.forEach((addressObj, index) => { %>
-                        <option value="<%= addressObj._id %>-<%= index %>">
-                            <%= addressObj.name %>, <%= addressObj.flatNumber %>, <%= addressObj.address %>, <%= addressObj.landMark %>, <%= addressObj.city %>, <%= addressObj.state %> - <%= addressObj.pincode %>
+                <% if (userAddresses && userAddresses.length > 0) { %>
+                    <% userAddresses.forEach((address, index) => { %>
+                        <option value="<%= address._id %>-<%= index %>">
+                            <%= address.name %>, <%= address.flatNumber %>, <%= address.address %>, <%= address.landMark %>, <%= address.city %>, <%= address.state %> - <%= address.pincode %>
                         </option>
                     <% }) %>
                 <% } else { %>
@@ -200,7 +190,7 @@
             <h2>Order Summary</h2>
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>₹<%= totalPrice %></span>
+                <span>₹<%= totalAmount.toFixed(2) %></span>
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
@@ -212,7 +202,7 @@
             </div>
             <div class="total-row">
                 <span>Total</span>
-                <span>₹<%= total.toFixed(2) %></span>
+                <span>₹<%= totalAmount.toFixed(2) %></span>
             </div>
 
             <h3>Payment Method</h3>
@@ -223,7 +213,7 @@
                 <option value="netbanking">Net Banking</option>
             </select>
 
-            <button id="placeOrderBtn" class="btn">Place Order</button>
+            <button id="placeOrderBtn" class="btn"><a href="/myorder">place Order</a></button>
         </div>
     </div>
 
@@ -335,7 +325,7 @@
 
         addressForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const newAddress = {
                 name: document.getElementById('name').value,
                 phone: parseInt(document.getElementById('phone').value),
@@ -350,7 +340,7 @@
 
             try {
                 // Using fetch to send the new address to server
-                const response = await fetch('/api/addresses', {
+                const response = await fetch('/myaddress', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -367,10 +357,10 @@
                     option.textContent = `${newAddress.name}, ${newAddress.flatNumber}, ${newAddress.address}, ${newAddress.landMark}, ${newAddress.city}, ${newAddress.state} - ${newAddress.pincode}`;
                     addressSelect.appendChild(option);
                     addressSelect.value = `${result.userId}-${result.index}`;
-                    
+
                     // Close the modal
                     addressModal.style.display = 'none';
-                    
+
                     // Reset the form
                     addressForm.reset();
                 } else {
@@ -385,28 +375,28 @@
         placeOrderBtn.addEventListener('click', async () => {
             const selectedAddressId = document.getElementById('addressSelect').value;
             const paymentMethod = document.getElementById('paymentMethod').value;
-            
+
             if (!selectedAddressId) {
                 alert('Please select or add an address');
                 return;
             }
-            
+
             const orderData = {
                 addressId: selectedAddressId,
                 paymentMethod: paymentMethod,
                 total: totalValue
             };
-            
+
             try {
                 // Using fetch to place the order
-                const response = await fetch('/api/orders', {
+                const response = await fetch('/myorder', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(orderData)
                 });
-                
+
                 if (response.ok) {
                     const result = await response.json();
                     alert('Order placed successfully!');

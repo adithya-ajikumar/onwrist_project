@@ -9,7 +9,7 @@ const ProfileController = require('../controllers/user/ProfileController');
 const AddressController = require('../controllers/user/addressController');
 const cartcontroller=require('../controllers/user/cartcontroller')
 const checkoutController = require('../controllers/user/checkoutcontroller');
-
+const orderController = require('../controllers/user/orderController');
 
 router.get("/", blockCheck,userController.loadHome);
 router.get("/signup", userController.loadSignup);
@@ -89,10 +89,12 @@ router.post('/delete-address', AddressController.deleteAddress);
   router.post('/clear',cartcontroller.clearCart);
   
   ////checkout
-  router.get('/checkout', isLogin,checkoutController.getcheckout);
+  router.get('/checkout', isLogin,checkoutController.getCheckoutPage);
 
 
-
+////ordercontroller
+router.get('/myorder', isLogin, orderController.getOrders);
+router.get('/myorder/:orderId', isLogin, orderController.getOrderDetails);
 
 
 
