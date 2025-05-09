@@ -145,6 +145,7 @@
             border-radius: 4px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="container">
@@ -359,12 +360,27 @@
                     // Close the modal
                     document.getElementById('addressModal').style.display = 'none';
                     document.getElementById('addressForm').reset();
+
+                    // Show success Swal notification
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Address Added',
+                        text: 'Your address has been added successfully!',
+                    });
                 } else {
-                    alert('Failed to add address');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add address. Please try again.',
+                    });
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
             }
         });
 
@@ -409,3 +425,4 @@
     </script>
 </body>
 </html>
+``` 
