@@ -4,61 +4,63 @@ const { v4: uuidv4 } = require('uuid');
 
 const OrderSchema = new Schema({
   orderId: {
-    type: String,
-    default: uuidv4,
-    unique: true
+    type: String, // Changed to String to store UUID
+    default: uuidv4, // Automatically generate a UUID
+    unique: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
-  items: [{
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true
+  items: [
+    {
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      color: {
+        type: String,
+      },
+      itemStatus: {
+        type: String,
+        enum: ['processing', 'shipped', 'delivered', 'cancelled'],
+        default: 'processing',
+      },
     },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    },
-    price: {
-      type: Number,
-      required: true
-    },
-    color: {
-      type: String
-    },
-    itemStatus: {
-      type: String,
-      enum: ['processing', 'shipped', 'delivered', 'cancelled'],
-      default: 'processing'
-    }
-  }],
+  ],
   couponUsed: {
     type: Schema.Types.ObjectId,
-    ref: 'Coupon'
+    ref: 'Coupon',
   },
   orderStatus: {
     type: String,
     enum: ['processing', 'shipped', 'delivered', 'cancelled'],
-    default: 'processing'
+    default: 'processing',
   },
   shippingAddress: {
     type: Schema.Types.ObjectId,
     ref: 'Address',
-    required: true
+    required: true,
   },
   totalPrice: {
     type: Number,
-    required: true
+    required: true,
   },
   paymentId: {
     type: Schema.Types.ObjectId,
-    ref: 'Payment'
-  }
+    ref: 'Payment',
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', OrderSchema);

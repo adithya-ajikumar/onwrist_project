@@ -91,12 +91,12 @@ router.post('/delete-address', AddressController.deleteAddress);
   ////checkout
   router.get('/checkout', isLogin,checkoutController.getCheckoutPage);
   router.post('/addAddress', checkoutController.addAddress);
+  router.post('/place-order', checkoutController.placeOrder);
 
 
 ////ordercontroller
 router.get('/myorder', isLogin, orderController.getOrders);
 router.get('/myorder/:orderId', isLogin, orderController.getOrderDetails);
-
 
 
 

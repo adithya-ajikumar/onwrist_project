@@ -1,6 +1,7 @@
 const Product = require('../../models/productsSchema');
 const Cart = require('../../models/cart');
 const Address = require('../../models/addressSchema'); // Assuming you have an Address model
+const Order = require('../../models/order'); // Import the Order model
 const mongoose = require('mongoose');
 
 const getCheckoutPage = async (req, res) => {
@@ -85,9 +86,60 @@ const addAddress = async (req, res) => {
   }
 };
 
+const placeOrder = async (req, res) => {
+  try {
+    const userId = req.session.user._id;
+    const { addressId, totalAmount } = req.body;
+
+    // Extract the actual address ID from the combined value
+    const actualAddressId = addressId.split('-')[0];
+
+    // Fetch the user's cart
+    const cart = await Cart.findOne({ userId }).populate("items.productId", "price");
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ success: false, message: "Your cart is empty." });
+    }
+
+    // Create the order items from the cart
+    const orderItems = cart.items.map(item => ({
+      product: item.productId._id,
+      quantity: item.quantity,
+      price: item.productId.price,
+      color: item.color,
+      itemStatus: "processing", // Default status for each item
+    }));
+
+    // Create a new order
+    const newOrder = new Order({
+      userId,
+      items: orderItems,
+      shippingAddress: actualAddressId, // Use the extracted address ID
+      totalPrice: totalAmount,
+      orderStatus: "processing", // Default status for the order
+    });
+
+    // Save the order
+    await newOrder.save();
+
+    // Clear the user's cart after placing the order
+    await Cart.deleteOne({ userId });
+
+    res.status(200).json({
+      success: true,
+      message: "Order placed successfully!",
+      orderId: newOrder._id,
+    });
+  } catch (error) {
+    console.error("Error placing order:", error);
+    res.status(500).json({ success: false, message: "Failed to place order." });
+  }
+};
+
 module.exports = {
   getCheckoutPage,
   addAddress,
+  placeOrder,
 };
 
 

@@ -423,6 +423,59 @@
             }
         });
     </script>
+    <script>
+  document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+    const selectedAddressId = document.getElementById('addressSelect').value;
+
+    if (!selectedAddressId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'No Address Selected',
+        text: 'Please select or add a shipping address.',
+      });
+      return;
+    }
+
+    const orderData = {
+      addressId: selectedAddressId,
+      totalAmount: <%= totalAmount %>, // Pass the total amount dynamically
+    };
+
+    try {
+      const response = await fetch('/place-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        Swal.fire({
+          icon: 'success',
+          title: 'Order Placed',
+          text: 'Your order has been placed successfully!',
+        }).then(() => {
+          window.location.href = `/order-confirmation/${result.orderId}`;
+        });
+      } else {
+        const result = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: result.message || 'Failed to place order.',
+        });
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An unexpected error occurred. Please try again.',
+      });
+    }
+  });
+</script>
 </body>
 </html>
-``` 
