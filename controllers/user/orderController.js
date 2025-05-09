@@ -74,7 +74,36 @@ const getOrderDetails = async (req, res) => {
   }
 };
 
+// Cancel an order
+const cancelOrder = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        const order = await Order.findOne({
+            orderId,
+            userId: req.session.user._id
+        });
+
+        if (!order) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        if (order.orderStatus !== 'processing') {
+            return res.status(400).json({ success: false, message: 'Order cannot be cancelled' });
+        }
+
+        order.orderStatus = 'cancelled';
+        await order.save();
+
+        res.json({ success: true, message: 'Order cancelled successfully' });
+    } catch (error) {
+        console.error('Error cancelling order:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
 module.exports = {
   getOrders,
-  getOrderDetails
+  getOrderDetails,
+  cancelOrder
 };

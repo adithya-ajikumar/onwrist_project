@@ -477,6 +477,11 @@
                 <p>Delivered</p>
             </div>
         </div>
+        <div class="action-buttons">
+            <% if (order.orderStatus === 'processing') { %>
+                <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
+            <% } %>
+        </div>
     </div>
 
     <!-- SweetAlert2 CDN -->
@@ -646,7 +651,6 @@
                     } else {
                         throw new Error(data.message || 'Failed to cancel order');
                     }
-
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
