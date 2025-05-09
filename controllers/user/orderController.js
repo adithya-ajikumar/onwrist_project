@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../../models/order');
+const Address = require('../../models/addressSchema'); // Import the Address model
 
 // Get all orders for the logged-in user
 const getOrders = async (req, res) => {
@@ -33,9 +34,23 @@ const getOrderDetails = async (req, res) => {
       orderId: req.params.orderId,
       userId: req.session.user._id
     })
-      .populate('items.product', 'name images price description')
-      .populate('shippingAddress')
-      .populate('paymentId');
+      .populate('items.product', 'productName productImage price').populate('shippingAddress') // Populate shipping address
+      .sort({ createdAt: -1 }); // Sort by creation date (newest first)
+      
+      // Populate product details
+      
+      console.log('Order Details:', order); 
+
+      const orders = await Order.findOne({ orderId: req.params.orderId })
+
+      console.log('Orders:', orders); // Log the orders
+
+      const shippingAddress = await Address.findOne({userId: req.session.user._id})
+      const address = shippingAddress.address.find(address => address._id.toString() === orders.shippingAddress.toString());
+      console.log('Address:', address); // Log the address
+
+       // Log the shipping address
+      // Populate shipping address
 
     if (!order) {
       return res.status(404).render('error', {
@@ -44,8 +59,9 @@ const getOrderDetails = async (req, res) => {
       });
     }
 
-    res.render('myorder/order-details', {
+    res.render('orderFullDetails', {
       order,
+      address,
       user: req.session.user,
       title: `Order #${order.orderId}`
     });

@@ -91,6 +91,8 @@ const placeOrder = async (req, res) => {
     const userId = req.session.user._id;
     const { addressId, totalAmount } = req.body;
 
+    console.log("Placing order with addressId:", addressId, "and totalAmount:", totalAmount);
+
     // Extract the actual address ID from the combined value
     const actualAddressId = addressId.split('-')[0];
 
@@ -110,15 +112,18 @@ const placeOrder = async (req, res) => {
       itemStatus: "processing", // Default status for each item
     }));
 
+    consolwe.log("Order Items:", orderItems);
+
     // Create a new order
     const newOrder = new Order({
-      userId,
-      items: orderItems,
-      shippingAddress: actualAddressId, // Use the extracted address ID
+      userId, // Assuming `req.user` contains the logged-in user's data
+      items: orderItems, // Assuming cart items are stored in the session
+      shippingAddress,
       totalPrice: totalAmount,
       orderStatus: "processing", // Default status for the order
     });
 
+    console.log("New Order:", newOrder);
     // Save the order
     await newOrder.save();
 

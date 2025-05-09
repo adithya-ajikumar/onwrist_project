@@ -96,7 +96,7 @@ router.post('/delete-address', AddressController.deleteAddress);
 
 ////ordercontroller
 router.get('/myorder', isLogin, orderController.getOrders);
-router.get('/myorder/:orderId', isLogin, orderController.getOrderDetails);
+router.get('/orders/:orderId', isLogin, orderController.getOrderDetails);
 
 
 
