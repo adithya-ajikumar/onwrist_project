@@ -153,10 +153,10 @@
             <% if (cartItems && cartItems.length > 0) { %>
                 <% cartItems.forEach(item => { %>
                     <div class="cart-item">
-                        <img src="<%= item.image %>" alt="<%= item.productName %>" class="item-image">
+                        <img src="/Uploads/product-Images/<%= item.image %>" alt="<%= item.productName %>" class="item-image">
                         <div class="item-details">
                             <h3><%= item.productName %></h3>
-                            <p> Color : <%= item.size %></p>
+                            <p> Color : <%= item.color %></p>
                             <p>Qty: <%= item.quantity %></p>
                             <p class="price">₹<%= item.totalPrice.toFixed(2) %></p>
                         </div>
@@ -335,34 +335,30 @@
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
                 country: document.getElementById('country').value,
-                pincode: parseInt(document.getElementById('pincode').value)
+                pincode: parseInt(document.getElementById('pincode').value),
             };
 
             try {
-                // Using fetch to send the new address to server
-                const response = await fetch('/myaddress', {
+                const response = await fetch('/addAddress', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(newAddress)
+                    body: JSON.stringify(newAddress),
                 });
 
                 if (response.ok) {
                     const result = await response.json();
-                    // Add the new address to the dropdown
                     const addressSelect = document.getElementById('addressSelect');
                     const option = document.createElement('option');
-                    option.value = `${result.userId}-${result.index}`;
+                    option.value = `${result.address._id}-${result.index}`;
                     option.textContent = `${newAddress.name}, ${newAddress.flatNumber}, ${newAddress.address}, ${newAddress.landMark}, ${newAddress.city}, ${newAddress.state} - ${newAddress.pincode}`;
                     addressSelect.appendChild(option);
-                    addressSelect.value = `${result.userId}-${result.index}`;
+                    addressSelect.value = `${result.address._id}-${result.index}`;
 
                     // Close the modal
-                    addressModal.style.display = 'none';
-
-                    // Reset the form
-                    addressForm.reset();
+                    document.getElementById('addressModal').style.display = 'none';
+                    document.getElementById('addressForm').reset();
                 } else {
                     alert('Failed to add address');
                 }

@@ -55,8 +55,39 @@ const getCheckoutPage = async (req, res) => {
   }
 };
 
+const addAddress = async (req, res) => {
+  try {
+    console.log("Adding address:", req.body);
+    const userId = req.session.user._id;
+    const newAddress = req.body;
+
+    // Find the user's address document or create a new one
+    let userAddressDoc = await Address.findOne({ userId });
+    if (!userAddressDoc) {
+      userAddressDoc = new Address({ userId, address: [] });
+    }
+
+    // Add the new address to the address array
+    userAddressDoc.address.push(newAddress);
+    await userAddressDoc.save();
+
+    // Return the newly added address and its index
+    const addedAddressIndex = userAddressDoc.address.length - 1;
+    res.status(200).json({
+      success: true,
+      message: "Address added successfully",
+      address: newAddress,
+      index: addedAddressIndex,
+    });
+  } catch (error) {
+    console.error("Error adding address:", error);
+    res.status(500).json({ success: false, message: "Failed to add address" });
+  }
+};
+
 module.exports = {
-  getCheckoutPage
+  getCheckoutPage,
+  addAddress,
 };
 
 
