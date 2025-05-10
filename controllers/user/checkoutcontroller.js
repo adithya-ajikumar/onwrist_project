@@ -124,12 +124,12 @@ const placeOrder = async (req, res) => {
             quantity: item.quantity,
             price: item.productId.price,
             color: item.color,
-            itemStatus: "processing", // Default status for each item
+            itemStatus: "Processing", // Default status for each item
           },
         ],
         shippingAddress: actualAddressId,
         totalPrice: item.quantity * item.productId.price, // Calculate total price for this item
-        orderStatus: "processing", // Default status for the order
+        orderStatus: "Processing", // Default status for the order
       });
 
       await newOrder.save();
@@ -142,7 +142,7 @@ const placeOrder = async (req, res) => {
 
     console.log("Order placed successfully!");
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Order placed successfully!",
       

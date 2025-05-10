@@ -464,15 +464,15 @@
             <% }) %>
         </div>
         <div class="status-tracker">
-            <div class="status-step <%= order.orderStatus === 'processing' || order.orderStatus !== 'cancelled' ? 'active' : '' %>">
+            <div class="status-step <%= order.orderStatus === 'Processing' || order.orderStatus !== 'Cancelled' ? 'active' : '' %>">
                 <div class="circle"><i class="fas fa-hourglass-start"></i></div>
                 <p>Processing</p>
             </div>
-            <div class="status-step <%= order.orderStatus === 'shipped' || order.orderStatus === 'delivered' ? 'active' : '' %>">
+            <div class="status-step <%= order.orderStatus === 'Shipped' || order.orderStatus === 'Delivered' ? 'active' : '' %>">
                 <div class="circle"><i class="fas fa-truck"></i></div>
                 <p>Shipped</p>
             </div>
-            <div class="status-step <%= order.orderStatus === 'delivered' ? 'active' : '' %>">
+            <div class="status-step <%= order.orderStatus === 'Delivered' ? 'active' : '' %>">
                 <div class="circle"><i class="fas fa-check-circle"></i></div>
                 <p>Delivered</p>
             </div>
@@ -483,13 +483,35 @@
             <% } %>
         </div>
 
+        
+
         <div class="action-buttons">
             <% if (order.orderStatus === 'Delivered') { %>
-                <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
+                <button class="action-button return-button" onclick="openReturnModal('<%= order.orderId %>')">Return Order</button>
             <% } %>
         </div>
 
-    
+        
+
+        <!-- Return Modal -->
+        <div id="returnModal" class="return-modal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeReturnModal()">×</button>
+                <div class="modal-header">
+                    <h3>Return Order</h3>
+                    <p>Please provide a reason for returning this order.</p>
+                </div>
+                <form id="returnForm" onsubmit="submitReturn(event)">
+                    <input type="hidden" id="orderId" name="orderId">
+                    <textarea id="returnReason" name="returnReason" placeholder="Enter your reason for return..." required></textarea>
+                    <div class="modal-buttons">
+                        <button type="submit" class="modal-button submit-return">Submit</button>
+                        <button type="button" class="modal-button cancel-return" onclick="closeReturnModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <!-- SweetAlert2 CDN -->
@@ -497,10 +519,9 @@
 
     <!-- Scripts -->
     <script>
-        function openReturnModal(orderId, itemId) {
+        function openReturnModal(orderId) {
             const modal = document.getElementById('returnModal');
             document.getElementById('orderId').value = orderId;
-            document.getElementById('itemId').value = itemId;
 
             modal.style.display = 'flex';
             requestAnimationFrame(() => {
@@ -523,7 +544,6 @@
             event.preventDefault();
 
             const orderId = document.getElementById('orderId').value;
-            const itemId = document.getElementById('itemId').value;
             const reason = document.getElementById('returnReason').value.trim();
 
             if (!reason) {
@@ -553,7 +573,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ orderId, itemId, reason })
+                    body: JSON.stringify({ orderId, reason })
                 });
 
                 const data = await response.json();
@@ -583,108 +603,6 @@
                 });
             }
         }
-
-        async function downloadInvoice(orderId) {
-            try {
-                const response = await fetch(`/download-invoice/${orderId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to download invoice');
-                }
-
-                // Create blob from response
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                
-                // Create temporary link and trigger download
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `invoice_${orderId}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                
-                // Cleanup
-                window.URL.revokeObjectURL(url);
-                a.remove();
-
-            } catch (error) {
-                console.error('Error downloading invoice:', error);
-                alert('Failed to download invoice');
-            }
-        }
-
-        async function confirmCancelOrder(orderId) {
-            const result = await Swal.fire({
-                title: 'Cancel Order?',
-                text: 'Are you sure you want to cancel this order?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc3545',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, cancel it!',
-                cancelButtonText: 'No, keep it'
-            });
-
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`/cancel-order/${orderId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to cancel order');
-                    }
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Cancelled!',
-                            text: 'Your order has been cancelled successfully.',
-                            confirmButtonColor: '#28a745',
-                            timer: 2000,
-                            timerProgressBar: true
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        throw new Error(data.message || 'Failed to cancel order');
-                    }
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to cancel order. Please try again.',
-                        confirmButtonColor: '#dc3545'
-                    });
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('returnModal');
-
-            window.onclick = function(event) {
-                if (event.target === modal) {
-                    closeReturnModal();
-                }
-            };
-
-            document.addEventListener('keydown', function(event) {
-                if (event.key === "Escape") {
-                    closeReturnModal();
-                }
-            });
-        });
     </script>
 </body>
 
