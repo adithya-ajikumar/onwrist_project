@@ -39,8 +39,8 @@ router.get('/blockProduct',productController.blockProduct);
 router.get('/unblockProduct',productController.unblockProduct);
 router.post('/deleteImage',productController.deleteSingleImg);
 
-router.get("/adminOrder",orderController.getAllOrders);
-router.get("/adminOrder/:orderId",orderController.getOrderDetails);
+router.get("/adminOrder",checkSession,orderController.getAllOrders);
+router.get("/adminOrder/:orderId",checkSession,orderController.getOrderDetails);
 router.post('/update-order-status/:orderId', orderController.updateOrderStatus);
 
 
