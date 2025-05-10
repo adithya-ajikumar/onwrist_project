@@ -389,93 +389,54 @@
             const paymentMethod = document.getElementById('paymentMethod').value;
 
             if (!selectedAddressId) {
-                alert('Please select or add an address');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No Address Selected',
+                    text: 'Please select or add a shipping address.',
+                });
                 return;
             }
 
             const orderData = {
                 addressId: selectedAddressId,
-                paymentMethod: paymentMethod,
-                total: totalValue
+                totalAmount: <%= totalAmount %>, // Pass the total amount dynamically
             };
 
             try {
-                // Using fetch to place the order
-                const response = await fetch('/myorder', {
+                const response = await fetch('/place-order', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(orderData)
+                    body: JSON.stringify(orderData),
                 });
 
                 if (response.ok) {
                     const result = await response.json();
-                    alert('Order placed successfully!');
-                    // Redirect to order confirmation page
-                    window.location.href = `/order-confirmation/${result.orderId}`;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Orders Placed',
+                        text: 'Your orders have been placed successfully!',
+                    }).then(() => {
+                        window.location.href = `/myorder`;
+                    });
                 } else {
-                    alert('Failed to place order');
+                    const result = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message || 'Failed to place orders.',
+                    });
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                console.error('Error placing orders:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
             }
         });
     </script>
-    <script>
-  document.getElementById('placeOrderBtn').addEventListener('click', async () => {
-    const selectedAddressId = document.getElementById('addressSelect').value;
-
-    if (!selectedAddressId) {
-      Swal.fire({
-        icon: 'error',
-        title: 'No Address Selected',
-        text: 'Please select or add a shipping address.',
-      });
-      return;
-    }
-
-    const orderData = {
-      addressId: selectedAddressId,
-      totalAmount: <%= totalAmount %>, // Pass the total amount dynamically
-    };
-
-    try {
-      const response = await fetch('/place-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        Swal.fire({
-          icon: 'success',
-          title: 'Order Placed',
-          text: 'Your order has been placed successfully!',
-        }).then(() => {
-          window.location.href = `/myorder`;
-        });
-      } else {
-        const result = await response.json();
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: result.message || 'Failed to place order.',
-        });
-      }
-    } catch (error) {
-      console.error('Error placing order:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'An unexpected error occurred. Please try again.',
-      });
-    }
-  });
-</script>
 </body>
 </html>

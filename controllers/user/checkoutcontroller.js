@@ -112,28 +112,40 @@ const placeOrder = async (req, res) => {
       itemStatus: "processing", // Default status for each item
     }));
 
-    consolwe.log("Order Items:", orderItems);
+    console.log("Order Items:", orderItems);
 
-    // Create a new order
-    const newOrder = new Order({
-      userId, // Assuming `req.user` contains the logged-in user's data
-      items: orderItems, // Assuming cart items are stored in the session
-      shippingAddress,
-      totalPrice: totalAmount,
-      orderStatus: "processing", // Default status for the order
-    });
+       const orders = [];
+    for (const item of cart.items) {
+      const newOrder = new Order({
+        userId,
+        items: [
+          {
+            product: item.productId._id,
+            quantity: item.quantity,
+            price: item.productId.price,
+            color: item.color,
+            itemStatus: "processing", // Default status for each item
+          },
+        ],
+        shippingAddress: actualAddressId,
+        totalPrice: item.quantity * item.productId.price, // Calculate total price for this item
+        orderStatus: "processing", // Default status for the order
+      });
 
-    console.log("New Order:", newOrder);
-    // Save the order
-    await newOrder.save();
+      await newOrder.save();
+      
+    }
+
 
     // Clear the user's cart after placing the order
     await Cart.deleteOne({ userId });
 
+    console.log("Order placed successfully!");
+
     res.status(200).json({
       success: true,
       message: "Order placed successfully!",
-      orderId: newOrder._id,
+      
     });
   } catch (error) {
     console.error("Error placing order:", error);

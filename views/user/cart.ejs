@@ -169,7 +169,10 @@
         
         <div class="product-details">
           <div class="product-name"><%= item.productName %></div>
-          <a href="#" class="remove-link" onclick="removeItem('<%= item.productId %>')">Remove</a>
+          <!-- <div class="product-description"><%= item.description %></div>
+          <div class="product-sku"> Color: <%= item.color %></div>
+          <div class="product-sku"> Quantity : <%= item.quantity %></div> -->
+          <a href="" class="remove-link" onclick="removeItem('<%= item.productId._id %>')">Remove</a>
         </div>
         
         <div class="price-column">
@@ -229,17 +232,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   async function removeItem(productId) {
-    const confirmation = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to remove this item from your cart?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, remove it!',
-    });
-
-    if (confirmation.isConfirmed) {
+    
       try {
         const response = await fetch('/remove', {
           method: 'POST',
@@ -257,7 +250,7 @@
             title: 'Removed!',
             text: result.message,
           }).then(() => {
-            location.reload(); // Reload the page to reflect changes
+            // Reload the page to reflect changes
           });
         } else {
           Swal.fire({
@@ -275,7 +268,7 @@
         });
       }
     }
-  }
+  
   
   async function updateQuantity(productId, newQuantity) {
     if (newQuantity < 1) {

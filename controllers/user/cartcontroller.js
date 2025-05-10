@@ -5,7 +5,7 @@ const Coupon = require('../../models/Coupons'); // Assuming you have a Coupon mo
 const mongoose = require('mongoose');
 
 
-exports.getCart = async (req, res) => {
+const getCart = async (req, res) => {
   try {
     
     const userId =req.session.user._id
@@ -17,7 +17,20 @@ exports.getCart = async (req, res) => {
   
 
     }
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId }).populate('items.productId', 'productName productImage price');
+    console.log('cart',cart)
+
+
+    for (let item of cart.items) {
+      item.productName = item.productId.productName;
+      item.image = item.productId.productImage && item.productId.productImage.length > 0 ? item.productId.productImage[0] : '/default-image.jpg';
+      item.totalPrice = item.price * item.quantity;
+    }
+
+    console.log('prductId',cart.items[0].productId)
+    console.log('productName',cart.items[0].productName)
+
+    console.log('cart after populating',cart)
     
    
     if (!cart) {
@@ -29,11 +42,7 @@ exports.getCart = async (req, res) => {
       await cart.save();
     }
 
-    for (let item of cart.items) {
-      
-      item.productName = `product ${item.productId}`;
-      item.image = `/images/products/${item.productId}.jpg`;
-    }
+   
 
     res.render('cart', { 
       cart,
@@ -49,7 +58,7 @@ exports.getCart = async (req, res) => {
 };
 
 // Update item quantity
-exports.updateCartItem = async (req, res) => {
+const updateCartItem = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
     console.log(req.body)
@@ -68,7 +77,8 @@ exports.updateCartItem = async (req, res) => {
     }
 
     // Find the item in the cart
-    const itemIndex = cart.items.findIndex(item => item.productId === productId);
+    const itemIndex = cart.items.findIndex(item => item.productId == productId);
+    console.log('itemIndex',itemIndex)
     if (itemIndex === -1) {
       return res.status(404).json({ message: 'Item not found in cart' });
     }
@@ -90,19 +100,21 @@ exports.updateCartItem = async (req, res) => {
 };
 
 // Remove item from cart
-exports.removeCartItem = async (req, res) => {
+ const removeCartItem = async (req, res) => {
   try {
     const { productId } = req.body;
+    console.log('req.body',req.body)
     const userId = req.session.user._id;
 
     // Find the user's cart
     const cart = await Cart.findOne({ userId });
-    if (!cart) {
-      return res.status(404).json({ message: 'Cart not found' });
-    }
+    console.log('cart',cart)
+    console.log('productId',productId)
+   
 
     // Remove the item from the cart
-    const itemIndex = cart.items.findIndex(item => item.productId === productId);
+    const itemIndex = cart.items.findIndex(item => item.productId == productId);
+    console.log('itemIndex',itemIndex)
     if (itemIndex === -1) {
       return res.status(404).json({ message: 'Item not found in cart' });
     }
@@ -111,6 +123,8 @@ exports.removeCartItem = async (req, res) => {
 
     // Recalculate total price
     cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    console.log('cart after removing item',cart)
 
     // Save the updated cart
     await cart.save();
@@ -123,17 +137,14 @@ exports.removeCartItem = async (req, res) => {
 };
 
 // Apply coupon to cart
-exports.applyCoupon = async (req, res) => {
+const applyCoupon = async (req, res) => {
   try {
     const { couponCode } = req.body;
     const userId = req.user ? req.user._id : '64a5e4e31b7d44ce5f8c1234'; // Example userId
     
     // Find the coupon by code
-    const coupon = await Coupon.findOne({ code: couponCode });
-    if (!coupon) {
-      req.flash('error', 'Invalid coupon code');
-      return res.redirect('/cart');
-    }
+    
+    
     
     // Check if coupon is expired
     if (coupon.expiryDate && coupon.expiryDate < new Date()) {
@@ -209,7 +220,7 @@ exports.removeCoupon = async (req, res) => {
 };
 
 // Add item to cart
-exports.addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
     try {
         const { productId, color, quantity } = req.body;
         console.log('req.body',req.body)
@@ -242,7 +253,7 @@ exports.addToCart = async (req, res) => {
 
         // Check if the product already exists in the cart
         const itemIndex = cart.items.findIndex(
-            (item) => item.productId === productId && item.color === color
+            (item) => item.productId == productId && item.color == color
         );
 
         if (itemIndex > -1) {
@@ -275,7 +286,7 @@ exports.addToCart = async (req, res) => {
 };
 
 // Clear cart
-exports.clearCart = async (req, res) => {
+const clearCart = async (req, res) => {
   try {
     const userId = req.user ? req.user._id : '64a5e4e31b7d44ce5f8c1234'; // Example userId
     
@@ -302,4 +313,18 @@ exports.clearCart = async (req, res) => {
     req.flash('error', 'Could not clear cart');
     res.redirect('/cart');
   }
+};
+
+
+module.exports = {
+ 
+  removeCartItem,
+  getCart,
+  updateCartItem,
+  addToCart,
+  clearCart,
+  applyCoupon,
+  
+
+ 
 };
