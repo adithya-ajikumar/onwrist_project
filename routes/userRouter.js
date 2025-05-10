@@ -22,6 +22,7 @@ router.get("/userprofile",ProfileController.userprofile)
 router.post("/change-password",ProfileController.changepasswordotp)
 router.post('/verify-otp',ProfileController.verifyOtp);
 router.post('/reset-password', ProfileController.resetPassword);
+router.get('/logout',userController.logout);
 
 
 // Auth routes

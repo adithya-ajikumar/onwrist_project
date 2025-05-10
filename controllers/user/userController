@@ -206,6 +206,17 @@ const loadForgotPassword = async (req, res) => {
     }
 };
 
+
+const logout = (req, res) => {
+    try {
+        req.session.user = null;
+        res.redirect("/");
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).send("Server error");
+    }
+}
+
 module.exports = {
     loadHome,
     loadSignup,
@@ -217,5 +228,6 @@ module.exports = {
     loadVerifyOtp,
     signin,
     loadForgotPassword,
+    logout
 };
 

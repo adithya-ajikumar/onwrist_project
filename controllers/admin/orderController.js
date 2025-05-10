@@ -15,6 +15,10 @@ const getAllOrders = async (req, res) => {
             .populate('userId', 'name email')
             .sort({ createdAt: -1 });
 
+
+
+      
+
         const formattedOrders = orders.map(order => {
             return {
                 _id: order._id,
@@ -37,6 +41,8 @@ const getAllOrders = async (req, res) => {
             };
         });
 
+        console.log('Formatted Orders:', formattedOrders);
+
         res.render('adminOrders', { 
             orders: formattedOrders, 
             title: 'All Orders'
@@ -47,7 +53,42 @@ const getAllOrders = async (req, res) => {
     }
 };
 
+const getOrderDetails = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+
+        // Fetch the order details
+        const order = await Order.findOne({ orderId })
+            .populate('userId', 'name email')
+            .populate({
+                path: 'items.product',
+                select: 'productName productImage',
+            })
+            
+     const shippingAddress = await Address.findOne({userId:order.userId}) 
+      const address = shippingAddress.address.find(address => address._id.toString() === order.shippingAddress.toString());
+      console.log('Address:', address); 
+
+
+        if (!order) {
+            return res.status(404).send('Order Not Found');
+        }
+
+
+
+
+        // Pass the order and address data to the view
+        res.render('adminOrderdetails', {
+            order,
+            address: order.shippingAddress,
+        });
+    } catch (error) {
+        console.error('Error fetching order details:', error);
+        res.status(500).send('Server Error');
+    }
+};
+
 module.exports = {
     getAllOrders,
-   
+    getOrderDetails,
 };

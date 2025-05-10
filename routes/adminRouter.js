@@ -38,6 +38,9 @@ router.get('/editProduct',productController.loadEditProduct);
 router.get('/blockProduct',productController.blockProduct);
 router.get('/unblockProduct',productController.unblockProduct);
 router.post('/deleteImage',productController.deleteSingleImg);
+
 router.get("/adminOrder",orderController.getAllOrders);
+router.get("/adminOrder/:orderId",orderController.getOrderDetails);
+
 
 module.exports=router;
