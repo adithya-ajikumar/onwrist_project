@@ -251,6 +251,7 @@ const addToCart = async (req, res) => {
             });
         }
 
+        console.log('modified product',product)
         // Check if the product already exists in the cart
         const itemIndex = cart.items.findIndex(
             (item) => item.productId == productId && item.color == color

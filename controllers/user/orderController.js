@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../../models/order');
 const Address = require('../../models/addressSchema'); // Import the Address model
+const Product = require('../../models/productsSchema'); // Import the Product model
 
 // Get all orders for the logged-in user
 const getOrders = async (req, res) => {
@@ -88,12 +89,26 @@ const cancelOrder = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
 
-        if (order.orderStatus !== 'processing') {
+        if (order.orderStatus !== 'Processing') {
             return res.status(400).json({ success: false, message: 'Order cannot be cancelled' });
         }
 
-        order.orderStatus = 'cancelled';
+        // Update stock for each item in the order
+        for (const item of order.items) {
+            const product = await Product.findById(item.product);
+            if (product) {
+                product.colorStock[item.color] = (product.colorStock[item.color] || 0) + item.quantity;
+                product.totalStock += item.quantity;
+                await product.save();
+                console.log(`Updated stock for product ${product.productName}: ${product.colorStock[item.color]} units available in color ${item.color}`);
+            }
+        }
+
+        // Update order status to 'Cancelled'
+        order.orderStatus = 'Cancelled';
         await order.save();
+
+
 
         res.json({ success: true, message: 'Order cancelled successfully' });
     } catch (error) {

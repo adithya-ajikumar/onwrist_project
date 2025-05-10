@@ -478,7 +478,7 @@
             </div>
         </div>
         <div class="action-buttons">
-            <% if (order.orderStatus === 'processing') { %>
+            <% if (order.orderStatus === 'Processing') { %>
                 <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
             <% } %>
         </div>
@@ -601,6 +601,71 @@
                     text: error.message || 'Something went wrong',
                     confirmButtonColor: '#dc3545'
                 });
+            }
+        }
+    </script>
+    <script>
+        async function confirmCancelOrder(orderId) {
+            // Show confirmation dialog
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to cancel this order?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it'
+            });
+
+            if (result.isConfirmed) {
+                // Show loading indicator
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Cancelling your order',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                try {
+                    // Make a fetch request to cancel the order
+                    const response = await fetch(`/cancel-order/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Show success message and reload the page
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cancelled!',
+                            text: 'Your order has been cancelled successfully.',
+                            confirmButtonColor: '#28a745',
+                            timer: 2000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message || 'Failed to cancel the order');
+                    }
+                } catch (error) {
+                    // Show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: error.message || 'Something went wrong',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
             }
         }
     </script>
