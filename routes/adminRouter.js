@@ -5,6 +5,7 @@ const { isLogin, checkSession } = require('../middlewares/adminAuth');
 const customerController=require('../controllers/admin/customerController')
 const categoryController = require('../controllers/admin/categoryController.js')
 const productController = require('../controllers/admin/productController.js')
+const orderController = require('../controllers/admin/orderController.js')
 const upload=require('../middlewares/multer.js')
 
 
@@ -37,5 +38,6 @@ router.get('/editProduct',productController.loadEditProduct);
 router.get('/blockProduct',productController.blockProduct);
 router.get('/unblockProduct',productController.unblockProduct);
 router.post('/deleteImage',productController.deleteSingleImg);
+router.get("/adminOrder",orderController.getAllOrders);
 
 module.exports=router;
