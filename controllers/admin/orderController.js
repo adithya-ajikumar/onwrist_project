@@ -89,30 +89,35 @@ const getOrderDetails = async (req, res) => {
 };
 
 
-const updateOrderStatus = async(req,res)=>{
+const updateOrderStatus = async (req, res) => {
     try {
-        
         const orderId = req.params.orderId;
         const { status } = req.body;
 
+        console.log('Updating order status:', orderId, status);
+
         const validStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Return Request', 'Returned'];
 
-        if(!validStatuses.includes(status)){
+        if (!validStatuses.includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const order = await Order.findOneAndUpdate(
-            {orderId},
-            {status},
-            {new : true}
-        );
-
-        if(!order){
+        const order = await Order.findOne({ orderId });
+        if (!order) {
             return res.status(404).json({ error: 'Order not found' });
         }
 
-        res.json({ success: true, message: 'Order status updated successfully', status: order.status });
+        // Update the orderStatus field in the Order schema
+        for(const item of order.items) {
+            item.itemStatus = status;
+            order.save();
+        }
 
+        console.log('Updated Order:', order);
+
+        
+
+        res.json({ success: true, message: 'Order status updated successfully', status: order.orderStatus });
     } catch (error) {
         console.error('Error updating order status:', error);
         res.status(500).json({ error: 'Failed to update status' });
