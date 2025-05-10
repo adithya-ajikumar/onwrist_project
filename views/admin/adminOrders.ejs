@@ -201,19 +201,6 @@
                       <div class="order-actions">
                           <a href="/admin/adminOrder/<%= order.orderId %>" class="btn-details">View Details</a>
                       </div>
-                      <div class="order-actions">
-                          <select id="status-<%= order.orderId %>" required>
-                              <option value="" disabled selected>Update Status</option>
-                              <option value="Pending">Pending</option>
-                              <option value="Processing">Processing</option>
-                              <option value="Shipped">Shipped</option>
-                              <option value="Delivered">Delivered</option>
-                              <option value="Cancelled">Cancelled</option>
-                              <option value="Return Request">Return Request</option>
-                              <option value="Returned">Returned</option>
-                          </select>
-                          <button class="btn-details" onclick="updateOrderStatus('<%= order.orderId %>')">Update</button>
-                      </div>
                   </div>
               <% }); %>
           <% }); %>
@@ -229,57 +216,5 @@
     </main>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-  <script>
-    async function updateOrderStatus(orderId) {
-        const status = document.getElementById(`status-${orderId}`).value;
-
-        if (!status) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Invalid Status',
-                text: 'Please select a valid status before updating.',
-                confirmButtonColor: '#ffc107',
-            });
-            return;
-        }
-
-        try {
-            const response = await fetch(`/admin/update-order-status/${orderId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ status }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Status Updated',
-                    text: data.message,
-                    confirmButtonColor: '#28a745',
-                }).then(() => {
-                    location.reload(); // Reload the page to reflect changes
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Update Failed',
-                    text: data.error || 'Failed to update the order status.',
-                    confirmButtonColor: '#dc3545',
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'An unexpected error occurred. Please try again later.',
-                confirmButtonColor: '#dc3545',
-            });
-        }
-    }
-  </script>
 </body>
 </html>

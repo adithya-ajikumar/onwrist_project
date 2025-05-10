@@ -482,6 +482,14 @@
                 <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
             <% } %>
         </div>
+
+        <div class="action-buttons">
+            <% if (order.orderStatus === 'Delivered') { %>
+                <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
+            <% } %>
+        </div>
+
+    
     </div>
 
     <!-- SweetAlert2 CDN -->

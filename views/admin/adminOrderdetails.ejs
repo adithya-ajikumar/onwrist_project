@@ -476,11 +476,7 @@
                 <p>Delivered</p>
             </div>
         </div>
-        <div class="action-buttons">
-            <% if (order.orderStatus === 'processing') { %>
-                <button class="action-button cancel-button" onclick="confirmCancelOrder('<%= order.orderId %>')">Cancel Order</button>
-            <% } %>
-        </div>
+        
         <% order.items.forEach(item => { %>
         <div class="action-buttons">
             <label for="status">Update Status:</label>

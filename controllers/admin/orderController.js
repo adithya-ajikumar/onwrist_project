@@ -110,6 +110,7 @@ const updateOrderStatus = async (req, res) => {
         // Update the orderStatus field in the Order schema
         for(const item of order.items) {
             item.itemStatus = status;
+            order.orderStatus = status;
             order.save();
         }
 
