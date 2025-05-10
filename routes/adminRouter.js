@@ -41,6 +41,7 @@ router.post('/deleteImage',productController.deleteSingleImg);
 
 router.get("/adminOrder",orderController.getAllOrders);
 router.get("/adminOrder/:orderId",orderController.getOrderDetails);
+router.post('/update-order-status/:orderId', orderController.updateOrderStatus);
 
 
 module.exports=router;
